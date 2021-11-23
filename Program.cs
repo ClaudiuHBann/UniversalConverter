@@ -12,6 +12,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).WithOrigins("https://localhost:4200").AllowCredentials());
 app.UseStaticFiles();
 app.UseDefaultFiles();
 
