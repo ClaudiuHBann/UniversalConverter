@@ -4,12 +4,12 @@ using System.Xml;
 
 namespace Server.UConverter
 {
-    public class CCurrency
+    public class CCurrency: UConverterBase
     {
-        private static Dictionary<string, double>? currenciesAndRates = null;
+        private Dictionary<string, double>? currenciesAndRates = null;
         public static readonly List<string> categoryCurrency = new() { "USD", "JPY", "BGN", "CZK", "DKK", "GBP", "HUF", "PLN", "RON", "SEK", "CHF", "ISK", "NOK", "HRK", "RUB", "TRY", "AUD", "BRL", "CAD", "CNY", "HKD", "IDR", "ILS", "INR", "KRW", "MXN", "MYR", "NZD", "PHP", "SGD", "THB", "ZAR" };
 
-        private static void GetCurrency()
+        private void GetCurrency()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -29,7 +29,7 @@ namespace Server.UConverter
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ConvertCurrency(string amount, int from, int to)
+        public override string Convert(string amount, int from, int to)
         {
             if (currenciesAndRates == null)
             {

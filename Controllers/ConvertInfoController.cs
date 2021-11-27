@@ -7,30 +7,41 @@ namespace Server.Controllers
     [Route("[controller]")]
     public class ConvertInfoController : Controller
     {
-        private readonly ILogger<ConvertInfoController> _logger;
-
-        public ConvertInfoController(ILogger<ConvertInfoController> logger)
-        {
-            _logger = logger;
-        }
-
         [Route("[action]")]
         [HttpPost]
-        public JsonResult Post([FromBody] ConvertInfo ci)
+        public IActionResult Post([FromBody] ConvertInfo ci)
         {
+            if (ci.Category < 0 || ci.Category > UConverter.UConverter.subcategoriesCount.Count)
+            {
+                return BadRequest("JSON.category does not exist!");
+            }
+
             if (ci.Items is null)
             {
-                return Json(null);
+                return BadRequest("JSON.items are not existing!");
+            }
+
+            if (ci.From == ci.To)
+            {
+                return Ok(ci.Items);
+            }
+
+            if (ci.From < 0 || ci.From > UConverter.UConverter.subcategoriesCount[ci.Category] - 1 ||
+                ci.To < 0 || ci.To > UConverter.UConverter.subcategoriesCount[ci.Category] - 1)
+            {
+                return BadRequest("JSON.from or JSON.to are invalid!");
+            }
+
+            if (UConverter.UConverter.uConverter[ci.Category].IsFormatted() is false)
+            {
+                return BadRequest("JSON.items are not correctly formatted!");
             }
 
             List<string>? jsonResult = new();
 
-            foreach (var item in ci.Items)
-            {
-                jsonResult.Add(UConverter.UConverter.methods[ci.Category](item, ci.From, ci.To));
-            }
+            ci.Items.ForEach((item) => jsonResult.Add(UConverter.UConverter.uConverter[ci.Category].Convert(item, ci.From, ci.To)));
 
-            return Json(jsonResult);
+            return Ok(jsonResult);
         }
     }
 }

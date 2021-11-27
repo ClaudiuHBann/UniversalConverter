@@ -2,12 +2,12 @@ namespace Server.Models
 {
     public class ConvertInfo
     {
-        public byte Category { get; set; }
+        public int Category { get; set; }
 
         public List<string>? Items { get; set; }
 
-        public byte From { get; set; }
+        public int From { get; set; }
 
-        public byte To { get; set; }
+        public int To { get; set; }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Server.UConverter
 {
-    public class CTemperature
+    public class CTemperature: UConverterBase
     {
         public static readonly List<string> categoryTemperature = new() { "Celsius", "Fahrenheit", "Kelvin" };
 
-        private static readonly Dictionary<string, Func<double, double>> degreesConvertingFunctions = new()
+        private readonly Dictionary<string, Func<double, double>> degreesConvertingFunctions = new()
         {
             { "01", degrees => degrees * 1.8 + 32.0 },
             { "02", degrees => degrees + 273.15 },
@@ -17,6 +17,6 @@ namespace Server.UConverter
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ConvertTemperature(string degrees, int from, int to) => degreesConvertingFunctions[from.ToString() + to.ToString()].Invoke(double.Parse(degrees)).ToString();
+        public override string Convert(string degrees, int from, int to) => degreesConvertingFunctions[from.ToString() + to.ToString()].Invoke(double.Parse(degrees)).ToString();   
     }
 }

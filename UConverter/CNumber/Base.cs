@@ -2,11 +2,11 @@
 
 namespace Server.UConverter.CNumber
 {
-    public class Base
+    public class Base: UConverterBase
     {
-        public static readonly string baseString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public readonly string baseString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public static string ConvertNumberBase(string number, int from, int to)
+        public override string Convert(string number, int from, int to)
         {
             BigInteger base10Number = new(0);
             if (from != 10)

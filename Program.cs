@@ -12,11 +12,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).WithOrigins("https://localhost:4200").AllowCredentials());
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true)
+#if DEBUG
+.WithOrigins("https://localhost:4200")
+#else
+.WithOrigins("https://162.55.32.18:80")
+#endif
+.AllowCredentials());
 app.UseStaticFiles();
 app.UseDefaultFiles();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
