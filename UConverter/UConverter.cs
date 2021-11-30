@@ -15,12 +15,18 @@
         {
             foreach (string item in Items)
             {
+                char lastC = ' ';
                 foreach (char c in item)
                 {
-                    if (char.IsDigit(c) is false && " ,.\n".IndexOf(c) == -1)
+                    if ((char.IsDigit(c) is false && c != '.') ||
+                        (lastC == '.' && c == '.') ||
+                        (char.IsDigit(c) && lastC == '.') ||
+                        (c == '.' && char.IsDigit(lastC)))
                     {
                         return false;
                     }
+
+                    lastC = c;
                 }
             }
 

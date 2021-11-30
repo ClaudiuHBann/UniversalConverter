@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using java.math;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Xml;
 
@@ -36,7 +37,7 @@ namespace Server.UConverter
                 GetCurrency();
             }
 
-            return (double.Parse(amount) / currenciesAndRates[categoryCurrency[from]] * currenciesAndRates[categoryCurrency[to]]).ToString();
+            return (new BigDecimal(amount).divide(new(currenciesAndRates[categoryCurrency[from]])).multiply(new(currenciesAndRates[categoryCurrency[to]]))).ToString();
         }
     }
 }
