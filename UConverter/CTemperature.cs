@@ -10,7 +10,7 @@ namespace Server.UConverter
         private static readonly BigDecimal bd1 = new(1.8);
         private static readonly BigDecimal bd2 = new(32.0);
         private static readonly BigDecimal bd3 = new(273.15);
-        private static readonly BigDecimal bd4 = new BigDecimal(5.0).divide(new(9.0));
+        private static readonly BigDecimal bd4 = new BigDecimal(5.0).divide(new(9.0), RoundingMode.HALF_EVEN);
 
         private readonly Dictionary<string, Func<BigDecimal, BigDecimal>> degreesConvertingFunctions = new()
         {

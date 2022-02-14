@@ -1,39 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
 
-namespace Server.Controllers
-{
+namespace Server.Controllers {
     [ApiController]
     [Route("[controller]")]
-    public class ConvertInfoController : Controller
-    {
+    public class ConvertInfoController : Controller {
         [Route("[action]")]
         [HttpPost]
-        public IActionResult Post([FromBody] ConvertInfo ci)
-        {
-            if (ci.Category < 0 || ci.Category > UConverter.UConverter.subcategoriesCount.Count)
-            {
+        public IActionResult Post([FromBody] ConvertInfo ci) {
+            if (ci.Category < 0 || ci.Category > UConverter.UConverter.subcategoriesCount.Count) {
                 return BadRequest("JSON.category does not exist!");
             }
 
-            if (ci.Items is null)
-            {
+            if (ci.Items is null) {
                 return BadRequest("JSON.items are not existing!");
             }
 
-            if (ci.From == ci.To)
-            {
+            if (ci.From == ci.To) {
                 return Ok(ci.Items);
             }
 
-            if (ci.From < 0 || ci.From > UConverter.UConverter.subcategoriesCount[ci.Category] - 1 ||
-                ci.To < 0 || ci.To > UConverter.UConverter.subcategoriesCount[ci.Category] - 1)
-            {
-                return BadRequest("JSON.from or JSON.to are invalid!");
+            if (ci.From < 0 && ci.From > UConverter.UConverter.subcategoriesCount[ci.Category] - 1) {
+                return BadRequest("JSON.from are invalid!");
             }
 
-            if (UConverter.UConverter.uConverter[ci.Category].IsFormatted() is false)
-            {
+            if (ci.To < 0 && ci.To > UConverter.UConverter.subcategoriesCount[ci.Category] - 1) {
+                return BadRequest("JSON.to are invalid!");
+            }
+
+            if (UConverter.UConverter.uConverter[ci.Category].IsFormatted(ci.Items) is false) {
                 return BadRequest("JSON.items are not correctly formatted!");
             }
 

@@ -11,9 +11,9 @@
     {
         public abstract string Convert(string data, int from, int to);
 
-        public virtual bool IsFormatted()
+        public virtual bool IsFormatted(List<string> items)
         {
-            foreach (string item in Items)
+            foreach (string item in items)
             {
                 char lastC = ' ';
                 foreach (char c in item)

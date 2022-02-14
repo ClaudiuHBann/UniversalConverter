@@ -8,6 +8,9 @@ namespace Server.UConverter.CNumber
 
         public override string Convert(string number, int from, int to)
         {
+            from += 2;
+            to += 2;
+
             BigInteger base10Number = new(0);
             if (from != 10)
             {

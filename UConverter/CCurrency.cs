@@ -37,7 +37,7 @@ namespace Server.UConverter
                 GetCurrency();
             }
 
-            return (new BigDecimal(amount).divide(new(currenciesAndRates[categoryCurrency[from]])).multiply(new(currenciesAndRates[categoryCurrency[to]]))).ToString();
+            return (new BigDecimal(amount).divide(new(currenciesAndRates[categoryCurrency[from]]), RoundingMode.HALF_EVEN).multiply(new(currenciesAndRates[categoryCurrency[to]]))).ToString();
         }
     }
 }
