@@ -21,7 +21,7 @@ namespace Server.UConverter.CNumber
                         continue;
                     }
 
-                    base10Number += baseString.IndexOf(number[i]) * (BigInteger)Math.Pow(from, number.Length - i - 1);
+                    base10Number += baseString.IndexOf(char.ToUpper(number[i])) * (BigInteger)Math.Pow(from, number.Length - i - 1);
                 }
             }
             else

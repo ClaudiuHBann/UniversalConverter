@@ -1,16 +1,14 @@
 ﻿using java.math;
 using System.Runtime.CompilerServices;
 
-namespace Server.UConverter
-{
-    public class CTemperature : UConverterBase
-    {
+namespace Server.UConverter {
+    public class CTemperature : UConverterBase {
         public static readonly List<string> categoryTemperature = new() { "Celsius", "Fahrenheit", "Kelvin" };
 
         private static readonly BigDecimal bd1 = new(1.8);
         private static readonly BigDecimal bd2 = new(32.0);
         private static readonly BigDecimal bd3 = new(273.15);
-        private static readonly BigDecimal bd4 = new BigDecimal(5.0).divide(new(9.0), RoundingMode.HALF_EVEN);
+        private static readonly BigDecimal bd4 = new BigDecimal(5.0).divide(new(9.0), 15, RoundingMode.DOWN);
 
         private readonly Dictionary<string, Func<BigDecimal, BigDecimal>> degreesConvertingFunctions = new()
         {
@@ -23,6 +21,6 @@ namespace Server.UConverter
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string Convert(string degrees, int from, int to) => degreesConvertingFunctions[from.ToString() + to.ToString()].Invoke(new(degrees)).ToString();
+        public override string Convert(string degrees, int from, int to) => degreesConvertingFunctions[from.ToString() + to.ToString()].Invoke(new(degrees)).setScale(15, RoundingMode.DOWN).stripTrailingZeros().ToString();
     }
 }

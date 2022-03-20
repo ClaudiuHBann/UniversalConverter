@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Newtonsoft.Json;
 
 namespace Server.Controllers {
     [ApiController]
@@ -34,7 +35,15 @@ namespace Server.Controllers {
 
             List<string>? jsonResult = new();
 
+#if DEBUG
+            Console.WriteLine(JsonConvert.SerializeObject(ci, Formatting.Indented) + '\n');
+#endif
+
             ci.Items.ForEach((item) => jsonResult.Add(UConverter.UConverter.uConverter[ci.Category].Convert(item, ci.From, ci.To)));
+
+#if DEBUG
+            Console.WriteLine(JsonConvert.SerializeObject(jsonResult, Formatting.Indented) + "\n\n\n");
+#endif
 
             return Ok(jsonResult);
         }

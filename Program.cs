@@ -14,9 +14,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true)
 #if DEBUG
-.WithOrigins("https://localhost:4200")
+.WithOrigins("http://localhost:4200")
 #else
-.WithOrigins("https://162.55.32.18:80")
+.WithOrigins("http://162.55.32.18:80")
 #endif
 .AllowCredentials());
 app.UseStaticFiles();
