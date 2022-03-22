@@ -21,6 +21,27 @@ namespace Server.UConverter {
             }
         }
 
+        public override bool IsFormatted(Models.ConvertInfo ci) {
+            if (ci.Items is null) {
+                return false;
+            }
+
+            foreach (var item in ci.Items) {
+                if (string.IsNullOrWhiteSpace(item) ||
+                    item.StartsWith('.') || item.EndsWith('.')) {
+                    return false;
+                }
+
+                foreach (var c in item) {
+                    if (!char.IsDigit(c) && c != '.') {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string Convert(string amount, int from, int to) {
             if (currenciesAndRates == null) {

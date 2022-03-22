@@ -29,7 +29,7 @@ namespace Server.Controllers {
                 return BadRequest("JSON.to are invalid!");
             }
 
-            if (UConverter.UConverter.uConverter[ci.Category].IsFormatted(ci.Items) is false) {
+            if (UConverter.UConverter.uConverter[ci.Category].IsFormatted(ci) is false) {
                 return BadRequest("JSON.items are not correctly formatted!");
             }
 

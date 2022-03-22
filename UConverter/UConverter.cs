@@ -11,27 +11,7 @@
     {
         public abstract string Convert(string data, int from, int to);
 
-        public virtual bool IsFormatted(List<string> items)
-        {
-            foreach (string item in items)
-            {
-                char lastC = ' ';
-                foreach (char c in item)
-                {
-                    if ((char.IsDigit(c) is false && c != '.') ||
-                        (lastC == '.' && c == '.') ||
-                        (char.IsDigit(c) && lastC == '.') ||
-                        (c == '.' && char.IsDigit(lastC)))
-                    {
-                        return false;
-                    }
-
-                    lastC = c;
-                }
-            }
-
-            return true;
-        }
+        public abstract bool IsFormatted(Models.ConvertInfo ci);
     }
 
     public class UConverter
