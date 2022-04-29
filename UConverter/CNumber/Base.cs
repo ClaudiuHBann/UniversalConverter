@@ -16,12 +16,10 @@ namespace Server.UConverter.CNumber {
 
                 string newItem = item;
                 if (item.StartsWith("0x") || item.StartsWith("0X")) {
-                    newItem = item.Substring(2);
+                    newItem = item[2..];
                 }
 
                 foreach (var c in newItem) {
-                    Console.WriteLine((baseString.IndexOf(char.ToUpper(c)) + 1).ToString() + " > " + (ci.From + 2).ToString());
-
                     if (!char.IsLetterOrDigit(c) ||
                         baseString.IndexOf(char.ToUpper(c)) + 1 > ci.From + 2) {
                         return false;
@@ -37,7 +35,7 @@ namespace Server.UConverter.CNumber {
             to += 2;
 
             if (number.StartsWith("0x") || number.StartsWith("0X")) {
-                number = number.Substring(2);
+                number = number[2..];
             }
 
             if (number.StartsWith('0')) {
