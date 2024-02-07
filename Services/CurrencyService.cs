@@ -12,8 +12,8 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 {
     private const string Source = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 
-    private Dictionary<string, decimal> _rates = [];
-    private DateTime _ratesLastUpdate = DateTime.UtcNow;
+    private static Dictionary<string, decimal> _rates = [];
+    private static DateTime _ratesLastUpdate = DateTime.MinValue;
 
     public override async Task<List<string>> FromTo()
     {

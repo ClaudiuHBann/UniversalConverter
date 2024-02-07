@@ -6,7 +6,7 @@ namespace Server.Services
 {
 public class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
 {
-    private readonly Dictionary<string, Func<double, double>> _temperatureDirectConversions =
+    private static readonly Dictionary<string, Func<double, double>> _temperatureDirectConversions =
         new() { { "Celsius->Celsius", temperature => temperature },
                 { "Celsius->Fahrenheit", ToFahrenheit },
                 { "Celsius->Kelvin", ToKelvin },

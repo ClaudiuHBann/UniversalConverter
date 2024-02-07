@@ -9,7 +9,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
     private const string Bases = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public override async Task<List<string>> FromTo() =>
-        await Task.FromResult(Enumerable.Range(2, Bases.Length).Select(number => number.ToString()).ToList());
+        await Task.FromResult(Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList());
 
     protected override async Task Validate(RadixRequest request)
     {
