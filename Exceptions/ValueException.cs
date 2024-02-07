@@ -1,12 +1,17 @@
-﻿namespace Server.Exceptions
+﻿using System.Net;
+
+using Server.Responses;
+
+namespace Server.Exceptions
 {
 public class ValueException : BaseException
 {
-    public ValueException(string value) : base(value)
+    public ValueException(string value) : base(new ErrorResponse(HttpStatusCode.BadRequest, value))
     {
     }
 
-    public ValueException(string value, Exception inner) : base(value, inner)
+    public ValueException(string value, Exception inner)
+        : base(new ErrorResponse(HttpStatusCode.BadRequest, value), inner)
     {
     }
 }
