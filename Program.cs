@@ -1,4 +1,10 @@
+using Server.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<RadixService>();
+builder.Services.AddTransient<CurrencyService>();
+builder.Services.AddTransient<TemperatureService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -12,20 +18,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true)
-#if DEBUG
-.WithOrigins("http://localhost:4200")
-#else
-.WithOrigins("http://162.55.32.18:80")
-#endif
-.AllowCredentials());
-app.UseStaticFiles();
-app.UseDefaultFiles();
+app.UseCors(config => config.AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .SetIsOriginAllowed(origin => true)
+                          .WithOrigins("https://localhost:5001/")
+                          .AllowCredentials());
 
-//app.UseHttpsRedirection();
-
+app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
