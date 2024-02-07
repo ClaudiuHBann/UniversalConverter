@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Server.Requests;
 using Server.Responses;
 using Server.Exceptions;
 
@@ -11,7 +10,7 @@ namespace Server.Controllers
 [Controller]
 public abstract class BaseController : ControllerBase
 {
-    protected async Task<ActionResult> Try(Func<Task<BaseRequest>> func)
+    protected async Task<ActionResult> Try(Func<Task<BaseResponse>> func)
     {
         try
         {
