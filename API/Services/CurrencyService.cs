@@ -49,6 +49,10 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
         {
             throw new ValueException($"The value converted from {request.From} to {request.To} is too small/big!");
         }
+        catch (Exception e)
+        {
+            throw new ValueException($"The value converted from {request.From} to {request.To} is too small/big!");
+        }
     }
 
     private bool ShouldUpdateRates()
