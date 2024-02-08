@@ -1,4 +1,4 @@
-namespace Server.Requests
+namespace Shared.Requests
 {
 public class TemperatureRequest : BaseRequest
 {

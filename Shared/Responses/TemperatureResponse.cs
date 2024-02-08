@@ -1,4 +1,4 @@
-﻿namespace Server.Responses
+﻿namespace Shared.Responses
 {
 public class TemperatureResponse
 (List<double> temperatures) : BaseResponse

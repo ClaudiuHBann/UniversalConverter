@@ -1,18 +1,23 @@
 ﻿using System.Net;
 
-using Server.Services;
+using Shared.Responses;
+using Shared.Services;
 
-namespace Server.Exceptions
+namespace Shared.Exceptions
 {
 public class FromToException : BaseException
 {
+    public FromToException(ErrorResponse error) : base(EType.FromTo, error)
+    {
+    }
+
     public FromToException(IService service, bool fromIsInvalid)
-        : base(new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)))
+        : base(EType.FromTo, new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)))
     {
     }
 
     public FromToException(IService service, bool fromIsInvalid, Exception inner)
-        : base(new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)), inner)
+        : base(EType.FromTo, new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)), inner)
     {
     }
 

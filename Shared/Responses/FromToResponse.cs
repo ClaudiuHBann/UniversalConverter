@@ -1,4 +1,4 @@
-﻿namespace Server.Responses
+﻿namespace Shared.Responses
 {
 public class FromToResponse
 (List<string> fromTo) : BaseResponse
