@@ -34,14 +34,12 @@ public abstract class BaseUCService<TRequest, TResponse>
         Delete
     }
 
-    public virtual async Task<TResponse> FromTo(TRequest request) => await Request(EHTTPRequest.Get,
-                                                                                   EDBAction.FromTo.ToString(),
-                                                                                   request);
-    public virtual async Task<TResponse> Convert(TRequest request) => await Request(EHTTPRequest.Post,
-                                                                                    EDBAction.Convert.ToString(),
-                                                                                    request);
+    public virtual async Task<FromToResponse> FromTo() => await Request<FromToResponse>(EHTTPRequest.Get,
+                                                                                        EDBAction.FromTo.ToString());
+    public virtual async Task<TResponse> Convert(TRequest request) => await Request<TResponse>(
+        EHTTPRequest.Post, EDBAction.Convert.ToString(), request);
 
-    protected async Task<TResponse> Request(EHTTPRequest requestHTTP, string action, object? value = null)
+    protected async Task<Response> Request<Response>(EHTTPRequest requestHTTP, string action, object? value = null)
     {
         var uri = $"{_URLBase}{GetControllerName()}/{action}";
 
@@ -53,15 +51,15 @@ public abstract class BaseUCService<TRequest, TResponse>
             _ => throw new ArgumentException($"The EHTTPRequest type '{requestHTTP}' is not allowed!"),
         };
 
-        return await ProcessResponse(response);
+        return await ProcessResponse<Response>(response);
     }
 
-    private static async Task<TResponse> ProcessResponse(HttpResponseMessage message)
+    private static async Task<Response> ProcessResponse<Response>(HttpResponseMessage message)
     {
         var parseException = new ArgumentException("Could not ReadFromJsonAsync the message content!");
         if (message.IsSuccessStatusCode)
         {
-            return await message.Content.ReadFromJsonAsync<TResponse>() ?? throw parseException;
+            return await message.Content.ReadFromJsonAsync<Response>() ?? throw parseException;
         }
         else
         {

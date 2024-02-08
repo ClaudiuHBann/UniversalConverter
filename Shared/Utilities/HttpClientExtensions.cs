@@ -8,7 +8,7 @@ public static class HttpClientExtensions
                                                                          TValue value)
     {
         var request = new HttpRequestMessage { Content = JsonContent.Create(value), Method = HttpMethod.Get,
-                                               RequestUri = new Uri(requestUri, UriKind.Relative) };
+                                               RequestUri = new Uri(requestUri) };
         return await httpClient.SendAsync(request);
     }
 
@@ -16,7 +16,7 @@ public static class HttpClientExtensions
                                                                             string requestUri, TValue value)
     {
         var request = new HttpRequestMessage { Content = JsonContent.Create(value), Method = HttpMethod.Delete,
-                                               RequestUri = new Uri(requestUri, UriKind.Relative) };
+                                               RequestUri = new Uri(requestUri) };
         return await httpClient.SendAsync(request);
     }
 }

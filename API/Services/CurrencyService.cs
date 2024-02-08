@@ -41,7 +41,14 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
         await Validate(request);
 
         await UpdateRates();
-        return new(request.Money.Select(money => money / _rates[request.From] * _rates[request.To]).ToList());
+        try
+        {
+            return new(request.Money.Select(money => money / _rates[request.From] * _rates[request.To]).ToList());
+        }
+        catch (OverflowException)
+        {
+            throw new ValueException($"The value converted from {request.From} to {request.To} is too small/big!");
+        }
     }
 
     private bool ShouldUpdateRates()
