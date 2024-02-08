@@ -8,30 +8,31 @@ using Microsoft.AspNetCore.Diagnostics;
 namespace API.Middlewares
 {
 public class GlobalExceptionHandlerMiddleware
-(ILogger<GlobalExceptionHandlerMiddleware> logger) : IExceptionHandler
+(ILogger<GlobalExceptionHandlerMiddleware> logger) : IMiddleware
 {
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
-                                                CancellationToken cancellationToken)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        _logger.LogError($"Exception: {exception.Message}");
-
-        ErrorResponse response;
-        if (exception is BaseException baseException)
+        try
         {
-            response = baseException.Error;
+            await next(context);
         }
-        else
+        catch (BaseException exception)
         {
-            response = new(HttpStatusCode.InternalServerError, exception.Message);
+            _logger.LogError($"Exception: {exception.Message}");
+
+            context.Response.StatusCode = (int)exception.Error.Code;
+            await context.Response.WriteAsJsonAsync(exception.Error);
         }
+        catch (Exception exception)
+        {
+            _logger.LogError($"Exception: {exception.Message}");
 
-        httpContext.Response.StatusCode = (int)response.Code;
-
-        await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
-
-        return true;
+            ErrorResponse error = new(HttpStatusCode.InternalServerError, exception.Message);
+            context.Response.StatusCode = (int)error.Code;
+            await context.Response.WriteAsJsonAsync(error);
+        }
     }
 }
 }
