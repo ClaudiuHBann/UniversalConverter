@@ -22,6 +22,8 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     protected override async Task Validate(TemperatureRequest request)
     {
+        await Validate(request);
+
         var fromTo = await FromTo();
 
         if (!fromTo.Contains(request.From.ToLower().ToUpperInvariant()))

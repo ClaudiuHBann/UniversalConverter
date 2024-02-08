@@ -1,4 +1,5 @@
 using Server.Services;
+using Server.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddTransient<TemperatureService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandlerMiddleware>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -27,5 +31,7 @@ app.UseCors(config => config.AllowAnyMethod()
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+app.UseExceptionHandler();
 
 app.Run();

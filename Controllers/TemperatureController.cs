@@ -12,10 +12,10 @@ public class TemperatureController
 (TemperatureService service) : BaseController
 {
     [HttpGet(nameof(FromTo))]
-    public async Task<ActionResult> FromTo() => await Try(async () => new FromToResponse(await service.FromTo()));
+    public async Task<ActionResult> FromTo() => MakeOk(new FromToResponse(await service.FromTo()));
 
     [HttpPost(nameof(Convert))]
     public async Task<ActionResult> Convert([FromBody] TemperatureRequest request) =>
-        await Try(async () => await service.Convert(request));
+        MakeOk(await service.Convert(request));
 }
 }

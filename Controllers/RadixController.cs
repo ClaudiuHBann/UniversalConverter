@@ -12,10 +12,9 @@ public class RadixController
 (RadixService service) : BaseController
 {
     [HttpGet(nameof(FromTo))]
-    public async Task<ActionResult> FromTo() => await Try(async () => new FromToResponse(await service.FromTo()));
+    public async Task<ActionResult> FromTo() => MakeOk(new FromToResponse(await service.FromTo()));
 
     [HttpPost(nameof(Convert))]
-    public async Task<ActionResult> Convert([FromBody] RadixRequest request) =>
-        await Try(async () => await service.Convert(request));
+    public async Task<ActionResult> Convert([FromBody] RadixRequest request) => MakeOk(await service.Convert(request));
 }
 }

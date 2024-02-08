@@ -38,6 +38,8 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 
     public override async Task<CurrencyResponse> Convert(CurrencyRequest request)
     {
+        await Validate(request);
+
         await UpdateRates();
         return new(request.Money.Select(money => money / _rates[request.From] * _rates[request.To]).ToList());
     }

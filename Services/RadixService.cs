@@ -32,6 +32,8 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     public override async Task<RadixResponse> Convert(RadixRequest request)
     {
+        await Validate(request);
+
         var from = ulong.Parse(request.From);
         var to = ulong.Parse(request.To);
 
