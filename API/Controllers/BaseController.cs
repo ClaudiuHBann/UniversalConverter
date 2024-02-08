@@ -2,9 +2,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Server.Responses;
+using Shared.Responses;
 
-namespace Server.Controllers
+namespace API.Controllers
 {
 [Controller]
 public abstract class BaseController : ControllerBase
@@ -20,7 +20,7 @@ public abstract class BaseController : ControllerBase
     protected NotFoundObjectResult MakeNotFound(string message) => NotFound(new ErrorResponse(HttpStatusCode.NotFound,
                                                                                               message));
 
-    protected ObjectResult MakeInternalServerError(string message) => new(new ErrorResponse(
+    protected ObjectResult MakeInternalAPIError(string message) => new(new ErrorResponse(
         HttpStatusCode.InternalServerError, message)) { StatusCode = StatusCodes.Status500InternalServerError };
 }
 }

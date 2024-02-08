@@ -1,11 +1,11 @@
 ﻿using System.Net;
 
-using Server.Responses;
-using Server.Exceptions;
+using Shared.Responses;
+using Shared.Exceptions;
 
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace Server.Middlewares
+namespace API.Middlewares
 {
 public class GlobalExceptionHandlerMiddleware
 (ILogger<GlobalExceptionHandlerMiddleware> logger) : IExceptionHandler

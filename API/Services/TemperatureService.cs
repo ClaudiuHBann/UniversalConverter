@@ -1,8 +1,8 @@
-﻿using Server.Requests;
-using Server.Responses;
-using Server.Exceptions;
+﻿using Shared.Requests;
+using Shared.Responses;
+using Shared.Exceptions;
 
-namespace Server.Services
+namespace API.Services
 {
 public class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
 {

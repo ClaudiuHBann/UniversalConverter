@@ -1,7 +1,8 @@
-﻿using Server.Requests;
-using Server.Responses;
+﻿using Shared.Services;
+using Shared.Requests;
+using Shared.Responses;
 
-namespace Server.Services
+namespace API.Services
 {
 public abstract class BaseService<Request, Response>() : IService
     where Request : BaseRequest

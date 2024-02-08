@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Server.Services;
-using Server.Requests;
-using Server.Responses;
+using API.Services;
+using Shared.Requests;
+using Shared.Responses;
 
-namespace Server.Controllers
+namespace API.Controllers
 {
 [ApiController]
 [Route("[controller]")]

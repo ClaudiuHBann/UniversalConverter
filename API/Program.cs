@@ -1,5 +1,5 @@
-using Server.Services;
-using Server.Middlewares;
+using API.Services;
+using API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
