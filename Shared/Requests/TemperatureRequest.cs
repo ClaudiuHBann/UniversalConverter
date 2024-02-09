@@ -1,3 +1,5 @@
+using Shared.Utilities;
+
 namespace Shared.Requests
 {
 public class TemperatureRequest : BaseRequest
@@ -8,9 +10,14 @@ public class TemperatureRequest : BaseRequest
     {
     }
 
-    public TemperatureRequest(TemperatureRequest request)
+    public TemperatureRequest(TemperatureRequest request) : base(request)
     {
         Temperatures = request.Temperatures;
+    }
+
+    public override string ToString()
+    {
+        return this.ToJSON(true);
     }
 }
 }

@@ -1,4 +1,6 @@
-﻿namespace Shared.Requests
+﻿using Shared.Utilities;
+
+namespace Shared.Requests
 {
 public class RadixRequest : BaseRequest
 {
@@ -8,9 +10,14 @@ public class RadixRequest : BaseRequest
     {
     }
 
-    public RadixRequest(RadixRequest request)
+    public RadixRequest(RadixRequest request) : base(request)
     {
         Numbers = request.Numbers;
+    }
+
+    public override string ToString()
+    {
+        return this.ToJSON(true);
     }
 }
 }
