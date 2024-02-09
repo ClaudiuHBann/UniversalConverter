@@ -4,11 +4,11 @@ namespace Test.UCUnitTests
 {
 public class BaseUCUnitTest
 {
-    protected static async Task Try(bool valid, Action action)
+    protected static async Task Try(bool valid, Func<Task> func)
     {
         try
         {
-            await Task.Run(action);
+            await func();
         }
         catch (BaseException exception)
         {

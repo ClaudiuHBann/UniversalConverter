@@ -25,11 +25,12 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
 
         public static IEnumerable<object[]> CurrencyInput { get; } = [
             [true, CurrencyRequestValid],
-            [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }],
             [false, new CurrencyRequest(CurrencyRequestValid) { To = "XXX" }],
+            [true, new CurrencyRequest(CurrencyRequestValid) { From = "EUR" }], // EUR is the reference currency and the rates API doesn't contain it by default
+            [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }],
             [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX", To = "XXX" }], // those values are not valid but they can be skipped because they are the same
-            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MaxValue] }], // decimal.MaxValue from RON to USD will overflow
-            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MinValue], From = "EUR", To = "GBP" }], // decimal.MinValue from USD to RON will "underflow"
+            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MinValue], From = "GBP" }], // decimal.MinValue from default EUR to GBP will "underflow"
+            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MaxValue], From = "EUR", To = "IDR" }], // decimal.MaxValue from EUR (default) to IDR will overflow
         ];
     // clang-format on
 
@@ -42,8 +43,7 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
 
                              var rates = await FindRates();
                              // the money current currency is EUR and we need to convert it to RON and next USD
-                             var money = CurrencyRequestValid.Money.Select(m => m / rates[CurrencyRequestValid.From] *
-                                                                                rates[CurrencyRequestValid.To]);
+                             var money = request.Money.Select(m => m / rates[request.From] * rates[request.To]);
                              Assert.IsTrue(money.SequenceEqual(response.Money));
                          });
 
@@ -51,9 +51,9 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
     public async Task TestCurrencyFromTo() => await Try(true,
                                                         async () =>
                                                         {
+                                                            var response = await _uc.Currency.FromTo();
                                                             var rates = await FindRates();
 
-                                                            var response = await _uc.Currency.FromTo();
                                                             Assert.IsTrue(rates.Keys.SequenceEqual(response.FromTo));
                                                         });
 
@@ -69,6 +69,7 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
 
         return xml.XPathSelectElements("//ecb:Cube[@currency and @rate]", nsManager)
             .Select(cube => (cube.Attribute("currency")!.Value, decimal.Parse(cube.Attribute("rate")!.Value)))
+            .Append(("EUR", 1m))
             .ToDictionary();
     }
 }
