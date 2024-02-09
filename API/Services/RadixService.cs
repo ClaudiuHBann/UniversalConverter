@@ -37,8 +37,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
         var from = ulong.Parse(request.From);
         var to = ulong.Parse(request.To);
 
-        RadixResponse response = new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
-        return await Task.FromResult(response);
+        return new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
     }
 
     private static bool WillOverflow(string number, ulong from)

@@ -1,6 +1,7 @@
 ﻿using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;
+using Shared.Utilities;
 
 namespace API.Services
 {
@@ -22,16 +23,14 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     protected override async Task Validate(TemperatureRequest request)
     {
-        await Validate(request);
-
         var fromTo = await FromTo();
 
-        if (!fromTo.Contains(request.From.ToLower().ToUpperInvariant()))
+        if (!fromTo.Contains(request.From.ToLower().FirstCharToUpper()))
         {
             throw new FromToException(this, true);
         }
 
-        if (!fromTo.Contains(request.To.ToLower().ToUpperInvariant()))
+        if (!fromTo.Contains(request.To.ToLower().FirstCharToUpper()))
         {
             throw new FromToException(this, false);
         }
@@ -39,14 +38,22 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     public override async Task<TemperatureResponse> Convert(TemperatureRequest request)
     {
+        await Validate(request);
+
         var algorithm = FindDirectConversion(request);
-        TemperatureResponse response = new(request.Temperatures.Select(temperature => algorithm(temperature)).ToList());
-        return await Task.FromResult(response);
+        try
+        {
+            return new(request.Temperatures.Select(temperature => algorithm(temperature)).ToList());
+        }
+        catch (OverflowException)
+        {
+            throw new ValueException($"The value converted from {request.From} to {request.To} is too small/big!");
+        }
     }
 
-    private Func<double, double> FindDirectConversion(TemperatureRequest request)
+    private static Func<double, double> FindDirectConversion(TemperatureRequest request)
     {
-        var algorithmName = $"{request.From.ToLower().ToUpperInvariant()}->{request.To.ToLower().ToUpperInvariant()}";
+        var algorithmName = $"{request.From.ToLower().FirstCharToUpper()}->{request.To.ToLower().FirstCharToUpper()}";
         return _temperatureDirectConversions[algorithmName];
     }
 

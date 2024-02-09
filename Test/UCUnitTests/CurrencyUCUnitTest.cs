@@ -16,22 +16,22 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
     private readonly UCService _uc = new();
 
     // clang-format off
-        public static CurrencyRequest CurrencyRequestValid { get; } = new()
-        {
-            From = "RON",
-            To = "USD",
-            Money = [69.420m, 420.69m]
-        };
-
-        public static IEnumerable<object[]> CurrencyInput { get; } = [
-            [true, CurrencyRequestValid],
-            [false, new CurrencyRequest(CurrencyRequestValid) { To = "XXX" }],
-            [true, new CurrencyRequest(CurrencyRequestValid) { From = "EUR" }], // EUR is the reference currency and the rates API doesn't contain it by default
-            [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }],
-            [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX", To = "XXX" }], // those values are not valid but they can be skipped because they are the same
-            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MinValue], From = "GBP" }], // decimal.MinValue from default EUR to GBP will "underflow"
-            [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MaxValue], From = "EUR", To = "IDR" }], // decimal.MaxValue from EUR (default) to IDR will overflow
-        ];
+    public static CurrencyRequest CurrencyRequestValid { get; } = new()
+    {
+        From = "RON",
+        To = "USD",
+        Money = [69.420m, 420.69m]
+    };
+    
+    public static IEnumerable<object[]> CurrencyInput { get; } = [
+        [true, CurrencyRequestValid],
+        [false, new CurrencyRequest(CurrencyRequestValid) { To = "XXX" }],
+        [true, new CurrencyRequest(CurrencyRequestValid) { From = "EUR" }], // EUR is the reference currency and the rates API doesn't contain it by default
+        [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }],
+        [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX", To = "XXX" }], // those values are not valid but they can be skipped because they are the same
+        [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MinValue], From = "GBP" }], // decimal.MinValue from default EUR to GBP will "underflow"
+        [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MaxValue], From = "EUR", To = "IDR" }], // decimal.MaxValue from EUR (default) to IDR will overflow
+    ];
     // clang-format on
 
     [DataTestMethod]

@@ -29,9 +29,7 @@ public abstract class BaseUCService<TRequest, TResponse>
     protected enum EHTTPRequest
     {
         Post,
-        Get,
-        Put,
-        Delete
+        Get
     }
 
     public virtual async Task<FromToResponse> FromTo() => await Request<FromToResponse>(EHTTPRequest.Get,
@@ -44,10 +42,8 @@ public abstract class BaseUCService<TRequest, TResponse>
         var uri = $"{_URLBase}{GetControllerName()}/{action}";
 
         HttpResponseMessage? response = requestHTTP switch {
-            EHTTPRequest.Post => await _client.PostAsJsonAsync(uri, value),
             EHTTPRequest.Get => await _client.GetAsJsonAsync(uri, value),
-            EHTTPRequest.Put => await _client.PutAsJsonAsync(uri, value),
-            EHTTPRequest.Delete => await _client.DeleteAsJsonAsync(uri, value),
+            EHTTPRequest.Post => await _client.PostAsJsonAsync(uri, value),
             _ => throw new ArgumentException($"The EHTTPRequest type '{requestHTTP}' is not allowed!"),
         };
 
