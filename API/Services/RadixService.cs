@@ -8,6 +8,11 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 {
     private const string Bases = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+    private static readonly List<string> _numberBaseFromMax =
+        Enumerable.Range(2, Bases.Length - 1)
+            .Select(from => ToBase(ulong.MaxValue.ToString(), 10, (ulong)from, false))
+            .ToList();
+
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult(Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList());
 
@@ -15,18 +20,23 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
     {
         var fromTo = await FromTo();
 
-        var fromUpper = request.From.ToUpper();
-        var from = fromUpper.StartsWith("0X") ? fromUpper[2..] : fromUpper;
-        if (!fromTo.Contains(from))
+        if (!fromTo.Contains(request.From))
         {
             throw new FromToException(this, true);
         }
 
-        var toUpper = request.To.ToUpper();
-        var to = toUpper.StartsWith("0X") ? toUpper[2..] : toUpper;
-        if (!fromTo.Contains(to))
+        if (!fromTo.Contains(request.To))
         {
             throw new FromToException(this, false);
+        }
+
+        // check if the number contains invalid characters for the specific base
+        var maxBaseIndex = ulong.Parse(request.From);
+        var bases = Bases[..(int)maxBaseIndex];
+        if (request.Numbers.Any(number => TrimPrefix(number, maxBaseIndex).Any(c => !bases.Contains(char.ToUpper(c)))))
+        {
+            throw new ValueException(
+                $"The value converted from {request.From} to {request.To} contains invalid characters!");
         }
     }
 
@@ -40,9 +50,23 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
         return new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
     }
 
+    private static string TrimPrefix(string number, ulong from)
+    {
+        if (from == 16 && number.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
+        {
+            number = number[2..];
+        }
+        else if (from == 2 && number.StartsWith("0b", StringComparison.CurrentCultureIgnoreCase))
+        {
+            number = number[2..];
+        }
+
+        return number.TrimStart('0');
+    }
+
     private static bool WillOverflow(string number, ulong from)
     {
-        var numberBaseFromMax = ToBase(ulong.MaxValue.ToString(), 10, from, false);
+        var numberBaseFromMax = _numberBaseFromMax[(int)from - 2];
         if (number.Length > numberBaseFromMax.Length)
         {
             return true;
@@ -59,13 +83,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     private static string ToBase(string number, ulong from, ulong to, bool checkForOverflow = true)
     {
-        number = number.ToUpper();
-        if (number.StartsWith("0X"))
-        {
-            number = number[2..];
-        }
-
-        number = number.TrimStart('0');
+        number = TrimPrefix(number.ToUpper(), from);
         if (number.Length == 0)
         {
             return "0";
@@ -93,6 +111,10 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
                 numberBase10 += (ulong)Bases.IndexOf(number[i]) * (ulong)Math.Pow(from, number.Length - i - 1);
             }
+        }
+        else
+        {
+            numberBase10 = ulong.Parse(number);
         }
 
         string numberBaseN = "";
