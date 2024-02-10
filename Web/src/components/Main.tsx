@@ -3,11 +3,11 @@ import { Stack, Text } from "@mantine/core";
 import Input from "./io/Input";
 import Output from "./io/Output";
 import Actions from "./Actions";
-import NavBar from "./NavBar/NavBar";
+import AppShellEx from "./app-shell/AppShellEx";
 
 function App() {
   return (
-    <NavBar>
+    <AppShellEx>
       <Stack>
         <Text>Choose a category...</Text>
 
@@ -15,7 +15,7 @@ function App() {
         <Actions />
         <Output />
       </Stack>
-    </NavBar>
+    </AppShellEx>
   );
 }
 
