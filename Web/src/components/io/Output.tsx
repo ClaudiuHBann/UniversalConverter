@@ -1,6 +1,7 @@
-import { Textarea, ActionIcon, rem } from "@mantine/core";
+import { Textarea, rem } from "@mantine/core";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
-import StateButton from "../StateButton";
+import ActionIconEx from "../ActionIconEx";
+import { useState } from "react";
 
 function GetButtonIconCopy(copied: boolean) {
   if (copied) {
@@ -10,7 +11,17 @@ function GetButtonIconCopy(copied: boolean) {
   }
 }
 
+function HandleButtonIconCopy(value: string) {
+  if (value.length === 0) {
+    return;
+  }
+
+  navigator.clipboard.writeText(value);
+}
+
 function Output() {
+  const [outputValue, setOutputValue] = useState("");
+
   return (
     <div style={{ position: "relative" }}>
       <Textarea
@@ -22,24 +33,16 @@ function Output() {
         label="Output"
         description="Your Converted Values Here"
         placeholder="Read"
+        value={outputValue}
+        onChange={(event) => setOutputValue(event.currentTarget.value)}
       />
 
-      <StateButton>
-        {({ state, transition }) => (
-          <ActionIcon
-            style={{
-              color: state ? "teal" : "gray",
-              position: "absolute",
-              top: 10,
-              right: 10,
-            }}
-            variant="subtle"
-            onClick={transition}
-          >
-            {GetButtonIconCopy(state)}
-          </ActionIcon>
-        )}
-      </StateButton>
+      <ActionIconEx
+        onClick={() => {
+          HandleButtonIconCopy(outputValue);
+        }}
+        findIcon={GetButtonIconCopy}
+      />
     </div>
   );
 }

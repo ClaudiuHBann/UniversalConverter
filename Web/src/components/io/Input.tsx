@@ -1,6 +1,7 @@
-import { ActionIcon, Textarea, rem } from "@mantine/core";
+import { Textarea, rem } from "@mantine/core";
 import { IconCheck, IconClearAll } from "@tabler/icons-react";
-import StateButton from "../StateButton";
+import ActionIconEx from "../ActionIconEx";
+import { useState } from "react";
 
 function GetButtonIconClear(state: boolean) {
   if (state) {
@@ -11,6 +12,8 @@ function GetButtonIconClear(state: boolean) {
 }
 
 function Input() {
+  const [inputValue, setInputValue] = useState("");
+
   return (
     <div style={{ position: "relative" }}>
       <Textarea
@@ -21,24 +24,14 @@ function Input() {
         resize="vertical"
         description="Insert Your Values Below"
         placeholder="Write your values here..."
+        value={inputValue}
+        onChange={(event) => setInputValue(event.currentTarget.value)}
       />
 
-      <StateButton>
-        {({ state, transition }) => (
-          <ActionIcon
-            style={{
-              color: state ? "teal" : "gray",
-              position: "absolute",
-              top: 10,
-              right: 10,
-            }}
-            variant="subtle"
-            onClick={transition}
-          >
-            {GetButtonIconClear(state)}
-          </ActionIcon>
-        )}
-      </StateButton>
+      <ActionIconEx
+        onClick={() => setInputValue("")}
+        findIcon={GetButtonIconClear}
+      />
     </div>
   );
 }
