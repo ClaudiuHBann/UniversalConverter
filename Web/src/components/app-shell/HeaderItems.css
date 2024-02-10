@@ -11,3 +11,7 @@
     );
   }
 }
+
+.control:focus {
+  outline: none;
+}

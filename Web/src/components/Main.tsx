@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import { UCContext } from "../contexts/UCContext.tsx";
 import { useContext } from "react";
 
-function FindCategoryHeader(category: string | null) {
+function FindCategoryHeader(context: UCContext, category: string | null) {
   var text = "Choose a category...";
   if (!category) {
     return text;
@@ -16,7 +16,6 @@ function FindCategoryHeader(category: string | null) {
   category = category.toLowerCase();
   category = category[0].toUpperCase() + category.slice(1);
 
-  const context = useContext(UCContext);
   if (context.categories.includes(category)) {
     text = `${category} Converter`;
   }
@@ -25,6 +24,8 @@ function FindCategoryHeader(category: string | null) {
 }
 
 function App() {
+  const context = useContext(UCContext);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -33,7 +34,7 @@ function App() {
   return (
     <AppShellEx>
       <Stack>
-        <Text>{FindCategoryHeader(category)}</Text>
+        <Text>{FindCategoryHeader(context, category)}</Text>
 
         <Input />
         <Actions />
