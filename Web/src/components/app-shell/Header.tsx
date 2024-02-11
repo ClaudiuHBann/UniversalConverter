@@ -2,6 +2,7 @@ import { Grid, GridCol, Burger, UnstyledButton } from "@mantine/core";
 import NavBarItems from "./HeaderItems";
 import { useNavigate } from "react-router-dom";
 import "./HeaderItems.css";
+import { NavigateToRoot } from "../../utilities/NavigateExtensions";
 
 export interface AppShellExProps {
   opened: boolean;
@@ -18,7 +19,10 @@ function Header({ opened, toggle }: AppShellExProps) {
       </GridCol>
 
       <GridCol span={0} p={0} pr={10}>
-        <UnstyledButton className="control" onClick={() => navigate("/")}>
+        <UnstyledButton
+          className="control"
+          onClick={() => NavigateToRoot(navigate)}
+        >
           Universal Converter
         </UnstyledButton>
       </GridCol>
