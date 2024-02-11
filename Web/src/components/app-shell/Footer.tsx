@@ -13,7 +13,7 @@ function FindIconGoogle(state: boolean) {
   if (state) {
     return <IconCheck style={{ width: rem(69) }} />;
   } else {
-    return <IconBrandGoogle style={{ width: rem(69) }} />;
+    return <IconBrandGoogle style={{ width: rem(69), color: "#d44638" }} />;
   }
 }
 
@@ -25,7 +25,7 @@ function FindIconDiscord(state: boolean) {
   if (state) {
     return <IconCheck style={{ width: rem(69) }} />;
   } else {
-    return <IconBrandDiscord style={{ width: rem(69) }} />;
+    return <IconBrandDiscord style={{ width: rem(69), color: "#7289da" }} />;
   }
 }
 
@@ -65,14 +65,17 @@ function Footer() {
         <Text>My Socials:</Text>
         <Anchor
           href="https://www.facebook.com/profile.php?id=100011084952722"
-          c="gray"
+          c="#4267B2"
         >
           <IconBrandFacebook />
         </Anchor>
-        <Anchor href="https://github.com/ClaudiuHBann" c="gray">
+        <Anchor href="https://github.com/ClaudiuHBann" c="white">
           <IconBrandGithub />
         </Anchor>
-        <Anchor href="https://www.instagram.com/claudiuhbann/?hl=en" c="gray">
+        <Anchor
+          href="https://www.instagram.com/claudiuhbann/?hl=en"
+          c="#dd2a7b"
+        >
           <IconBrandInstagram />
         </Anchor>
       </Flex>

@@ -6,17 +6,18 @@ import AppShellEx from "./app-shell/AppShellEx";
 import { useLocation } from "react-router-dom";
 import { UCContext } from "../contexts/UCContext.tsx";
 import { useContext } from "react";
+import { SearchParam } from "../utilities/Enums.ts";
 
-function FindCategoryHeader(context: UCContext, category: string | null) {
+function FindCategoryHeader(
+  context: UCContext | undefined,
+  category: string | null
+) {
   var text = "Choose a category...";
-  if (!category) {
+  if (!context || !category) {
     return text;
   }
 
-  category = category.toLowerCase();
-  category = category[0].toUpperCase() + category.slice(1);
-
-  if (context.categories.includes(category)) {
+  if (context.hasCategory(category)) {
     text = `${category} Converter`;
   }
 
@@ -29,7 +30,7 @@ function App() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const category = searchParams.get("category");
+  const category = searchParams.get(SearchParam.Category);
 
   return (
     <AppShellEx>
