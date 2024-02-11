@@ -3,12 +3,16 @@ import { IconCheck, IconClearAll } from "@tabler/icons-react";
 import ActionIconEx from "../ActionIconEx";
 import { useState } from "react";
 
-function GetButtonIconClear(state: boolean) {
+function FindIconClear(state: boolean) {
   if (state) {
     return <IconCheck style={{ width: rem(69) }} />;
   } else {
     return <IconClearAll style={{ width: rem(69) }} />;
   }
+}
+
+function FindTooltipClear(state: boolean) {
+  return state ? "Cleared" : "Clear";
 }
 
 function Input() {
@@ -30,7 +34,13 @@ function Input() {
 
       <ActionIconEx
         onClick={() => setInputValue("")}
-        findIcon={GetButtonIconClear}
+        findIcon={FindIconClear}
+        findTooltip={FindTooltipClear}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+        }}
       />
     </div>
   );
