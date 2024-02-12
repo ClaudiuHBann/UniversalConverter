@@ -4,6 +4,6 @@ import { ToLowerCaseAndCapitalize } from "./StringExtensions";
 export function ToSearchParam(param: string): SearchParam | null {
   param = ToLowerCaseAndCapitalize(param);
 
-  const paramIndex = Object.values(SearchParam).indexOf(param as SearchParam);
-  return paramIndex === -1 ? null : (param as SearchParam);
+  const paramIndex = Object.keys(SearchParam).indexOf(param);
+  return paramIndex === -1 ? null : Object.values(SearchParam)[paramIndex];
 }

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { UCContext } from "../contexts/UCContext.tsx";
 import { useContext } from "react";
 import { SearchParam } from "../utilities/Enums.ts";
+import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions.ts";
 
 function FindCategoryHeader(
   context: UCContext | undefined,
@@ -18,7 +19,7 @@ function FindCategoryHeader(
   }
 
   if (context.hasCategory(category)) {
-    text = `${category} Converter`;
+    text = `${ToLowerCaseAndCapitalize(category)} Converter`;
   }
 
   return text;

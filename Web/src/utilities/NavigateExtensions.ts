@@ -20,7 +20,6 @@ function ParseSearchParams(searchParams: URLSearchParams) {
     if (!searchParam) {
       return;
     }
-
     searchParamToValue.set(searchParam, value);
   });
 
@@ -41,10 +40,6 @@ function NavigateToEx(
   searchParamToValue.forEach((value, searchParam) =>
     AddSearchParam(context, searchParams, category, searchParam, value)
   );
-
-  if (searchParams.size === 0) {
-    return;
-  }
 
   navigate({
     pathname: "/",

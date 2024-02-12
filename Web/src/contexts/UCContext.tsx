@@ -4,7 +4,7 @@ import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions";
 var categoryToFromTo: Map<string, string[]> = new Map();
 
 export interface UCContext {
-  fromTo: (category: string) => string[];
+  fromTo: (category: string | null) => string[];
   hasFromTo: (category: string, fromTo: string) => boolean;
   categories: () => string[];
   hasCategory: (category: string) => boolean;
@@ -21,8 +21,8 @@ function GetCategories(): string[] {
   return [...categoryToFromTo.keys()];
 }
 
-function GetFromTo(category: string) {
-  if (!HasCategory(category)) {
+function GetFromTo(category: string | null) {
+  if (!category || !HasCategory(category)) {
     return [];
   }
 
@@ -40,7 +40,8 @@ function HasCategory(category: string) {
 }
 
 function HasFromTo(category: string, fromTo: string) {
-  return GetFromTo(category).includes(ToLowerCaseAndCapitalize(fromTo));
+  fromTo = fromTo.toLowerCase();
+  return GetFromTo(category).some((value) => value.toLowerCase() === fromTo);
 }
 
 export const UCContext = createContext({
