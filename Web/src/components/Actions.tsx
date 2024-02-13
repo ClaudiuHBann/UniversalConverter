@@ -40,14 +40,14 @@ function Actions() {
   const context = useContext(UCContext);
   const navigate = useNavigate();
 
+  const category = searchParams.get(SearchParam.Category);
+
   const [fromValue, setFromValue] = useState<string | null>(
-    searchParams.get(SearchParam.From)
+    context.findFromTo(category, searchParams.get(SearchParam.From))
   );
   const [toValue, setToValue] = useState<string | null>(
-    searchParams.get(SearchParam.To)
+    context.findFromTo(category, searchParams.get(SearchParam.To))
   );
-
-  const category = searchParams.get(SearchParam.Category);
 
   const SwapFromTo = () => {
     setFromValue(toValue);

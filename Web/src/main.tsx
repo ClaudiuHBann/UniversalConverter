@@ -4,6 +4,10 @@ import App from "./App.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+if (import.meta.hot) {
+  import.meta.hot.on("vite:beforeUpdate", () => console.clear());
+}
+
 const router = createBrowserRouter([
   {
     path: "/",

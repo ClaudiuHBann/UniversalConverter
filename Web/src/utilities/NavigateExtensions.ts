@@ -63,13 +63,13 @@ function AddSearchParam(
     return;
   }
 
-  value = ToLowerCaseAndCapitalize(value);
+  value = context.findFromTo(category, value);
   switch (searchParam) {
     case SearchParam.From:
-      searchParams.set(SearchParam.From, value);
+      searchParams.set(SearchParam.From, value!);
       break;
     case SearchParam.To:
-      searchParams.set(SearchParam.To, value);
+      searchParams.set(SearchParam.To, value!);
       break;
   }
 }

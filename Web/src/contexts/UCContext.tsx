@@ -5,9 +5,10 @@ var categoryToFromTo: Map<string, string[]> = new Map();
 
 export interface UCContext {
   fromTo: (category: string | null) => string[];
-  hasFromTo: (category: string, fromTo: string) => boolean;
+  hasFromTo: (category: string | null, fromTo: string | null) => boolean;
+  findFromTo: (category: string | null, fromTo: string | null) => string | null;
   categories: () => string[];
-  hasCategory: (category: string) => boolean;
+  hasCategory: (category: string | null) => boolean;
 }
 
 function GetCategories(): string[] {
@@ -35,11 +36,32 @@ function GetFromTo(category: string | null) {
   return categoryToFromTo.get(category)!;
 }
 
-function HasCategory(category: string) {
+function FindFromTo(category: string | null, fromTo: string | null) {
+  if (!category || !fromTo) {
+    return null;
+  }
+
+  const fromTos = GetFromTo(category);
+  var index = fromTos.findIndex(
+    (item) => fromTo.toLowerCase() === item.toLowerCase()
+  );
+
+  return index === -1 ? null : fromTos[index];
+}
+
+function HasCategory(category: string | null) {
+  if (!category) {
+    return false;
+  }
+
   return GetCategories().includes(ToLowerCaseAndCapitalize(category));
 }
 
-function HasFromTo(category: string, fromTo: string) {
+function HasFromTo(category: string | null, fromTo: string | null) {
+  if (!category || !fromTo) {
+    return false;
+  }
+
   fromTo = fromTo.toLowerCase();
   return GetFromTo(category).some((value) => value.toLowerCase() === fromTo);
 }
@@ -47,6 +69,7 @@ function HasFromTo(category: string, fromTo: string) {
 export const UCContext = createContext({
   fromTo: GetFromTo,
   hasFromTo: HasFromTo,
+  findFromTo: FindFromTo,
   categories: GetCategories,
   hasCategory: HasCategory,
 });
