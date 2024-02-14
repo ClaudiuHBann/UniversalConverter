@@ -5,5 +5,6 @@ public class UCService : IService
     public RadixUCService Radix { get; set; } = new();
     public CurrencyUCService Currency { get; set; } = new();
     public TemperatureUCService Temperature { get; set; } = new();
+    public LinkZipUCService LinkZip { get; set; } = new();
 }
 }
