@@ -1,6 +1,6 @@
 ﻿using Shared.Requests;
 
-using Test.Services.UC;
+using Shared.Services.UC;
 
 namespace Test.UCUnitTests
 {

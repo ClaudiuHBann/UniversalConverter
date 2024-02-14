@@ -18,17 +18,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     protected override async Task Validate(RadixRequest request)
     {
-        var fromTo = await FromTo();
-
-        if (!fromTo.Contains(request.From))
-        {
-            throw new FromToException(this, true);
-        }
-
-        if (!fromTo.Contains(request.To))
-        {
-            throw new FromToException(this, false);
-        }
+        await base.Validate(request);
 
         // check if the number contains invalid characters for the specific base
         var maxBaseIndex = ulong.Parse(request.From);

@@ -1,6 +1,4 @@
-﻿using Shared.Services;
-
-namespace Test.Services.UC
+﻿namespace Shared.Services.UC
 {
 public class UCService : IService
 {

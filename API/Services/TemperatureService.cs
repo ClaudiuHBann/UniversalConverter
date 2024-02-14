@@ -21,21 +21,6 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
     public override async Task<List<string>> FromTo() => await Task.FromResult(
         _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList());
 
-    protected override async Task Validate(TemperatureRequest request)
-    {
-        var fromTo = await FromTo();
-
-        if (!fromTo.Contains(request.From.ToLower().FirstCharToUpper()))
-        {
-            throw new FromToException(this, true);
-        }
-
-        if (!fromTo.Contains(request.To.ToLower().FirstCharToUpper()))
-        {
-            throw new FromToException(this, false);
-        }
-    }
-
     public override async Task<TemperatureResponse> Convert(TemperatureRequest request)
     {
         await Validate(request);

@@ -3,8 +3,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Shared.Requests;
-
-using Test.Services.UC;
+using Shared.Services.UC;
 
 namespace Test.UCUnitTests
 {

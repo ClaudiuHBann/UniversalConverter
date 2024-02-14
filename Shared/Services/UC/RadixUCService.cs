@@ -1,8 +1,7 @@
 ﻿using Shared.Requests;
 using Shared.Responses;
-using Shared.Services.UC;
 
-namespace Test.Services.UC
+namespace Shared.Services.UC
 {
 public class RadixUCService : BaseUCService<RadixRequest, RadixResponse>
 {

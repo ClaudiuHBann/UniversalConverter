@@ -24,21 +24,6 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
         return _rates.Select(rate => rate.Key).ToList();
     }
 
-    protected override async Task Validate(CurrencyRequest request)
-    {
-        var fromTo = await FromTo();
-
-        if (!fromTo.Contains(request.From.ToUpper()))
-        {
-            throw new FromToException(this, true);
-        }
-
-        if (!fromTo.Contains(request.To.ToUpper()))
-        {
-            throw new FromToException(this, false);
-        }
-    }
-
     public override async Task<CurrencyResponse> Convert(CurrencyRequest request)
     {
         await Validate(request);
