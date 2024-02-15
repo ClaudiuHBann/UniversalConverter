@@ -26,7 +26,7 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 
     public override async Task<CurrencyResponse> Convert(CurrencyRequest request)
     {
-        await Validate(request);
+        await ValidateConvert(request);
 
         await FindRates();
         try

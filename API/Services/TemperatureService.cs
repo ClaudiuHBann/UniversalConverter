@@ -23,7 +23,7 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     public override async Task<TemperatureResponse> Convert(TemperatureRequest request)
     {
-        await Validate(request);
+        await ValidateConvert(request);
 
         var algorithm = FindDirectConversion(request);
         try

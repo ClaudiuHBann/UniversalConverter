@@ -16,9 +16,9 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult(Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList());
 
-    protected override async Task Validate(RadixRequest request)
+    protected override async Task ValidateConvert(RadixRequest request)
     {
-        await base.Validate(request);
+        await base.ValidateConvert(request);
 
         // check if the number contains invalid characters for the specific base
         var maxBaseIndex = ulong.Parse(request.From);
@@ -32,7 +32,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     public override async Task<RadixResponse> Convert(RadixRequest request)
     {
-        await Validate(request);
+        await ValidateConvert(request);
 
         var from = ulong.Parse(request.From);
         var to = ulong.Parse(request.To);

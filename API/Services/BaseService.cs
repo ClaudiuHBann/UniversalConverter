@@ -11,7 +11,7 @@ public abstract class BaseService<Request, Response>() : IService
 {
     public virtual Task<List<string>> FromTo() => throw new NotImplementedException();
 
-    protected virtual async Task Validate(Request request)
+    protected virtual async Task ValidateConvert(Request request)
     {
         var fromTo = await FromTo();
 

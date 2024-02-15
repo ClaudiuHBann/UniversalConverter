@@ -17,8 +17,5 @@ public class LinkZipController
     [HttpPost(nameof(Convert))]
     public async Task<ActionResult> Convert([FromBody] LinkZipRequest request) =>
         MakeOk(await service.Convert(request));
-
-    [HttpGet("Find/{code}")]
-    public async Task<ActionResult> Find(string code) => MakeOk(await service.Find(code));
 }
 }
