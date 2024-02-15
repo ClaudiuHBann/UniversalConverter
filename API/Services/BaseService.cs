@@ -9,7 +9,7 @@ public abstract class BaseService<Request, Response>() : IService
     where Request : BaseRequest
     where Response : BaseResponse
 {
-    public abstract Task<List<string>> FromTo();
+    public virtual Task<List<string>> FromTo() => throw new NotImplementedException();
 
     protected virtual async Task Validate(Request request)
     {
@@ -25,6 +25,7 @@ public abstract class BaseService<Request, Response>() : IService
             throw new FromToException(this, false);
         }
     }
-    public abstract Task<Response> Convert(Request request);
+
+    public virtual Task<Response> Convert(Request request) => throw new NotImplementedException();
 }
 }
