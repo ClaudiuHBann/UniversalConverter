@@ -63,7 +63,14 @@ public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipR
 
     public async Task<string> Find(string code)
     {
+        var url = await _cache.GetAsync<string>(code);
+        if (url != null)
+        {
+            return url;
+        }
+
         var entity = await Read(new() { Id = MakeId(code) });
+        _cache.Add(url, code);
         return entity.LinkLong;
     }
 
