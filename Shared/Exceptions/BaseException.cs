@@ -8,7 +8,8 @@ public class BaseException : Exception
     {
         Unknown,
         FromTo,
-        Value
+        Value,
+        Database
     }
 
     public ErrorResponse Error { get; }

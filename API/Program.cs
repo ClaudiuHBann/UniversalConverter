@@ -1,8 +1,13 @@
 using API.Services;
+using API.Entities;
 using API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddUserSecrets<Program>();
+
+builder.Services.AddLazyCache();
+builder.Services.AddTransient<UCContext>();
 builder.Services.AddTransient<RadixService>();
 builder.Services.AddTransient<CurrencyService>();
 builder.Services.AddTransient<TemperatureService>();

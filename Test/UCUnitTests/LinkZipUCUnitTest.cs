@@ -6,6 +6,7 @@ namespace Test.UCUnitTests
 [TestClass]
 public class LinkZipUCUnitTest : BaseUCUnitTest
 {
+    // TODO: add tests for LinkZipUC
     private readonly UCService _uc = new();
 
     // clang-format off
