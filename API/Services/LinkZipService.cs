@@ -11,7 +11,6 @@ using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;
 using Shared.Validators;
-using FluentValidation.Results;
 
 namespace API.Services
 {

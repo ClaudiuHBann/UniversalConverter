@@ -10,40 +10,37 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
-    [DbContext(typeof(UCContext))]
-    [Migration("20240216104839_init")]
-    partial class init
+[DbContext(typeof(UCContext))]
+[Migration("20240216104839_Init")]
+partial class Init
+{
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+        modelBuilder.HasAnnotation("ProductVersion", "8.0.2").HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Shared.Entities.LinkEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+        modelBuilder.Entity("Shared.Entities.LinkEntity",
+                            b =>
+                            {
+                                b.Property<long>("Id").ValueGeneratedOnAdd().HasColumnType("bigint").HasColumnName(
+                                    "id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)")
-                        .HasColumnName("url");
+                                b.Property<string>("Url")
+                                    .IsRequired()
+                                    .HasMaxLength(2048)
+                                    .HasColumnType("character varying(2048)")
+                                    .HasColumnName("url");
 
-                    b.HasKey("Id");
+                                b.HasKey("Id");
 
-                    b.ToTable("link");
-                });
+                                b.ToTable("link");
+                            });
 #pragma warning restore 612, 618
-        }
     }
+}
 }
