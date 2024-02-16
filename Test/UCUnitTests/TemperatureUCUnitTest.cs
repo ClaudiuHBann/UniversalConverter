@@ -22,10 +22,12 @@ public class TemperatureUCUnitTest : BaseUCUnitTest
         [true, new List<double>() { -203.72999999999996, 147.54000000000002 }, new TemperatureRequest(TemperatureRequestValid) { From = "Kelvin", To = "Celsius" }],
         [true, new List<double>() { 156.95600000000002, 789.242 }, new TemperatureRequest(TemperatureRequestValid) { To = "Fahrenheit" }],
         [true, new List<double>() { 20.78888890552, 215.93888906163997 }, new TemperatureRequest(TemperatureRequestValid) { From = "Fahrenheit", To = "Celsius" }],
-        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { To = "XXX" }],
-        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "XXX" }],
-        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "XXX", To = "XXX" }], // those values are not valid but they can be skipped because they are the same
-        // TODO: add overflow and underflow tests
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { To = "XXX" }], // invalid To
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "XXX" }], // invalid From
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "Celsius", To = "Celsius" }], // valid values but the same
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "XXX", To = "XXX" }], // invalid From and To but can be skipped because the same
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "Celsius", To = "Kelvin", Temperatures = [double.MaxValue] }], // overflow
+        [false, new List<double>(), new TemperatureRequest(TemperatureRequestValid) { From = "Kelvin", To = "Celsius", Temperatures = [double.MinValue] }], // "underflow"
     ];
     // clang-format on
 
