@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using Shared.Entities;
+
 namespace API.Entities
 {
 public class UCContext : DbContext

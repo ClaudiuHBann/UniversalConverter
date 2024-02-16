@@ -5,6 +5,7 @@ using API.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
+using Shared.Entities;
 using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;

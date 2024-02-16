@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Entities
+namespace Shared.Entities
 {
 [Table("link")]
 public class LinkEntity : BaseEntity
@@ -10,8 +10,9 @@ public class LinkEntity : BaseEntity
     [Column("id")]
     public long Id { get; set; } = -1;
 
-    [Column("link_long", TypeName = "text")]
-    public string LinkLong {
+    [MaxLength(2048)]
+    [Column("url")]
+    public string Url {
         get; set;
     } = "";
 
@@ -19,9 +20,9 @@ public class LinkEntity : BaseEntity
     {
     }
 
-    public LinkEntity(string linkLong)
+    public LinkEntity(string url)
     {
-        LinkLong = linkLong;
+        Url = url;
     }
 }
 }
