@@ -1,82 +1,132 @@
-﻿using API.Entities;
+﻿using System.Reflection;
+
+using API.Entities;
 
 using LazyCache;
 
 using Microsoft.EntityFrameworkCore;
 
+using Shared.Entities;
 using Shared.Requests;
 using Shared.Responses;
+using Shared.Exceptions;
+using Shared.Validators;
+using FluentValidation.Results;
 
 namespace API.Services
 {
 public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipResponse>
 {
-    private const string URLBase = "https://localhost:5001/LinkZip/";
-
     private readonly UCContext _context;
     private readonly RadixService _radix;
     private readonly IAppCache _cache;
+    private readonly LinkValidator _validator;
 
-    public LinkZipService(UCContext context, RadixService radix, IAppCache cache) : base(context)
+    public LinkZipService(UCContext context, RadixService radix, IAppCache cache, LinkValidator validator)
+        : base(context)
     {
         _context = context;
         _radix = radix;
         _cache = cache;
+        _validator = validator;
     }
 
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult<List<string>>(["Shortifier", "Longifier"]);
 
+    protected override async Task ValidateConvert(LinkZipRequest request)
+    {
+        if (request.URLs.Count > 69)
+        {
+            throw new ValueException("The maximum number of links is 69!");
+        }
+
+        var fromTo = await FromTo();
+
+        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
+        {
+            throw new FromToException(this, false);
+        }
+
+        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.CurrentCultureIgnoreCase)))
+        {
+            throw new FromToException(this, true);
+        }
+
+        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.CurrentCultureIgnoreCase)))
+        {
+            throw new FromToException(this, false);
+        }
+
+        foreach (var url in request.URLs)
+        {
+            var result = await _validator.ValidateAsync(new LinkEntity(url));
+            if (!result.IsValid)
+            {
+                // TODO: add the validation errors to the exception
+                throw new ValueException("The link is invalid!");
+            }
+        }
+    }
+
     public override async Task<LinkZipResponse> Convert(LinkZipRequest request)
     {
-        await Validate(request);
+        await ValidateConvert(request);
 
         List<string> urls = [];
-        request.URLs.ForEach(async url =>
-                             {
-                                 var code = await _cache.GetAsync<string>(url);
-                                 if (code != null)
-                                 {
-                                     urls.Add(URLBase + code);
-                                     return;
-                                 }
-
-                                 var entity = await _context.Links.FirstOrDefaultAsync(link => link.LinkLong == url);
-                                 if (entity != null)
-                                 {
-                                     urls.Add(URLBase + MakeCode(entity.Id));
-                                     return;
-                                 }
-
-                                 entity = new() { LinkLong = url };
-                                 await CreateValidate(entity);
-                                 entity = await Create(entity);
-
-                                 code = MakeCode(entity.Id);
-
-                                 urls.Add(URLBase + code);
-                                 _cache.Add(url, code);
-                             });
+        foreach (var url in request.URLs)
+        {
+            urls.Add(await Invoke<Task<string>>($"{request.From[0]}To{request.To[0]}", [url])!);
+        }
 
         return new(urls);
     }
 
-    public async Task<string> Find(string code)
+    private Result Invoke<Result>(string method, object?[]? parameters)
+        where Result : class
     {
-        var url = await _cache.GetAsync<string>(code);
-        if (url != null)
+        var methodValidation = GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic);
+        var methodValidationResult = methodValidation!.Invoke(this, parameters)!;
+        return (Result)methodValidationResult;
+    }
+
+    private async Task<string> SToL(string code)
+    {
+        var link = await _cache.GetAsync<string>(code);
+        if (link != null)
         {
-            return url;
+            return link;
         }
 
         var entity = await Read(new() { Id = MakeId(code) });
+        _cache.Add(code, entity.Url);
+        return entity.Url;
+    }
+
+    private async Task<string> LToS(string url)
+    {
+        var code = await _cache.GetAsync<string>(url);
+        if (code != null)
+        {
+            return code;
+        }
+
+        var entity = await _context.Links.FirstOrDefaultAsync(link => link.Url == url);
+        if (entity != null)
+        {
+            return MakeCode(entity.Id);
+        }
+
+        entity = await Create(new() { Url = url });
+        code = MakeCode(entity.Id);
+
         _cache.Add(url, code);
-        return entity.LinkLong;
+        return code;
     }
 
     private string MakeCode(long id)
     {
-        RadixRequest request = new() { From = "10", To = "36", Numbers = [id++.ToString()] };
+        RadixRequest request = new() { From = "10", To = "36", Numbers = [id.ToString()] };
         return _radix.Convert(request).Result.Numbers.First();
     }
 
