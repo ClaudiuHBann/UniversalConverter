@@ -16,9 +16,12 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult(Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList());
 
-    protected override async Task ValidateConvert(RadixRequest request)
+    protected override Task ValidateConvert(RadixRequest request)
     {
-        await base.ValidateConvert(request);
+        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
+        {
+            throw new FromToException(this, false);
+        }
 
         // check if the number contains invalid characters for the specific base
         var maxBaseIndex = ulong.Parse(request.From);
@@ -28,6 +31,8 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
             throw new ValueException(
                 $"The value converted from {request.From} to {request.To} contains invalid characters!");
         }
+
+        return Task.CompletedTask;
     }
 
     public override async Task<RadixResponse> Convert(RadixRequest request)
@@ -77,11 +82,6 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
         if (number.Length == 0)
         {
             return "0";
-        }
-
-        if (from == to)
-        {
-            return number;
         }
 
         if (checkForOverflow && WillOverflow(number, from))

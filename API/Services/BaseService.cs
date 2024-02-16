@@ -15,6 +15,11 @@ public abstract class BaseService<Request, Response>() : IService
     {
         var fromTo = await FromTo();
 
+        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
+        {
+            throw new FromToException(this, false);
+        }
+
         if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.CurrentCultureIgnoreCase)))
         {
             throw new FromToException(this, true);

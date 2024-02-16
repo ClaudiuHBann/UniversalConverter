@@ -2,16 +2,23 @@ using API.Services;
 using API.Entities;
 using API.Middlewares;
 
+using Shared.Validators;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddLazyCache();
+
 builder.Services.AddTransient<UCContext>();
+
+builder.Services.AddTransient<LinkValidator>();
+
 builder.Services.AddTransient<RadixService>();
 builder.Services.AddTransient<LinkZipService>();
 builder.Services.AddTransient<CurrencyService>();
 builder.Services.AddTransient<TemperatureService>();
+
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
 builder.Services.AddControllers();
