@@ -4,7 +4,7 @@ using Shared.Exceptions;
 
 namespace API.Services
 {
-public class RadixService : BaseService<RadixRequest, RadixResponse>
+public sealed class RadixService : BaseService<RadixRequest, RadixResponse>
 {
     private const string Bases = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

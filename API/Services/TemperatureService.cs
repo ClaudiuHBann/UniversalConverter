@@ -5,7 +5,7 @@ using Shared.Utilities;
 
 namespace API.Services
 {
-public class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
+public sealed class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
 {
     private static readonly Dictionary<string, Func<double, double>> _temperatureDirectConversions =
         new() { { "Celsius->Celsius", temperature => temperature },

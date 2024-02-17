@@ -15,6 +15,7 @@ builder.Services.AddTransient<UCContext>();
 builder.Services.AddTransient<LinkValidator>();
 
 builder.Services.AddTransient<RadixService>();
+builder.Services.AddSingleton<CommonService>();
 builder.Services.AddTransient<LinkZipService>();
 builder.Services.AddTransient<CurrencyService>();
 builder.Services.AddTransient<TemperatureService>();

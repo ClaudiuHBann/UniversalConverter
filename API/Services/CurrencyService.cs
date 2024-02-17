@@ -8,7 +8,7 @@ using Shared.Exceptions;
 
 namespace API.Services
 {
-public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
+public sealed class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 {
     private const string Source = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 
