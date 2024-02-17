@@ -8,7 +8,7 @@ public class LinkEntity : BaseEntity
 {
     [Key]
     [Column("id")]
-    public long Id { get; set; } = -1;
+    public long Id { get; set; }
 
     [MaxLength(2048)]
     [Column("url")]

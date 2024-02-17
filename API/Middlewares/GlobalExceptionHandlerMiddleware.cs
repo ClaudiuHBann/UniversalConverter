@@ -3,8 +3,6 @@
 using Shared.Responses;
 using Shared.Exceptions;
 
-using Microsoft.AspNetCore.Diagnostics;
-
 namespace API.Middlewares
 {
 public class GlobalExceptionHandlerMiddleware

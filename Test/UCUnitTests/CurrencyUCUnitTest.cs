@@ -25,10 +25,10 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
     public static IEnumerable<object[]> CurrencyInput { get; } = [
         [true, CurrencyRequestValid],
         [true, new CurrencyRequest(CurrencyRequestValid) { From = "EUR" }], // EUR is the reference currency and the rates API doesn't contain it by default
-        [false, new List<string>(), new CurrencyRequest(CurrencyRequestValid) { To = "XXX" }], // invalid To
-        [false, new List<string>(), new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }], // invalid From
-        [false, new List<string>(), new CurrencyRequest(CurrencyRequestValid) { From = "RON", To = "RON" }], // valid values but the same
-        [false, new List<string>(), new CurrencyRequest(CurrencyRequestValid) { From = "XXX", To = "XXX" }], // invalid From and To but can be skipped because the same
+        [false, new CurrencyRequest(CurrencyRequestValid) { To = "XXX" }], // invalid To
+        [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX" }], // invalid From
+        [false, new CurrencyRequest(CurrencyRequestValid) { From = "RON", To = "RON" }], // valid values but the same
+        [false, new CurrencyRequest(CurrencyRequestValid) { From = "XXX", To = "XXX" }], // invalid From and To but can be skipped because the same
         [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MinValue], From = "GBP" }], // "underflow"
         [false, new CurrencyRequest(CurrencyRequestValid) { Money = [decimal.MaxValue], From = "EUR", To = "IDR" }], // overflow
     ];

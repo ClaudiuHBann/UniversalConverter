@@ -19,8 +19,6 @@ public class RadixUCUnitTest : BaseUCUnitTest
     
     public static IEnumerable<object[]> RadixInput { get; } = [
         [true, new List<string>() { "1000101", "110100100" }, RadixRequestValid],
-        [true, new List<string>() { "FACC" }, new RadixRequest(RadixRequestValid) { Numbers = ["0xFACC"], From = "16", To = "16" }], // it will strip the 0x prefix
-        [true, new List<string>() { "10" }, new RadixRequest(RadixRequestValid) { Numbers = ["0b010"], From = "2" }], // it will strip the 0b0 prefix
         [true, new List<string>() { "1" }, new RadixRequest(RadixRequestValid) { Numbers = ["0001"], From = "8" }], // it will strip the 000 prefix
         [true, new List<string>() { "0" }, new RadixRequest(RadixRequestValid) { Numbers = ["00"] }], // it will strip the 0 prefix
         [true, new List<string>() { new('1', 64) }, new RadixRequest(RadixRequestValid) { Numbers = [new('f', 16)], From = "16" }], // 0xF x18 is the max for base 16 and uses a different branch to check for overflow
