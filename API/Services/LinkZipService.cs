@@ -33,45 +33,46 @@ public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipR
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult<List<string>>(["Shortifier", "Longifier"]);
 
-    protected override async Task ValidateConvert(LinkZipRequest request)
+    protected override async Task ConvertValidate(LinkZipRequest request)
     {
         if (request.URLs.Count > 69)
         {
             throw new ValueException("The maximum number of links is 69!");
         }
 
-        var fromTo = await FromTo();
-
-        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
+        if (request.From.Equals(request.To, StringComparison.OrdinalIgnoreCase))
         {
             throw new FromToException(this, false);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.CurrentCultureIgnoreCase)))
+        var fromTo = await FromTo();
+
+        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, true);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.CurrentCultureIgnoreCase)))
+        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, false);
         }
 
-        foreach (var url in request.URLs)
+        if (request.From.Equals("Longifier", StringComparison.OrdinalIgnoreCase))
         {
-            var result = await _validator.ValidateAsync(new LinkEntity(url));
-            if (!result.IsValid)
+            foreach (var url in request.URLs)
             {
-                // TODO: add the validation errors to the exception
-                throw new ValueException("The link is invalid!");
+                var result = await _validator.ValidateAsync(new LinkEntity(url));
+                if (!result.IsValid)
+                {
+                    // TODO: add the validation errors to the exception
+                    throw new ValueException("The link is invalid!");
+                }
             }
         }
     }
 
-    public override async Task<LinkZipResponse> Convert(LinkZipRequest request)
+    protected override async Task<LinkZipResponse> ConvertInternal(LinkZipRequest request)
     {
-        await ValidateConvert(request);
-
         List<string> urls = [];
         foreach (var url in request.URLs)
         {
@@ -97,7 +98,7 @@ public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipR
             return link;
         }
 
-        var entity = await Read(new() { Id = MakeId(code) });
+        var entity = await ReadEx(MakeId(code));
         _cache.Add(code, entity.Url);
         return entity.Url;
     }

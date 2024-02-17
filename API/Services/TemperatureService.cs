@@ -21,14 +21,14 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
     public override async Task<List<string>> FromTo() => await Task.FromResult(
         _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList());
 
-    public override async Task<TemperatureResponse> Convert(TemperatureRequest request)
+    protected override async Task<TemperatureResponse> ConvertInternal(TemperatureRequest request)
     {
-        await ValidateConvert(request);
-
         var algorithm = FindDirectConversion(request);
         try
         {
-            return new(request.Temperatures.Select(temperature => algorithm(temperature)).ToList());
+            TemperatureResponse response =
+                new(request.Temperatures.Select(temperature => algorithm(temperature)).ToList());
+            return await Task.FromResult(response);
         }
         catch (OverflowException)
         {

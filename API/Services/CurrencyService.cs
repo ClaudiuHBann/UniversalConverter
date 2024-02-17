@@ -14,6 +14,7 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 
     // the rates doesnt need a mutex because the _ratesLastUpdate acts like it
     private static Dictionary<string, decimal> _rates = [];
+    private static List<string> _fromTo = [];
 
     private static DateTime _ratesLastUpdate = DateTime.MinValue;
     private static readonly Mutex _mutexRatesLastUpdate = new();
@@ -21,13 +22,11 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     public override async Task<List<string>> FromTo()
     {
         await FindRates();
-        return _rates.Select(rate => rate.Key).ToList();
+        return _fromTo;
     }
 
-    public override async Task<CurrencyResponse> Convert(CurrencyRequest request)
+    protected override async Task<CurrencyResponse> ConvertInternal(CurrencyRequest request)
     {
-        await ValidateConvert(request);
-
         await FindRates();
         try
         {
@@ -74,6 +73,7 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
                      .Select(cube => (cube.Attribute("currency")!.Value, decimal.Parse(cube.Attribute("rate")!.Value)))
                      .Append(("EUR", 1m))
                      .ToDictionary();
+        _fromTo = _rates.Select(rate => rate.Key).ToList();
     }
 }
 }

@@ -13,15 +13,14 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
             .Select(from => ToBase(ulong.MaxValue.ToString(), 10, (ulong)from, false))
             .ToList();
 
-    public override async Task<List<string>> FromTo() =>
-        await Task.FromResult(Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList());
+    private static readonly List<string> _fromTo =
+        Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList();
 
-    protected override Task ValidateConvert(RadixRequest request)
+    public override async Task<List<string>> FromTo() => await Task.FromResult(_fromTo);
+
+    protected override async Task ConvertValidate(RadixRequest request)
     {
-        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
-        {
-            throw new FromToException(this, false);
-        }
+        await base.ConvertValidate(request);
 
         // check if the number contains invalid characters for the specific base
         var maxBaseIndex = ulong.Parse(request.From);
@@ -31,27 +30,24 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
             throw new ValueException(
                 $"The value converted from {request.From} to {request.To} contains invalid characters!");
         }
-
-        return Task.CompletedTask;
     }
 
-    public override async Task<RadixResponse> Convert(RadixRequest request)
+    protected override async Task<RadixResponse> ConvertInternal(RadixRequest request)
     {
-        await ValidateConvert(request);
-
         var from = ulong.Parse(request.From);
         var to = ulong.Parse(request.To);
 
-        return new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
+        RadixResponse response = new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
+        return await Task.FromResult(response);
     }
 
     private static string TrimPrefix(string number, ulong from)
     {
-        if (from == 16 && number.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
+        if (from == 16 && number.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
         {
             number = number[2..];
         }
-        else if (from == 2 && number.StartsWith("0b", StringComparison.CurrentCultureIgnoreCase))
+        else if (from == 2 && number.StartsWith("0b", StringComparison.OrdinalIgnoreCase))
         {
             number = number[2..];
         }

@@ -37,28 +37,28 @@ public class BaseDbService<Request, Entity, Response>(UCContext context) : BaseS
                                             $"Failed {action.ToString().ToLower()} validation for {entity}!"));
         await methodValidation;
 
-        var methodCRUD = Invoke<Task<Entity>>($"{action}Ex", [entity]) ??
+        var methodCRUD = Invoke<Task<Entity>>($"{action}Ex", [new[] { entity }]) ??
                          throw new DatabaseException(new(HttpStatusCode.InternalServerError,
                                                          $"Failed to {action.ToString().ToLower()} {entity}!"));
         return await methodCRUD;
     }
 
-    private Result? Invoke<Result>(string method, object?[]? parameters)
+    private Result? Invoke<Result>(string methodName, object?[]? parameters)
         where Result : class
     {
-        var methodValidation = GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic);
-        if (methodValidation == null)
+        var method = GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method == null)
         {
             return null;
         }
 
-        var methodValidationResult = methodValidation.Invoke(this, parameters);
-        if (methodValidationResult == null)
+        var methodResult = method.Invoke(this, parameters);
+        if (methodResult == null)
         {
             return null;
         }
 
-        return methodValidationResult as Result;
+        return methodResult as Result;
     }
 
     private DbSet<Entity> GetDbSet()
@@ -87,10 +87,9 @@ public class BaseDbService<Request, Entity, Response>(UCContext context) : BaseS
                    : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to create {entity}!"));
     }
 
-    protected async Task<Entity> ReadEx(params object?[]? keyValues)
-
-        => await context.FindAsync(typeof(Entity), keyValues) as Entity ??
-           throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+    protected async Task<Entity> ReadEx(params object?[]? keyValues) =>
+        await context.FindAsync(typeof(Entity), keyValues) as Entity ??
+        throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
 
     private async Task Exists(Entity entity, bool throwIfExists = false)
     {

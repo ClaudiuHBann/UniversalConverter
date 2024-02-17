@@ -11,26 +11,46 @@ public abstract class BaseService<Request, Response>() : IService
 {
     public virtual Task<List<string>> FromTo() => throw new NotImplementedException();
 
-    protected virtual async Task ValidateConvert(Request request)
+    private async Task<string> FindFromTo(string fromTo)
     {
-        var fromTo = await FromTo();
+        var fromTos = await FromTo();
+        var index = fromTos.FindIndex(ft => ft.Equals(fromTo, StringComparison.OrdinalIgnoreCase));
+        return fromTos[index];
+    }
 
-        if (request.From.Equals(request.To, StringComparison.CurrentCultureIgnoreCase))
+    private async Task UpdateRequestsFromTo(Request request)
+    {
+        request.From = await FindFromTo(request.From);
+        request.To = await FindFromTo(request.To);
+    }
+
+    protected virtual async Task ConvertValidate(Request request)
+    {
+        if (request.From.Equals(request.To, StringComparison.OrdinalIgnoreCase))
         {
             throw new FromToException(this, false);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.CurrentCultureIgnoreCase)))
+        var fromTo = await FromTo();
+
+        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, true);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.CurrentCultureIgnoreCase)))
+        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, false);
         }
     }
 
-    public virtual Task<Response> Convert(Request request) => throw new NotImplementedException();
+    protected virtual Task<Response> ConvertInternal(Request request) => throw new NotImplementedException();
+
+    public async Task<Response> Convert(Request request)
+    {
+        await ConvertValidate(request);
+        await UpdateRequestsFromTo(request);
+        return await ConvertInternal(request);
+    }
 }
 }
