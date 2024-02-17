@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Reflection;
 
 using API.Entities;
 
@@ -8,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
 using Shared.Requests;
 using Shared.Responses;
+using Shared.Utilities;
 using Shared.Exceptions;
 
 namespace API.Services
@@ -32,33 +32,15 @@ public class BaseDbService<Request, Entity, Response>(UCContext context) : BaseS
     private async Task<Entity> CRUD(Entity entity, EAction action)
     {
         var methodValidation =
-            Invoke<Task>($"{action}Validate", [entity]) ??
+            this.Invoke<Task>($"{action}Validate", [entity]) ??
             throw new DatabaseException(new(HttpStatusCode.InternalServerError,
                                             $"Failed {action.ToString().ToLower()} validation for {entity}!"));
         await methodValidation;
 
-        var methodCRUD = Invoke<Task<Entity>>($"{action}Ex", [new[] { entity }]) ??
+        var methodCRUD = this.Invoke<Task<Entity>>($"{action}Ex", [new[] { entity }]) ??
                          throw new DatabaseException(new(HttpStatusCode.InternalServerError,
                                                          $"Failed to {action.ToString().ToLower()} {entity}!"));
         return await methodCRUD;
-    }
-
-    private Result? Invoke<Result>(string methodName, object?[]? parameters)
-        where Result : class
-    {
-        var method = GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method == null)
-        {
-            return null;
-        }
-
-        var methodResult = method.Invoke(this, parameters);
-        if (methodResult == null)
-        {
-            return null;
-        }
-
-        return methodResult as Result;
     }
 
     private DbSet<Entity> GetDbSet()

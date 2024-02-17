@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-using API.Entities;
+﻿using API.Entities;
 
 using LazyCache;
 
@@ -8,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 using Shared.Entities;
 using Shared.Requests;
+using Shared.Utilities;
 using Shared.Responses;
 using Shared.Exceptions;
 using Shared.Validators;
 
 namespace API.Services
 {
-public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipResponse>
+public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipResponse>
 {
     private readonly UCContext _context;
     private readonly RadixService _radix;
@@ -76,18 +75,10 @@ public class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipR
         List<string> urls = [];
         foreach (var url in request.URLs)
         {
-            urls.Add(await Invoke<Task<string>>($"{request.From[0]}To{request.To[0]}", [url])!);
+            urls.Add(await this.Invoke<Task<string>>($"{request.From[0]}To{request.To[0]}", [url])!);
         }
 
         return new(urls);
-    }
-
-    private Result Invoke<Result>(string method, object?[]? parameters)
-        where Result : class
-    {
-        var methodValidation = GetType().GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic);
-        var methodValidationResult = methodValidation!.Invoke(this, parameters)!;
-        return (Result)methodValidationResult;
     }
 
     private async Task<string> SToL(string code)
