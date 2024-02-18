@@ -1,0 +1,1 @@
+﻿class CommonRequest extends BaseRequest {}
