@@ -1,15 +1,10 @@
-﻿import { Axios } from "axios";
-import { BaseUCService } from "./BaseUCService";
+﻿import { BaseUCService } from "./BaseUCService";
 
 export class LinkZipUCService extends BaseUCService<
   LinkZipRequest,
   LinkZipResponse
 > {
-  GetControllerName() {
+  protected override GetControllerName() {
     return "LinkZip";
-  }
-
-  constructor(axios: Axios) {
-    super(axios);
   }
 }

@@ -1,4 +1,4 @@
-﻿import { Axios, AxiosResponse } from "axios";
+﻿import axios, { AxiosResponse } from "axios";
 
 enum EDBAction {
   FromTo,
@@ -16,38 +16,36 @@ export class BaseUCService<
 > {
   readonly urlBase: string = "https://localhost:7212/";
 
-  axios: Axios;
-
-  constructor(axios: Axios) {
-    this.axios = axios;
-  }
-
-  GetControllerName() {
+  protected GetControllerName() {
     throw new Error("Not implemented");
   }
 
-  FromTo() {
-    return this.Request(EHTTPRequest.Get, EDBAction.FromTo.toString());
+  public async FromTo() {
+    return await this.Request(EHTTPRequest.Get, EDBAction.FromTo.toString());
   }
 
-  Convert(request: Request) {
-    return this.Request(
+  public async Convert(request: Request) {
+    return await this.Request(
       EHTTPRequest.Post,
       EDBAction.Convert.toString(),
       request
     );
   }
 
-  Request(requestHTTP: EHTTPRequest, action: string, value: any = null) {
+  protected async Request(
+    requestHTTP: EHTTPRequest,
+    action: string,
+    value?: Request
+  ): Promise<Response> {
     var uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
 
     var promise: Promise<AxiosResponse<any, any>>;
     switch (requestHTTP) {
       case EHTTPRequest.Get:
-        promise = this.axios.get(uri);
+        promise = axios.get<Response>(uri);
         break;
       case EHTTPRequest.Post:
-        promise = this.axios.post(uri, value);
+        promise = axios.post<Response>(uri, value);
         break;
 
       default:
@@ -57,6 +55,6 @@ export class BaseUCService<
     }
 
     promise.catch((error) => console.error(error));
-    return promise;
+    return (await promise).data;
   }
 }

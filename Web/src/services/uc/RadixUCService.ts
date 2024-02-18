@@ -1,12 +1,7 @@
-﻿import { Axios } from "axios";
-import { BaseUCService } from "./BaseUCService";
+﻿import { BaseUCService } from "./BaseUCService";
 
 export class RadixUCService extends BaseUCService<RadixRequest, RadixResponse> {
-  GetControllerName() {
+  protected override GetControllerName() {
     return "Radix";
-  }
-
-  constructor(axios: Axios) {
-    super(axios);
   }
 }

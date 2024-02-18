@@ -1,19 +1,14 @@
-﻿import { Axios } from "axios";
-import { BaseUCService, EHTTPRequest } from "./BaseUCService";
+﻿import { BaseUCService, EHTTPRequest } from "./BaseUCService";
 
 export class CommonUCService extends BaseUCService<
   CommonRequest,
   CommonResponse
 > {
-  GetControllerName() {
+  protected override GetControllerName() {
     return "Common";
   }
 
-  FromToAll() {
-    return super.Request(EHTTPRequest.Get, "FromToAll");
-  }
-
-  constructor(axios: Axios) {
-    super(axios);
+  public async FromToAll() {
+    return await super.Request(EHTTPRequest.Get, "FromToAll");
   }
 }
