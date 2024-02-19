@@ -1,4 +1,8 @@
 ﻿import axios, { AxiosResponse } from "axios";
+import { BaseRequest } from "../../models/requests/BaseRequest";
+import { BaseResponse } from "../../models/responses/BaseResponse";
+import { ErrorResponse } from "../../models/responses/ErrorResponse";
+import { CreateResponse } from "../../utilities/ResponseExtensions";
 
 enum EDBAction {
   FromTo,
@@ -11,8 +15,8 @@ export enum EHTTPRequest {
 }
 
 export class BaseUCService<
-  Request extends BaseRequest,
-  Response extends BaseResponse
+  TRequest extends BaseRequest,
+  TResponse extends BaseResponse
 > {
   readonly urlBase: string = "https://localhost:7212/";
 
@@ -24,7 +28,7 @@ export class BaseUCService<
     return await this.Request(EHTTPRequest.Get, EDBAction.FromTo.toString());
   }
 
-  public async Convert(request: Request) {
+  public async Convert(request: TRequest) {
     return await this.Request(
       EHTTPRequest.Post,
       EDBAction.Convert.toString(),
@@ -35,17 +39,17 @@ export class BaseUCService<
   protected async Request(
     requestHTTP: EHTTPRequest,
     action: string,
-    value?: Request
-  ): Promise<Response> {
+    value?: TRequest
+  ) {
     var uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
 
-    var promise: Promise<AxiosResponse<any, any>>;
+    var promise;
     switch (requestHTTP) {
       case EHTTPRequest.Get:
-        promise = axios.get<Response>(uri);
+        promise = axios.get<TResponse>(uri);
         break;
       case EHTTPRequest.Post:
-        promise = axios.post<Response>(uri, value);
+        promise = axios.post<TResponse>(uri, value);
         break;
 
       default:
@@ -54,7 +58,19 @@ export class BaseUCService<
         );
     }
 
+    // TODO: use a config
     promise.catch((error) => console.error(error));
-    return (await promise).data;
+
+    return this.ProcessResponse(await promise);
+  }
+
+  private async ProcessResponse(result: AxiosResponse<TResponse, any>) {
+    var response = CreateResponse(result.data.type, result.data);
+    if (result.status === 200) {
+      return response as TResponse;
+    } else {
+      // TODO: create the specific exception
+      throw new Error((response as ErrorResponse).message);
+    }
   }
 }
