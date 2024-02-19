@@ -1,16 +1,16 @@
-import { Category, SearchParam } from "./Enums";
+import { ECategory, ESearchParam } from "./Enums";
 import { ToLowerCaseAndCapitalize } from "./StringExtensions";
 
-export function ToSearchParam(param: string): SearchParam | null {
+export function ToSearchParam(param: string): ESearchParam | null {
   param = ToLowerCaseAndCapitalize(param);
 
-  const paramIndex = Object.keys(SearchParam).indexOf(param);
-  return paramIndex === -1 ? null : Object.values(SearchParam)[paramIndex];
+  const paramIndex = Object.keys(ESearchParam).indexOf(param);
+  return paramIndex === -1 ? null : Object.values(ESearchParam)[paramIndex];
 }
 
 export function ToCategory(category: string): string | null {
   category = ToLowerCaseAndCapitalize(category);
 
-  const categoryIndex = Object.keys(Category).indexOf(category);
-  return categoryIndex === -1 ? null : Object.values(Category)[categoryIndex];
+  const categoryIndex = Object.keys(ECategory).indexOf(category);
+  return categoryIndex === -1 ? null : Object.values(ECategory)[categoryIndex];
 }

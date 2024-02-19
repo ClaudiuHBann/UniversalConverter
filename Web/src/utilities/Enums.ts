@@ -1,10 +1,10 @@
-export enum SearchParam {
+export enum ESearchParam {
   Category = "category",
   From = "from",
   To = "to",
 }
 
-export enum Category {
+export enum ECategory {
   Currency = "Currency",
   LinkZip = "LinkZip",
   Radix = "Radix",

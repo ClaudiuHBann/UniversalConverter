@@ -1,18 +1,17 @@
 import { Group, UnstyledButton, Select } from "@mantine/core";
 import "./HeaderItems.css";
-import { useContext } from "react";
-import { UCContext } from "../../contexts/UCContext";
+import { useUCContext } from "../../contexts/UCContext";
 import { useNavigate } from "react-router-dom";
 import { NavigateToCategory } from "../../utilities/NavigateExtensions";
 
 function HeaderItems() {
-  const context = useContext(UCContext);
+  const context = useUCContext();
   const navigate = useNavigate();
 
   return (
     <Group justify="space-between">
       <Group gap={0}>
-        {context.categories().map((category, index) => {
+        {context.GetCategories().map((category, index) => {
           return (
             <UnstyledButton
               key={index}
@@ -27,7 +26,7 @@ function HeaderItems() {
 
       <Select
         placeholder="Search for a category..."
-        data={context.categories()}
+        data={context.GetCategories()}
         onChange={(value) => NavigateToCategory(navigate, context, value)}
         maxDropdownHeight={200}
         searchable

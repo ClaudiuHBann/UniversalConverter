@@ -5,12 +5,12 @@ import {
   IconSwitchHorizontal,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import { useContext, useState } from "react";
-import { UCContext } from "../contexts/UCContext";
+import { useUCContext } from "../contexts/UCContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { SearchParam } from "../utilities/Enums";
+import { ESearchParam } from "../utilities/Enums";
 import { NavigateTo } from "../utilities/NavigateExtensions";
 import ActionIconEx from "./ActionIconEx";
+import { useState } from "react";
 
 function FindTooltipConvert(state: boolean) {
   return state ? "Converting..." : "Convert";
@@ -37,27 +37,27 @@ function FindTooltipSwap(state: boolean) {
 function Actions() {
   const [loading, { toggle }] = useDisclosure();
   const [searchParams] = useSearchParams();
-  const context = useContext(UCContext);
+  const context = useUCContext();
   const navigate = useNavigate();
 
-  const category = searchParams.get(SearchParam.Category);
+  const category = searchParams.get(ESearchParam.Category);
 
   const [fromValue, setFromValue] = useState<string | null>(
-    context.findFromTo(category, searchParams.get(SearchParam.From))
+    context.FindFromTo(category, searchParams.get(ESearchParam.From))
   );
   const [toValue, setToValue] = useState<string | null>(
-    context.findFromTo(category, searchParams.get(SearchParam.To))
+    context.FindFromTo(category, searchParams.get(ESearchParam.To))
   );
 
   const SwapFromTo = () => {
     setFromValue(toValue);
     if (toValue) {
-      searchParams.set(SearchParam.From, toValue);
+      searchParams.set(ESearchParam.From, toValue);
     }
 
     setToValue(fromValue);
     if (fromValue) {
-      searchParams.set(SearchParam.To, fromValue);
+      searchParams.set(ESearchParam.To, fromValue);
     }
 
     NavigateTo(navigate, context, searchParams);
@@ -75,10 +75,10 @@ function Actions() {
 
     if (fromTo) {
       setFromValue(value);
-      searchParams.set(SearchParam.From, value);
+      searchParams.set(ESearchParam.From, value);
     } else {
       setToValue(value);
-      searchParams.set(SearchParam.To, value);
+      searchParams.set(ESearchParam.To, value);
     }
 
     NavigateTo(navigate, context, searchParams);
@@ -88,7 +88,7 @@ function Actions() {
     <Flex mih={50} gap="md" justify="center" align="center">
       <Select
         placeholder="Select from"
-        data={context.fromTo(category)}
+        data={context.GetFromTo(category)}
         maxDropdownHeight={200}
         value={fromValue}
         onChange={(value) => OnChangeFromTo(value, true)}
@@ -114,7 +114,7 @@ function Actions() {
 
       <Select
         placeholder="Select to"
-        data={context.fromTo(category)}
+        data={context.GetFromTo(category)}
         maxDropdownHeight={200}
         value={toValue}
         onChange={(value) => OnChangeFromTo(value, false)}

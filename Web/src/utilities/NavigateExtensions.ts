@@ -1,7 +1,7 @@
 import { NavigateFunction, createSearchParams } from "react-router-dom";
 import { UCContext } from "../contexts/UCContext";
 import { ToLowerCaseAndCapitalize } from "./StringExtensions";
-import { SearchParam } from "./Enums";
+import { ESearchParam } from "./Enums";
 import { ToSearchParam } from "./EnumsExtensions";
 
 export function NavigateTo(
@@ -14,7 +14,7 @@ export function NavigateTo(
 }
 
 function ParseSearchParams(searchParams: URLSearchParams) {
-  const searchParamToValue = new Map<SearchParam, string | null>();
+  const searchParamToValue = new Map<ESearchParam, string | null>();
   searchParams.forEach((value, key) => {
     const searchParam = ToSearchParam(key);
     if (!searchParam) {
@@ -29,14 +29,14 @@ function ParseSearchParams(searchParams: URLSearchParams) {
 function NavigateToEx(
   navigate: NavigateFunction,
   context: UCContext,
-  searchParamToValue: Map<SearchParam, string | null>
+  searchParamToValue: Map<ESearchParam, string | null>
 ) {
   const searchParams = createSearchParams();
-  if (!searchParamToValue.has(SearchParam.Category)) {
+  if (!searchParamToValue.has(ESearchParam.Category)) {
     return searchParams;
   }
 
-  const category = searchParamToValue.get(SearchParam.Category)!;
+  const category = searchParamToValue.get(ESearchParam.Category)!;
   searchParamToValue.forEach((value, searchParam) =>
     AddSearchParam(context, searchParams, category, searchParam, value)
   );
@@ -51,25 +51,25 @@ function AddSearchParam(
   context: UCContext,
   searchParams: URLSearchParams,
   category: string | null,
-  searchParam: SearchParam,
+  searchParam: ESearchParam,
   value: string | null
 ) {
-  if (!category || !context.hasCategory(category)) {
+  if (!category || !context.HasCategory(category)) {
     return;
   }
 
-  searchParams.set(SearchParam.Category, ToLowerCaseAndCapitalize(category));
-  if (!value || !context.hasFromTo(category, value)) {
+  searchParams.set(ESearchParam.Category, ToLowerCaseAndCapitalize(category));
+  if (!value || !context.HasFromTo(category, value)) {
     return;
   }
 
-  value = context.findFromTo(category, value);
+  value = context.FindFromTo(category, value);
   switch (searchParam) {
-    case SearchParam.From:
-      searchParams.set(SearchParam.From, value!);
+    case ESearchParam.From:
+      searchParams.set(ESearchParam.From, value!);
       break;
-    case SearchParam.To:
-      searchParams.set(SearchParam.To, value!);
+    case ESearchParam.To:
+      searchParams.set(ESearchParam.To, value!);
       break;
   }
 }
@@ -79,7 +79,7 @@ export function NavigateToCategory(
   context: UCContext,
   category: string | null
 ) {
-  NavigateToEx(navigate, context, new Map([[SearchParam.Category, category]]));
+  NavigateToEx(navigate, context, new Map([[ESearchParam.Category, category]]));
 }
 
 export function NavigateToRoot(navigate: NavigateFunction) {

@@ -1,7 +1,9 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { UCService } from "../services/uc/UCService";
 import { BaseUCService } from "../services/uc/BaseUCService";
-import { Category } from "../utilities/Enums";
+import { ECategory } from "../utilities/Enums";
+import { BaseResponse } from "../models/responses/BaseResponse";
+import { BaseRequest } from "../models/requests/BaseRequest";
 
 const uc = new UCService();
 
@@ -9,10 +11,10 @@ const categoryToService = new Map<
   string,
   BaseUCService<BaseRequest, BaseResponse>
 >([
-  [Category.Currency, uc.currency],
-  [Category.LinkZip, uc.linkZip],
-  [Category.Radix, uc.radix],
-  [Category.Temperature, uc.temperature],
+  [ECategory.Currency, uc.currency],
+  [ECategory.LinkZip, uc.linkZip],
+  [ECategory.Radix, uc.radix],
+  [ECategory.Temperature, uc.temperature],
 ]);
 
 export const useFromToAll = () => {
@@ -23,7 +25,7 @@ export const useFromToAll = () => {
   });
 };
 
-export const useFromTo = (category: Category) => {
+export const useFromTo = (category: ECategory) => {
   return useQuery({
     queryKey: ["fromTo", category],
     queryFn: async () => await categoryToService.get(category)?.FromTo(),
@@ -31,9 +33,9 @@ export const useFromTo = (category: Category) => {
   });
 };
 
-export const useConvert = (category: Category, request: BaseRequest) => {
+export const useConvert = (category: ECategory, request: BaseRequest) => {
   return useMutation({
-    mutationKey: ["convert", category],
+    mutationKey: ["convert", category, request],
     mutationFn: async () =>
       await categoryToService.get(category)?.Convert(request),
   });

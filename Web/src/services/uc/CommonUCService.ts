@@ -1,4 +1,6 @@
-﻿import { BaseUCService, EHTTPRequest } from "./BaseUCService";
+﻿import { CommonRequest } from "../../models/requests/CommonRequest";
+import { CommonResponse } from "../../models/responses/CommonResponse";
+import { BaseUCService, EHTTPRequest } from "./BaseUCService";
 
 export class CommonUCService extends BaseUCService<
   CommonRequest,

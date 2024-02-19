@@ -4,34 +4,30 @@ import Output from "./io/Output";
 import Actions from "./Actions";
 import AppShellEx from "./app-shell/AppShellEx";
 import { useLocation } from "react-router-dom";
-import { UCContext } from "../contexts/UCContext.tsx";
-import { useContext } from "react";
-import { SearchParam } from "../utilities/Enums.ts";
+import { ESearchParam } from "../utilities/Enums.ts";
 import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions.ts";
+import { UCContext, useUCContext } from "../contexts/UCContext.ts";
 
-function FindCategoryHeader(
-  context: UCContext | undefined,
-  category: string | null
-) {
+function FindCategoryHeader(context: UCContext, category: string | null) {
   var text = "Choose a category...";
   if (!context || !category) {
     return text;
   }
 
-  if (context.hasCategory(category)) {
+  if (context.HasCategory(category)) {
     text = `${ToLowerCaseAndCapitalize(category)} Converter`;
   }
 
   return text;
 }
 
-function App() {
-  const context = useContext(UCContext);
+function Main() {
+  const context = useUCContext();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const category = searchParams.get(SearchParam.Category);
+  const category = searchParams.get(ESearchParam.Category);
 
   return (
     <AppShellEx>
@@ -46,4 +42,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main;
