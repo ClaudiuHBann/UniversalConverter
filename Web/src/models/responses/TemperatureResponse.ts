@@ -1,8 +1,17 @@
-﻿class TemperatureResponse extends BaseResponse {
-  temperatures: number[] = [];
+﻿import { BaseResponse, EResponse } from "./BaseResponse";
 
-  constructor(temperatures: number[]) {
-    super();
-    this.temperatures = temperatures;
+export class TemperatureResponse extends BaseResponse {
+  public temperatures: number[] = [];
+
+  public constructor(temperatures?: number[]) {
+    super(EResponse.Temperature);
+
+    if (temperatures) {
+      this.temperatures = temperatures;
+    }
+  }
+
+  public override Initialize(data: any) {
+    this.temperatures = Array.from(data.temperatures);
   }
 }

@@ -1,7 +1,9 @@
-class TemperatureRequest extends BaseRequest {
-  temperatures: number[] = [];
+import { BaseRequest } from "./BaseRequest";
 
-  constructor(from: string, to: string, temperatures: number[]) {
+export class TemperatureRequest extends BaseRequest {
+  public temperatures: number[] = [];
+
+  public constructor(from: string, to: string, temperatures: number[]) {
     super(from, to);
     this.temperatures = temperatures;
   }

@@ -1,7 +1,9 @@
-﻿class CurrencyRequest extends BaseRequest {
-  money: number[] = [];
+﻿import { BaseRequest } from "./BaseRequest";
 
-  constructor(from: string, to: string, money: number[]) {
+export class CurrencyRequest extends BaseRequest {
+  public money: number[] = [];
+
+  public constructor(from: string, to: string, money: number[]) {
     super(from, to);
     this.money = money;
   }

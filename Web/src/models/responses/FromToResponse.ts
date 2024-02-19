@@ -1,8 +1,17 @@
-﻿class FromToResponse extends BaseResponse {
-  fromTo: string[] = [];
+﻿import { BaseResponse, EResponse } from "./BaseResponse";
 
-  constructor(fromTo: string[]) {
-    super();
-    this.fromTo = fromTo;
+export class FromToResponse extends BaseResponse {
+  public fromTo: string[] = [];
+
+  public constructor(fromTo?: string[]) {
+    super(EResponse.FromTo);
+
+    if (fromTo) {
+      this.fromTo = fromTo;
+    }
+  }
+
+  public override Initialize(data: any) {
+    this.fromTo = Array.from(data.fromTo!);
   }
 }

@@ -1,8 +1,17 @@
-﻿class CommonResponse extends BaseResponse {
-  fromToAll: Map<string, string[]> = new Map<string, string[]>();
+﻿import { BaseResponse, EResponse } from "./BaseResponse";
 
-  constructor(fromToAll: Map<string, string[]>) {
-    super();
-    this.fromToAll = fromToAll;
+export class CommonResponse extends BaseResponse {
+  public fromToAll: Map<string, string[]> = new Map<string, string[]>();
+
+  public constructor(fromToAll?: Map<string, string[]>) {
+    super(EResponse.Common);
+
+    if (fromToAll) {
+      this.fromToAll = fromToAll;
+    }
+  }
+
+  public override Initialize(data: any) {
+    this.fromToAll = new Map(Object.entries(data.fromToAll!));
   }
 }

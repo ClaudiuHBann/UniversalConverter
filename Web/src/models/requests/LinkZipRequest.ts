@@ -1,7 +1,9 @@
-﻿class LinkZipRequest extends BaseRequest {
-  urls: string[] = [];
+﻿import { BaseRequest } from "./BaseRequest";
 
-  constructor(from: string, to: string, urls: string[]) {
+export class LinkZipRequest extends BaseRequest {
+  public urls: string[] = [];
+
+  public constructor(from: string, to: string, urls: string[]) {
     super(from, to);
     this.urls = urls;
   }

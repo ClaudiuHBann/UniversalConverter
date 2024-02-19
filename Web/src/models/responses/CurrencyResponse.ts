@@ -1,8 +1,17 @@
-﻿class CurrencyResponse extends BaseResponse {
-  money: number[] = [];
+﻿import { BaseResponse, EResponse } from "./BaseResponse";
 
-  constructor(money: number[]) {
-    super();
-    this.money = money;
+export class CurrencyResponse extends BaseResponse {
+  public money: number[] = [];
+
+  public constructor(money?: number[]) {
+    super(EResponse.Currency);
+
+    if (money) {
+      this.money = money;
+    }
+  }
+
+  public override Initialize(data: any) {
+    this.money = Array.from(data.money);
   }
 }
