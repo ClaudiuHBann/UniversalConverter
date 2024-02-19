@@ -5,7 +5,7 @@ using Shared.Exceptions;
 namespace Shared.Responses
 {
 public class ErrorResponse
-(HttpStatusCode code, string message) : BaseResponse
+(HttpStatusCode code, string message) : BaseResponse(EType.Error)
 {
     public HttpStatusCode Code { get; set; } = code;
     public string Message { get; set; } = message;

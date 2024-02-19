@@ -5,11 +5,11 @@ public class BaseRequest
     public string From { get; set; } = "";
     public string To { get; set; } = "";
 
-    public BaseRequest()
+    protected BaseRequest()
     {
     }
 
-    public BaseRequest(BaseRequest request)
+    protected BaseRequest(BaseRequest request)
     {
         From = request.From;
         To = request.To;
