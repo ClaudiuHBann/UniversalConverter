@@ -1,6 +1,5 @@
 import { NavigateFunction, createSearchParams } from "react-router-dom";
 import { UCContext } from "../contexts/UCContext";
-import { ToLowerCaseAndCapitalize } from "./StringExtensions";
 import { ESearchParam } from "./Enums";
 import { ToSearchParam } from "./EnumsExtensions";
 
@@ -58,7 +57,7 @@ function AddSearchParam(
     return;
   }
 
-  searchParams.set(ESearchParam.Category, ToLowerCaseAndCapitalize(category));
+  searchParams.set(ESearchParam.Category, context.FindCategory(category)!);
   if (!value || !context.HasFromTo(category, value)) {
     return;
   }

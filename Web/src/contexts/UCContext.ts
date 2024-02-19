@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions";
+import { Contains, FindItem } from "../utilities/ArrayExtensions";
 
 export class UCContext {
   private categoryToFromTo: Map<string, string[]> = new Map();
@@ -12,34 +12,44 @@ export class UCContext {
     return [...this.categoryToFromTo.keys()];
   }
 
-  public GetFromTo(category: string | null) {
+  public GetFromTo(category: string | null): string[] {
     if (!category || !this.HasCategory(category)) {
       return [];
     }
 
-    category = ToLowerCaseAndCapitalize(category);
-    return this.categoryToFromTo.get(category)!;
+    category = FindItem(this.GetCategories(), category);
+    if (!category) {
+      return [];
+    }
+
+    return this.categoryToFromTo.get(category) || [];
   }
 
-  public FindFromTo(category: string | null, fromTo: string | null) {
+  public FindFromTo(
+    category: string | null,
+    fromTo: string | null
+  ): string | null {
     if (!category || !fromTo) {
       return null;
     }
 
-    const fromTos = this.GetFromTo(category);
-    var index = fromTos.findIndex(
-      (item) => fromTo.toLowerCase() === item.toLowerCase()
-    );
-
-    return index === -1 ? null : fromTos[index];
+    return FindItem(this.GetFromTo(category), fromTo);
   }
 
-  public HasCategory(category: string | null) {
+  public FindCategory(category: string | null): string | null {
+    if (!category) {
+      return null;
+    }
+
+    return FindItem(this.GetCategories(), category);
+  }
+
+  public HasCategory(category: string | null): boolean {
     if (!category) {
       return false;
     }
 
-    return this.GetCategories().includes(ToLowerCaseAndCapitalize(category));
+    return Contains(this.GetCategories(), category);
   }
 
   public HasFromTo(category: string | null, fromTo: string | null) {
@@ -47,10 +57,7 @@ export class UCContext {
       return false;
     }
 
-    fromTo = fromTo.toLowerCase();
-    return this.GetFromTo(category).some(
-      (value) => value.toLowerCase() === fromTo
-    );
+    return Contains(this.GetFromTo(category), fromTo);
   }
 }
 
