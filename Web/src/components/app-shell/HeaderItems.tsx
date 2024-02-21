@@ -3,10 +3,20 @@ import "./HeaderItems.css";
 import { useUCContext } from "../../contexts/UCContext";
 import { useNavigate } from "react-router-dom";
 import { NavigateToCategory } from "../../utilities/NavigateExtensions";
+import { ToCategory } from "../../utilities/EnumsExtensions";
 
 function HeaderItems() {
   const context = useUCContext();
   const navigate = useNavigate();
+
+  const HandleCategoryChange = (category: string | null) => {
+    var eCategory = ToCategory(category);
+    if (!eCategory) {
+      return;
+    }
+
+    NavigateToCategory(navigate, context, eCategory);
+  };
 
   return (
     <Group justify="space-between">
@@ -16,7 +26,7 @@ function HeaderItems() {
             <UnstyledButton
               key={index}
               className="control"
-              onClick={() => NavigateToCategory(navigate, context, category)}
+              onClick={() => HandleCategoryChange(category)}
             >
               {category}
             </UnstyledButton>
@@ -27,7 +37,7 @@ function HeaderItems() {
       <Select
         placeholder="Search for a category..."
         data={context.GetCategories()}
-        onChange={(value) => NavigateToCategory(navigate, context, value)}
+        onChange={(category) => HandleCategoryChange(category)}
         maxDropdownHeight={200}
         searchable
         clearable
