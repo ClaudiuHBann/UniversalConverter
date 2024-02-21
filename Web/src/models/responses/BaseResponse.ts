@@ -12,7 +12,7 @@
 export class BaseResponse {
   public type: EResponse;
 
-  public constructor(type: EResponse) {
+  protected constructor(type: EResponse) {
     this.type = type;
   }
 

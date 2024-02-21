@@ -1,5 +1,5 @@
 import { ErrorResponse } from "../models/responses/ErrorResponse";
-import { EResponse, BaseResponse } from "../models/responses/BaseResponse";
+import { EResponse } from "../models/responses/BaseResponse";
 import { CommonResponse } from "../models/responses/CommonResponse";
 import { CurrencyResponse } from "../models/responses/CurrencyResponse";
 import { FromToResponse } from "../models/responses/FromToResponse";
@@ -8,7 +8,7 @@ import { RadixResponse } from "../models/responses/RadixResponse";
 import { TemperatureResponse } from "../models/responses/TemperatureResponse";
 
 export function CreateResponse(type: EResponse, data: any) {
-  var response: BaseResponse;
+  var response;
   switch (type) {
     case EResponse.Common:
       response = new CommonResponse();

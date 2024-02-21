@@ -4,6 +4,7 @@ import { UCContext, ucContext } from "./UCContext";
 function UCContextProvider({ children }: { children: React.ReactNode }) {
   const queryFromToAll = useFromToAll();
   if (queryFromToAll.isLoading) {
+    // TODO: add skeleton
     return <>Loading...</>;
   }
 

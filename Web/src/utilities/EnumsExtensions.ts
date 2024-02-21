@@ -6,7 +6,11 @@ export function ToSearchParam(param: string): ESearchParam | null {
   return paramIndex === -1 ? null : Object.values(ESearchParam)[paramIndex];
 }
 
-export function ToCategory(category: string): string | null {
+export function ToCategory(category: string | null): ECategory | null {
+  if (!category) {
+    return null;
+  }
+
   const categoryIndex = FindIndex(Object.keys(ECategory), category);
   return categoryIndex === -1 ? null : Object.values(ECategory)[categoryIndex];
 }
