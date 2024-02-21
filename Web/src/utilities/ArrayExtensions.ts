@@ -28,3 +28,11 @@ export function Contains(
 ): boolean {
   return FindIndex(array, item, icase) !== -1;
 }
+
+export function SplitByAnySpace(str: string): string[] {
+  return str.trim().split(/\s+/);
+}
+
+export function SplitByAnySpaceAndComma(str: string): string[] {
+  return str.trim().split(/[\s,]+/);
+}

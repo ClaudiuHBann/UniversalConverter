@@ -4,6 +4,50 @@ import { CurrencyRequest } from "../models/requests/CurrencyRequest";
 import { LinkZipRequest } from "../models/requests/LinkZipRequest";
 import { RadixRequest } from "../models/requests/RadixRequest";
 import { TemperatureRequest } from "../models/requests/TemperatureRequest";
+import { SplitByAnySpace, SplitByAnySpaceAndComma } from "./ArrayExtensions";
+import { ECategory } from "./Enums";
+
+export function ToRequest(type: ECategory): ERequest {
+  switch (type) {
+    case ECategory.Currency:
+      return ERequest.Currency;
+
+    case ECategory.LinkZip:
+      return ERequest.LinkZip;
+
+    case ECategory.Radix:
+      return ERequest.Radix;
+
+    case ECategory.Temperature:
+      return ERequest.Temperature;
+
+    default:
+      throw new Error(`The ECategory type '${type}' is not allowed!`);
+  }
+}
+
+export function ParseInput(type: ERequest, input: any) {
+  if (typeof input !== "string") {
+    throw new Error("Invalid parse input!");
+  }
+
+  switch (type) {
+    case ERequest.Currency:
+      return SplitByAnySpaceAndComma(input).map(Number);
+
+    case ERequest.LinkZip:
+      return SplitByAnySpace(input);
+
+    case ERequest.Radix:
+      return SplitByAnySpaceAndComma(input);
+
+    case ERequest.Temperature:
+      return SplitByAnySpaceAndComma(input).map(Number);
+
+    default:
+      throw new Error(`The ERequest type '${type}' is not allowed!`);
+  }
+}
 
 export function CreateRequest(
   type: ERequest,

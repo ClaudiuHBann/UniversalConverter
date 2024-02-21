@@ -11,15 +11,17 @@ import { ESearchParam } from "../utilities/Enums";
 import { NavigateTo } from "../utilities/NavigateExtensions";
 import ActionIconEx from "./ActionIconEx";
 import { useState } from "react";
+import { useConvert } from "../hooks/Queries";
+import { ToCategory } from "../utilities/EnumsExtensions";
+import {
+  CreateRequest,
+  ParseInput,
+  ToRequest,
+} from "../utilities/RequestExtensions";
+import { ToOutput } from "../utilities/ResponseExtensions";
 
 function FindTooltipConvert(state: boolean) {
   return state ? "Converting..." : "Convert";
-}
-
-function Convert(toggle: () => void) {
-  toggle();
-  // TODO: Convert
-  toggle();
 }
 
 function FindIconSwap(state: boolean) {
@@ -48,6 +50,29 @@ function Actions() {
   const [toValue, setToValue] = useState<string | null>(
     context.FindFromTo(category, searchParams.get(ESearchParam.To))
   );
+
+  const convert = async () => {
+    const eCategory = ToCategory(category);
+    if (loading || !eCategory || !fromValue || !toValue) {
+      return;
+    }
+
+    // TODO: take from input
+    const inputParsed = ParseInput(ToRequest(eCategory), "");
+    const request = CreateRequest(ToRequest(eCategory), fromValue, toValue);
+
+    toggle();
+
+    const convert = useConvert(eCategory, request);
+    const result = await convert.mutateAsync();
+
+    if (result) {
+      const output = ToOutput(result);
+      // TODO: show in output
+    }
+
+    toggle();
+  };
 
   const SwapFromTo = () => {
     setFromValue(toValue);
@@ -100,7 +125,7 @@ function Actions() {
         <ActionIcon
           loading={loading}
           variant="subtle"
-          onClick={() => Convert(toggle)}
+          onClick={() => convert()}
         >
           <IconCircleArrowDown color="gray" />
         </ActionIcon>
