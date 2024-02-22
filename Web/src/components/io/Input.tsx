@@ -1,7 +1,7 @@
 import { Textarea, rem } from "@mantine/core";
 import { IconCheck, IconClearAll } from "@tabler/icons-react";
 import ActionIconEx from "../ActionIconEx";
-import { useState } from "react";
+import { useUCContext } from "../../contexts/UCContext";
 
 function FindIconClear(state: boolean) {
   if (state) {
@@ -16,7 +16,8 @@ function FindTooltipClear(state: boolean) {
 }
 
 function Input() {
-  const [inputValue, setInputValue] = useState("");
+  const context = useUCContext();
+  const [inputValue, setInputValue] = context.GetInput();
 
   return (
     <div style={{ position: "relative" }}>

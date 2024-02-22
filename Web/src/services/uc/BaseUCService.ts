@@ -5,8 +5,8 @@ import { ErrorResponse } from "../../models/responses/ErrorResponse";
 import { CreateResponse } from "../../utilities/ResponseExtensions";
 
 enum EDBAction {
-  FromTo,
-  Convert,
+  FromTo = "FromTo",
+  Convert = "Convert",
 }
 
 export enum EHTTPRequest {

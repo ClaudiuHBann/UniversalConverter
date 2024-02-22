@@ -1,7 +1,7 @@
 import { Textarea, rem } from "@mantine/core";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import ActionIconEx from "../ActionIconEx";
-import { useState } from "react";
+import { useUCContext } from "../../contexts/UCContext";
 
 function FindIconCopy(state: boolean) {
   if (state) {
@@ -24,7 +24,8 @@ function HandleButtonIconCopy(value: string) {
 }
 
 function Output() {
-  const [outputValue, setOutputValue] = useState("");
+  const context = useUCContext();
+  const [outputValue, setOutputValue] = context.GetOutput();
 
   return (
     <div style={{ position: "relative" }}>

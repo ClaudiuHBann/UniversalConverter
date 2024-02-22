@@ -1,11 +1,28 @@
-import { createContext, useContext } from "react";
+import { Dispatch, SetStateAction, createContext, useContext } from "react";
 import { Contains, FindItem } from "../utilities/ArrayExtensions";
 
 export class UCContext {
   private categoryToFromTo: Map<string, string[]> = new Map();
 
-  public constructor(categoryToFromTo: Map<string, string[]>) {
+  private input: [string, Dispatch<SetStateAction<string>>] = ["", () => {}];
+  private output: [string, Dispatch<SetStateAction<string>>] = ["", () => {}];
+
+  public constructor(
+    categoryToFromTo: Map<string, string[]>,
+    input: [string, Dispatch<SetStateAction<string>>],
+    output: [string, Dispatch<SetStateAction<string>>]
+  ) {
     this.categoryToFromTo = categoryToFromTo;
+    this.input = input;
+    this.output = output;
+  }
+
+  public GetInput(): [string, Dispatch<SetStateAction<string>>] {
+    return this.input;
+  }
+
+  public GetOutput(): [string, Dispatch<SetStateAction<string>>] {
+    return this.output;
   }
 
   public GetCategories(): string[] {
@@ -61,7 +78,9 @@ export class UCContext {
   }
 }
 
-export const ucContext = createContext(new UCContext(new Map()));
+export const ucContext = createContext(
+  new UCContext(new Map(), ["", () => {}], ["", () => {}])
+);
 
 export function useUCContext() {
   return useContext(ucContext);
