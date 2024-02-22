@@ -1,3 +1,4 @@
+import { EException } from "../models/exceptions/BaseException";
 import { FindIndex } from "./ArrayExtensions";
 import { ECategory, ESearchParam } from "./Enums";
 
@@ -13,4 +14,8 @@ export function ToCategory(category: string | null): ECategory | null {
 
   const categoryIndex = FindIndex(Object.keys(ECategory), category);
   return categoryIndex === -1 ? null : Object.values(ECategory)[categoryIndex];
+}
+
+export function ToExceptionStr(type: EException) {
+  return Object.keys(EException)[type];
 }

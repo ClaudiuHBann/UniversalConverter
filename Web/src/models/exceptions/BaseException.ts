@@ -1,10 +1,11 @@
-﻿import { ErrorResponse } from "../responses/ErrorResponse";
+﻿import { ToExceptionStr } from "../../utilities/EnumsExtensions";
+import { ErrorResponse } from "../responses/ErrorResponse";
 
 export enum EException {
-  Unknown = "Unknown",
-  FromTo = "FromTo",
-  Value = "Value",
-  Database = "Database",
+  Unknown,
+  FromTo,
+  Value,
+  Database,
 }
 
 export class BaseException extends Error {
@@ -17,7 +18,7 @@ export class BaseException extends Error {
     stack?: string
   ) {
     super(error.message);
-    super.name = type;
+    super.name = ToExceptionStr(type);
     super.stack = stack;
 
     this.type = type;

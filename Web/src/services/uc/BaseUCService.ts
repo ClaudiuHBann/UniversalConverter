@@ -20,6 +20,9 @@ export class BaseUCService<
   TResponse extends BaseResponse
 > {
   readonly urlBase: string = "https://localhost:7212/";
+  readonly axiosConfig = {
+    validateStatus: () => true,
+  };
 
   protected GetControllerName() {
     throw new Error("Not implemented");
@@ -47,10 +50,10 @@ export class BaseUCService<
     var promise;
     switch (requestHTTP) {
       case EHTTPRequest.Get:
-        promise = axios.get<TResponse>(uri);
+        promise = axios.get<TResponse>(uri, this.axiosConfig);
         break;
       case EHTTPRequest.Post:
-        promise = axios.post<TResponse>(uri, value);
+        promise = axios.post<TResponse>(uri, value, this.axiosConfig);
         break;
 
       default:

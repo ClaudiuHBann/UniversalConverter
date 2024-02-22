@@ -7,7 +7,7 @@ import {
   IconBrandInstagram,
   IconCheck,
 } from "@tabler/icons-react";
-import ActionIconEx from "../ActionIconEx";
+import ActionIconEx from "../extensions/ActionIconEx";
 
 function FindIconGoogle(state: boolean) {
   if (state) {

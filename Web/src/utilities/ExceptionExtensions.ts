@@ -3,6 +3,7 @@ import { DatabaseException } from "../models/exceptions/DatabaseException";
 import { FromToException } from "../models/exceptions/FromToException";
 import { ValueException } from "../models/exceptions/ValueException";
 import { ErrorResponse } from "../models/responses/ErrorResponse";
+import { FindItem } from "./ArrayExtensions";
 
 export function CreateException(type: EException, error: ErrorResponse) {
   switch (type) {
@@ -18,4 +19,8 @@ export function CreateException(type: EException, error: ErrorResponse) {
     default:
       throw new Error(`The EException type '${type}' is not allowed!`);
   }
+}
+
+export function IsBaseException(error: any): boolean {
+  return FindItem(Object.keys(EException), error.name as string) !== null;
 }
