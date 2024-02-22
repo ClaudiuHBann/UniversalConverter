@@ -33,10 +33,9 @@ export const useFromTo = (category: ECategory) => {
   });
 };
 
-export const useConvert = (category: ECategory, request: BaseRequest) => {
+export const useConvert = (category: ECategory) => {
   return useMutation({
-    mutationKey: ["convert", category, request],
-    mutationFn: async () =>
+    mutationFn: async (request: BaseRequest) =>
       await categoryToService.get(category)?.Convert(request),
   });
 };

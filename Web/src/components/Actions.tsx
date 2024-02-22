@@ -37,7 +37,7 @@ function FindTooltipSwap(state: boolean) {
 }
 
 function Actions() {
-  const [loading, { toggle }] = useDisclosure();
+  const [loading, toggle] = useDisclosure(false);
   const [searchParams] = useSearchParams();
   const context = useUCContext();
   const navigate = useNavigate();
@@ -51,27 +51,33 @@ function Actions() {
     context.FindFromTo(category, searchParams.get(ESearchParam.To))
   );
 
+  const convertHook = useConvert(ToCategory(category)!);
   const convert = async () => {
     const eCategory = ToCategory(category);
     if (loading || !eCategory || !fromValue || !toValue) {
       return;
     }
 
-    // TODO: take from input
-    const inputParsed = ParseInput(ToRequest(eCategory), "");
-    const request = CreateRequest(ToRequest(eCategory), fromValue, toValue);
+    const eRequest = ToRequest(eCategory);
 
-    toggle();
+    const [inputValue] = context.GetInput();
+    const inputParsed = ParseInput(eRequest, inputValue);
+    const request = CreateRequest(eRequest, fromValue, toValue, inputParsed);
 
-    const convert = useConvert(eCategory, request);
-    const result = await convert.mutateAsync();
+    toggle.open();
 
-    if (result) {
-      const output = ToOutput(result);
-      // TODO: show in output
-    }
+    convertHook
+      .mutateAsync(request)
+      .then((result) => {
+        if (!result) {
+          return;
+        }
 
-    toggle();
+        const [_, setOutputValue] = context.GetOutput();
+        setOutputValue(ToOutput(result));
+      })
+      .catch((error) => console.error(error))
+      .finally(() => toggle.close());
   };
 
   const SwapFromTo = () => {
@@ -125,7 +131,7 @@ function Actions() {
         <ActionIcon
           loading={loading}
           variant="subtle"
-          onClick={() => convert()}
+          onClick={async () => convert()}
         >
           <IconCircleArrowDown color="gray" />
         </ActionIcon>
