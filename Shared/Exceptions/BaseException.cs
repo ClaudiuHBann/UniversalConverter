@@ -15,7 +15,7 @@ public class BaseException : Exception
     public ErrorResponse Error { get; }
     public EType Type { get; }
 
-    public BaseException(EType type, ErrorResponse error) : base(error.Message)
+    protected BaseException(EType type, ErrorResponse error) : base(error.Message)
     {
         Type = type;
 
@@ -23,7 +23,7 @@ public class BaseException : Exception
         Error.TypeException = type;
     }
 
-    public BaseException(EType type, ErrorResponse error, Exception inner) : base(error.Message, inner)
+    protected BaseException(EType type, ErrorResponse error, Exception inner) : base(error.Message, inner)
     {
         Type = type;
 

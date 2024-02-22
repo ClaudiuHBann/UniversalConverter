@@ -1,6 +1,8 @@
-﻿import { BaseResponse, EResponse } from "./BaseResponse";
+﻿import { EException } from "../exceptions/BaseException";
+import { BaseResponse, EResponse } from "./BaseResponse";
 
 export class ErrorResponse extends BaseResponse {
+  public typeException: EException = EException.Unknown;
   public code: number = 0;
   public message: string = "";
 
