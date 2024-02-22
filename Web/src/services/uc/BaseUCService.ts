@@ -3,6 +3,7 @@ import { BaseRequest } from "../../models/requests/BaseRequest";
 import { BaseResponse } from "../../models/responses/BaseResponse";
 import { ErrorResponse } from "../../models/responses/ErrorResponse";
 import { CreateResponse } from "../../utilities/ResponseExtensions";
+import { CreateException } from "../../utilities/ExceptionExtensions";
 
 enum EDBAction {
   FromTo = "FromTo",
@@ -58,9 +59,6 @@ export class BaseUCService<
         );
     }
 
-    // TODO: use a config
-    promise.catch((error) => console.error(error));
-
     return this.ProcessResponse(await promise);
   }
 
@@ -69,8 +67,8 @@ export class BaseUCService<
     if (result.status === 200) {
       return response as TResponse;
     } else {
-      // TODO: create the specific exception
-      throw new Error((response as ErrorResponse).message);
+      const error = response as ErrorResponse;
+      throw CreateException(error.typeException, error);
     }
   }
 }

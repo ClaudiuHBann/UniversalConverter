@@ -16,7 +16,7 @@ export class BaseResponse {
     this.type = type;
   }
 
-  public Initialize(data: any) {
+  public Initialize(_: any) {
     throw new Error("Not implemented!");
   }
 }

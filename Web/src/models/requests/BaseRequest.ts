@@ -21,7 +21,7 @@ export class BaseRequest {
     }
   }
 
-  public Initialize(data?: any) {
+  public Initialize(_?: any) {
     throw new Error("Not implemented!");
   }
 }

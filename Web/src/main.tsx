@@ -18,7 +18,19 @@ const router = createBrowserRouter([
   },
 ]);
 
-const clientQuery = new QueryClient();
+const clientQuery = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: true,
+    },
+    mutations: {
+      throwOnError: true,
+      onError(error, variables, context) {
+        console.error(error, variables, context);
+      },
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
