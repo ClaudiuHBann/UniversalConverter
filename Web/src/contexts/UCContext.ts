@@ -78,9 +78,7 @@ export class UCContext {
   }
 }
 
-export const ucContext = createContext(
-  new UCContext(new Map(), ["", () => {}], ["", () => {}])
-);
+export const ucContext = createContext<UCContext | null>(null);
 
 export function useUCContext() {
   return useContext(ucContext);

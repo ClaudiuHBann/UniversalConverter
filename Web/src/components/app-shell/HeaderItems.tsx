@@ -11,7 +11,7 @@ function HeaderItems() {
 
   const HandleCategoryChange = (category: string | null) => {
     var eCategory = ToCategory(category);
-    if (!eCategory) {
+    if (!eCategory || !context) {
       return;
     }
 
@@ -21,22 +21,23 @@ function HeaderItems() {
   return (
     <Group justify="space-between">
       <Group gap={0}>
-        {context.GetCategories().map((category, index) => {
-          return (
-            <UnstyledButton
-              key={index}
-              className="control"
-              onClick={() => HandleCategoryChange(category)}
-            >
-              {category}
-            </UnstyledButton>
-          );
-        })}
+        {context &&
+          context.GetCategories().map((category, index) => {
+            return (
+              <UnstyledButton
+                key={index}
+                className="control"
+                onClick={() => HandleCategoryChange(category)}
+              >
+                {category}
+              </UnstyledButton>
+            );
+          })}
       </Group>
 
       <Select
         placeholder="Search for a category..."
-        data={context.GetCategories()}
+        data={context ? context.GetCategories() : []}
         onChange={(category) => HandleCategoryChange(category)}
         maxDropdownHeight={200}
         searchable

@@ -17,7 +17,9 @@ function FindTooltipClear(state: boolean) {
 
 function Input() {
   const context = useUCContext();
-  const [inputValue, setInputValue] = context.GetInput();
+  const [inputValue, setInputValue] = context
+    ? context.GetInput()
+    : ["", () => {}];
 
   return (
     <div style={{ position: "relative" }}>

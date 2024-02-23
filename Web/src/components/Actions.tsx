@@ -44,22 +44,24 @@ function Actions() {
 
   const category = searchParams.get(ESearchParam.Category);
 
-  const fromValueNew = context.FindFromTo(
-    category,
-    searchParams.get(ESearchParam.From)
-  );
+  const fromValueNew = context
+    ? context.FindFromTo(category, searchParams.get(ESearchParam.From))
+    : "";
   const [fromValue, setFromValue] = useState<string | null>(fromValueNew);
   useEffect(() => setFromValue(fromValueNew), [fromValueNew]);
 
-  const toValueNew = context.FindFromTo(
-    category,
-    searchParams.get(ESearchParam.To)
-  );
+  const toValueNew = context
+    ? context.FindFromTo(category, searchParams.get(ESearchParam.To))
+    : "";
   const [toValue, setToValue] = useState<string | null>(toValueNew);
   useEffect(() => setToValue(toValueNew), [toValueNew]);
 
   const convertHook = useConvert(ToCategory(category)!);
   const convert = async () => {
+    if (!context) {
+      return;
+    }
+
     const eCategory = ToCategory(category);
     if (loading || !eCategory || !fromValue || !toValue) {
       return;
@@ -83,6 +85,10 @@ function Actions() {
   };
 
   const SwapFromTo = () => {
+    if (!context) {
+      return;
+    }
+
     setFromValue(toValue);
     if (toValue) {
       searchParams.set(ESearchParam.From, toValue);
@@ -97,6 +103,10 @@ function Actions() {
   };
 
   const OnChangeFromTo = (value: string | null, fromTo: boolean) => {
+    if (!context) {
+      return;
+    }
+
     if (fromValue === value || toValue === value) {
       SwapFromTo();
       return;
@@ -121,7 +131,7 @@ function Actions() {
     <Flex mih={50} gap="md" justify="center" align="center">
       <Select
         placeholder="Select from"
-        data={context.GetFromTo(category)}
+        data={context ? context.GetFromTo(category) : []}
         maxDropdownHeight={200}
         value={fromValue}
         onChange={(value) => OnChangeFromTo(value, true)}
@@ -147,7 +157,7 @@ function Actions() {
 
       <Select
         placeholder="Select to"
-        data={context.GetFromTo(category)}
+        data={context ? context.GetFromTo(category) : []}
         maxDropdownHeight={200}
         value={toValue}
         onChange={(value) => OnChangeFromTo(value, false)}

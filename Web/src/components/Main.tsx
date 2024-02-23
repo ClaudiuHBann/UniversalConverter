@@ -8,7 +8,10 @@ import { ESearchParam } from "../utilities/Enums.ts";
 import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions.ts";
 import { UCContext, useUCContext } from "../contexts/UCContext.ts";
 
-function FindCategoryHeader(context: UCContext, category: string | null) {
+function FindCategoryHeader(
+  context: UCContext | null,
+  category: string | null
+) {
   var text = "Choose a category...";
   if (!context || !category) {
     return text;

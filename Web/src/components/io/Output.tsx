@@ -25,7 +25,9 @@ function HandleButtonIconCopy(value: string) {
 
 function Output() {
   const context = useUCContext();
-  const [outputValue, setOutputValue] = context.GetOutput();
+  const [outputValue, setOutputValue] = context
+    ? context.GetOutput()
+    : ["", () => {}];
 
   return (
     <div style={{ position: "relative" }}>

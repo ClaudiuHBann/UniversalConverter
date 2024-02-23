@@ -9,21 +9,22 @@ function UCContextProvider({ children }: { children: React.ReactNode }) {
 
   const queryFromToAll = useFromToAll();
 
+  const [categoryToFromTo, setCategoryToFromTo] = useState(
+    new Map<string, string[]>()
+  );
   const input = useState("");
   const output = useState("");
 
-  const [context, setContext] = useState(
-    new UCContext(new Map(), input, output)
-  );
+  const context = new UCContext(categoryToFromTo, input, output);
 
   useEffect(() => {
     if (!queryFromToAll.data) {
       return;
     }
 
-    setContext(new UCContext(queryFromToAll.data.fromToAll, input, output));
+    setCategoryToFromTo(queryFromToAll.data.fromToAll);
     toggle.close();
-  }, [queryFromToAll.data]);
+  }, [queryFromToAll.data, input, output]);
 
   return (
     <Box pos="relative">
