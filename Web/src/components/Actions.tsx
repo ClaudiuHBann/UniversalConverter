@@ -10,7 +10,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ESearchParam } from "../utilities/Enums";
 import { NavigateTo } from "../utilities/NavigateExtensions";
 import ActionIconEx from "./extensions/ActionIconEx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useConvert } from "../hooks/Queries";
 import { ToCategory } from "../utilities/EnumsExtensions";
 import {
@@ -44,12 +44,19 @@ function Actions() {
 
   const category = searchParams.get(ESearchParam.Category);
 
-  const [fromValue, setFromValue] = useState<string | null>(
-    context.FindFromTo(category, searchParams.get(ESearchParam.From))
+  const fromValueNew = context.FindFromTo(
+    category,
+    searchParams.get(ESearchParam.From)
   );
-  const [toValue, setToValue] = useState<string | null>(
-    context.FindFromTo(category, searchParams.get(ESearchParam.To))
+  const [fromValue, setFromValue] = useState<string | null>(fromValueNew);
+  useEffect(() => setFromValue(fromValueNew), [fromValueNew]);
+
+  const toValueNew = context.FindFromTo(
+    category,
+    searchParams.get(ESearchParam.To)
   );
+  const [toValue, setToValue] = useState<string | null>(toValueNew);
+  useEffect(() => setToValue(toValueNew), [toValueNew]);
 
   const convertHook = useConvert(ToCategory(category)!);
   const convert = async () => {
