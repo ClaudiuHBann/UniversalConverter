@@ -1,7 +1,7 @@
 import { Textarea, rem } from "@mantine/core";
 import { IconCheck, IconClearAll } from "@tabler/icons-react";
-import ActionIconEx from "../extensions/ActionIconEx";
-import { useUCContext } from "../../contexts/UCContext";
+import ActionIconEx from "../../../components/ActionIconEx";
+import { useUCContext } from "../../../contexts/UCContext";
 
 function FindIconClear(state: boolean) {
   if (state) {

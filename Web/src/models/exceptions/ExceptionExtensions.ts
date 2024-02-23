@@ -1,9 +1,9 @@
-import { EException } from "../models/exceptions/BaseException";
-import { DatabaseException } from "../models/exceptions/DatabaseException";
-import { FromToException } from "../models/exceptions/FromToException";
-import { ValueException } from "../models/exceptions/ValueException";
-import { ErrorResponse } from "../models/responses/ErrorResponse";
-import { FindItem } from "./ArrayExtensions";
+import { EException } from "./BaseException";
+import { DatabaseException } from "./DatabaseException";
+import { FromToException } from "./FromToException";
+import { ValueException } from "./ValueException";
+import { ErrorResponse } from "../responses/ErrorResponse";
+import { FindItem } from "../../utilities/ArrayExtensions";
 
 export function CreateException(type: EException, error: ErrorResponse) {
   switch (type) {

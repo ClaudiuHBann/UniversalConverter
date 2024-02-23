@@ -1,12 +1,12 @@
 import { Stack, Text } from "@mantine/core";
-import Input from "./io/Input";
-import Output from "./io/Output";
-import Actions from "./Actions";
-import AppShellEx from "./app-shell/AppShellEx";
+import Input from "./io/Input.tsx";
+import Output from "./io/Output.tsx";
+import Actions from "./Actions.tsx";
+import AppShellEx from "./app-shell/AppShellEx.tsx";
 import { useLocation } from "react-router-dom";
-import { ESearchParam } from "../utilities/Enums.ts";
-import { ToLowerCaseAndCapitalize } from "../utilities/StringExtensions.ts";
-import { UCContext, useUCContext } from "../contexts/UCContext.ts";
+import { ESearchParam } from "../../utilities/Enums.ts";
+import { ToLowerCaseAndCapitalize } from "../../utilities/StringExtensions.ts";
+import { UCContext, useUCContext } from "../../contexts/UCContext.ts";
 
 function FindCategoryHeader(
   context: UCContext | null,

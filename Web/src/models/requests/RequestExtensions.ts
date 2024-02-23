@@ -1,11 +1,14 @@
-import { ERequest } from "../models/requests/BaseRequest";
-import { CommonRequest } from "../models/requests/CommonRequest";
-import { CurrencyRequest } from "../models/requests/CurrencyRequest";
-import { LinkZipRequest } from "../models/requests/LinkZipRequest";
-import { RadixRequest } from "../models/requests/RadixRequest";
-import { TemperatureRequest } from "../models/requests/TemperatureRequest";
-import { SplitByAnySpace, SplitByAnySpaceAndComma } from "./ArrayExtensions";
-import { ECategory } from "./Enums";
+import { ERequest } from "./BaseRequest";
+import { CommonRequest } from "./CommonRequest";
+import { CurrencyRequest } from "./CurrencyRequest";
+import { LinkZipRequest } from "./LinkZipRequest";
+import { RadixRequest } from "./RadixRequest";
+import { TemperatureRequest } from "./TemperatureRequest";
+import {
+  SplitByAnySpace,
+  SplitByAnySpaceAndComma,
+} from "../../utilities/ArrayExtensions";
+import { ECategory } from "../../utilities/Enums";
 
 export function ToRequest(type: ECategory): ERequest {
   switch (type) {

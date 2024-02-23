@@ -5,20 +5,20 @@ import {
   IconSwitchHorizontal,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import { useUCContext } from "../contexts/UCContext";
+import { useUCContext } from "../../contexts/UCContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ESearchParam } from "../utilities/Enums";
-import { NavigateTo } from "../utilities/NavigateExtensions";
-import ActionIconEx from "./extensions/ActionIconEx";
+import { ESearchParam } from "../../utilities/Enums";
+import { NavigateTo } from "../../utilities/NavigateExtensions";
+import ActionIconEx from "../../components/ActionIconEx";
 import { useEffect, useState } from "react";
-import { useConvert } from "../hooks/Queries";
-import { ToCategory } from "../utilities/EnumsExtensions";
+import { useConvert } from "../../hooks/Queries";
+import { ToCategory } from "../../utilities/EnumsExtensions";
 import {
   CreateRequest,
   ParseInput,
   ToRequest,
-} from "../utilities/RequestExtensions";
-import { ToOutput } from "../utilities/ResponseExtensions";
+} from "../../models/requests/RequestExtensions";
+import { ToOutput } from "../../models/responses/ResponseExtensions";
 
 function FindTooltipConvert(state: boolean) {
   return state ? "Converting..." : "Convert";

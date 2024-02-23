@@ -1,9 +1,9 @@
 import { Group, UnstyledButton, Select } from "@mantine/core";
 import "./HeaderItems.css";
-import { useUCContext } from "../../contexts/UCContext";
+import { useUCContext } from "../../../contexts/UCContext";
 import { useNavigate } from "react-router-dom";
-import { NavigateToCategory } from "../../utilities/NavigateExtensions";
-import { ToCategory } from "../../utilities/EnumsExtensions";
+import { NavigateToCategory } from "../../../utilities/NavigateExtensions";
+import { ToCategory } from "../../../utilities/EnumsExtensions";
 
 function HeaderItems() {
   const context = useUCContext();

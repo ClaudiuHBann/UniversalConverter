@@ -1,11 +1,11 @@
-import { ErrorResponse } from "../models/responses/ErrorResponse";
-import { BaseResponse, EResponse } from "../models/responses/BaseResponse";
-import { CommonResponse } from "../models/responses/CommonResponse";
-import { CurrencyResponse } from "../models/responses/CurrencyResponse";
-import { FromToResponse } from "../models/responses/FromToResponse";
-import { LinkZipResponse } from "../models/responses/LinkZipResponse";
-import { RadixResponse } from "../models/responses/RadixResponse";
-import { TemperatureResponse } from "../models/responses/TemperatureResponse";
+import { ErrorResponse } from "./ErrorResponse";
+import { BaseResponse, EResponse } from "./BaseResponse";
+import { CommonResponse } from "./CommonResponse";
+import { CurrencyResponse } from "./CurrencyResponse";
+import { FromToResponse } from "./FromToResponse";
+import { LinkZipResponse } from "./LinkZipResponse";
+import { RadixResponse } from "./RadixResponse";
+import { TemperatureResponse } from "./TemperatureResponse";
 
 export function ToOutput(response: BaseResponse) {
   switch (response.type) {

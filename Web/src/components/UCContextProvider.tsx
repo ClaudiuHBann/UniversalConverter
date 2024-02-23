@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFromToAll } from "../hooks/Queries";
-import { UCContext, ucContext } from "./UCContext";
+import { UCContext, ucContext } from "../contexts/UCContext";
 import { useDisclosure } from "@mantine/hooks";
 import { Box, LoadingOverlay } from "@mantine/core";
 
@@ -24,7 +24,7 @@ function UCContextProvider({ children }: { children: React.ReactNode }) {
 
     setCategoryToFromTo(queryFromToAll.data.fromToAll);
     toggle.close();
-  }, [queryFromToAll.data, input, output]);
+  }, [queryFromToAll.data]);
 
   return (
     <Box pos="relative">

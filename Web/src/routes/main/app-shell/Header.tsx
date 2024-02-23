@@ -2,7 +2,7 @@ import { Grid, GridCol, Burger, UnstyledButton } from "@mantine/core";
 import NavBarItems from "./HeaderItems";
 import { useNavigate } from "react-router-dom";
 import "./HeaderItems.css";
-import { NavigateToRoot } from "../../utilities/NavigateExtensions";
+import { NavigateToRoot } from "../../../utilities/NavigateExtensions";
 
 export interface AppShellExProps {
   opened: boolean;

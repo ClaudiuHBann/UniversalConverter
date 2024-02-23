@@ -2,8 +2,8 @@
 import { BaseRequest } from "../../models/requests/BaseRequest";
 import { BaseResponse } from "../../models/responses/BaseResponse";
 import { ErrorResponse } from "../../models/responses/ErrorResponse";
-import { CreateResponse } from "../../utilities/ResponseExtensions";
-import { CreateException } from "../../utilities/ExceptionExtensions";
+import { CreateResponse } from "../../models/responses/ResponseExtensions";
+import { CreateException } from "../../models/exceptions/ExceptionExtensions";
 
 enum EDBAction {
   FromTo = "FromTo",

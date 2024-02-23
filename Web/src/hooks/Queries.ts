@@ -4,7 +4,7 @@ import { BaseUCService } from "../services/uc/BaseUCService";
 import { ECategory } from "../utilities/Enums";
 import { BaseResponse } from "../models/responses/BaseResponse";
 import { BaseRequest } from "../models/requests/BaseRequest";
-import { NotificationEx } from "../utilities/NotificationExtensions";
+import { NotificationEx } from "../components/Notification";
 
 const uc = new UCService();
 

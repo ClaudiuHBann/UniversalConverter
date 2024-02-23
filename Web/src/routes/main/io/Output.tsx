@@ -1,7 +1,7 @@
 import { Textarea, rem } from "@mantine/core";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
-import ActionIconEx from "../extensions/ActionIconEx";
-import { useUCContext } from "../../contexts/UCContext";
+import ActionIconEx from "../../../components/ActionIconEx";
+import { useUCContext } from "../../../contexts/UCContext";
 
 function FindIconCopy(state: boolean) {
   if (state) {
