@@ -4,6 +4,7 @@ import { BaseUCService } from "../services/uc/BaseUCService";
 import { ECategory } from "../utilities/Enums";
 import { BaseResponse } from "../models/responses/BaseResponse";
 import { BaseRequest } from "../models/requests/BaseRequest";
+import { NotificationEx } from "../utilities/NotificationExtensions";
 
 const uc = new UCService();
 
@@ -20,7 +21,10 @@ const categoryToService = new Map<
 export const useFromToAll = () => {
   return useQuery({
     queryKey: ["fromToAll"],
-    queryFn: async () => await uc.common.FromToAll(),
+    queryFn: async () =>
+      await uc.common
+        .FromToAll()
+        .catch((error) => NotificationEx(error.message)),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
@@ -28,7 +32,11 @@ export const useFromToAll = () => {
 export const useFromTo = (category: ECategory) => {
   return useQuery({
     queryKey: ["fromTo", category],
-    queryFn: async () => await categoryToService.get(category)?.FromTo(),
+    queryFn: async () =>
+      await categoryToService
+        .get(category)
+        ?.FromTo()
+        .catch((error) => NotificationEx(error.message)),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
@@ -36,6 +44,9 @@ export const useFromTo = (category: ECategory) => {
 export const useConvert = (category: ECategory) => {
   return useMutation({
     mutationFn: async (request: BaseRequest) =>
-      await categoryToService.get(category)?.Convert(request),
+      await categoryToService
+        .get(category)
+        ?.Convert(request)
+        .catch((error) => NotificationEx(error.message)),
   });
 };

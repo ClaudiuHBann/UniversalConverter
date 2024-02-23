@@ -52,6 +52,7 @@ export class BaseUCService<
       case EHTTPRequest.Get:
         promise = axios.get<TResponse>(uri, this.axiosConfig);
         break;
+
       case EHTTPRequest.Post:
         promise = axios.post<TResponse>(uri, value, this.axiosConfig);
         break;

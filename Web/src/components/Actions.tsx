@@ -9,7 +9,7 @@ import { useUCContext } from "../contexts/UCContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ESearchParam } from "../utilities/Enums";
 import { NavigateTo } from "../utilities/NavigateExtensions";
-import ActionIconEx from "./ActionIconEx";
+import ActionIconEx from "./extensions/ActionIconEx";
 import { useState } from "react";
 import { useConvert } from "../hooks/Queries";
 import { ToCategory } from "../utilities/EnumsExtensions";
@@ -66,18 +66,13 @@ function Actions() {
 
     toggle.open();
 
-    convertHook
-      .mutateAsync(request)
-      .then((result) => {
-        if (!result) {
-          return;
-        }
+    const response = await convertHook.mutateAsync(request);
+    if (response) {
+      const [_, setOutputValue] = context.GetOutput();
+      setOutputValue(ToOutput(response));
+    }
 
-        const [_, setOutputValue] = context.GetOutput();
-        setOutputValue(ToOutput(result));
-      })
-      .catch((error) => console.error(error))
-      .finally(() => toggle.close());
+    toggle.close();
   };
 
   const SwapFromTo = () => {
@@ -131,7 +126,7 @@ function Actions() {
         <ActionIcon
           loading={loading}
           variant="subtle"
-          onClick={async () => convert()}
+          onClick={async () => await convert()}
         >
           <IconCircleArrowDown color="gray" />
         </ActionIcon>

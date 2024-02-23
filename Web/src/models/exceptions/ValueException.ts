@@ -2,7 +2,7 @@
 import { BaseException, EException } from "./BaseException";
 
 export class ValueException extends BaseException {
-  public constructor(error: ErrorResponse, stack?: string) {
-    super(EException.Value, error, stack);
+  public constructor(error: ErrorResponse) {
+    super(EException.Value, error);
   }
 }

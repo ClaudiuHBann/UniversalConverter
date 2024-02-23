@@ -12,14 +12,9 @@ export class BaseException extends Error {
   public error: ErrorResponse;
   public type: EException = EException.Unknown;
 
-  protected constructor(
-    type: EException,
-    error: ErrorResponse,
-    stack?: string
-  ) {
+  protected constructor(type: EException, error: ErrorResponse) {
     super(error.message);
     super.name = ToExceptionStr(type);
-    super.stack = stack;
 
     this.type = type;
     this.error = error;

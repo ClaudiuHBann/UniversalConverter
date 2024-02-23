@@ -6,15 +6,10 @@
 */
 
 import "@mantine/core/styles.css";
-import { MantineProvider } from "@mantine/core";
 import Main from "./components/Main";
 
 function App() {
-  return (
-    <MantineProvider defaultColorScheme="dark">
-      <Main />
-    </MantineProvider>
-  );
+  return <Main />;
 }
 
 export default App;
