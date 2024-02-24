@@ -2,6 +2,7 @@ export enum ESearchParam {
   Category = "category",
   From = "from",
   To = "to",
+  Code = "code",
 }
 
 export enum ECategory {
@@ -9,4 +10,9 @@ export enum ECategory {
   LinkZip = "LinkZip",
   Radix = "Radix",
   Temperature = "Temperature",
+}
+
+export enum ELinkZipFromTo {
+  Shortifier = "Shortifier",
+  Longifier = "Longifier",
 }

@@ -1,12 +1,13 @@
-import { Stack, Text } from "@mantine/core";
-import Input from "./io/Input.tsx";
-import Output from "./io/Output.tsx";
-import Actions from "./Actions.tsx";
-import AppShellEx from "./app-shell/AppShellEx.tsx";
+import { Center, Stack, Text, rem } from "@mantine/core";
+import Input from "./io/Input";
+import Output from "./io/Output";
+import Actions from "./Actions";
+import AppShellEx from "./app-shell/AppShellEx";
 import { useLocation } from "react-router-dom";
 import { ESearchParam } from "../../utilities/Enums.ts";
 import { ToLowerCaseAndCapitalize } from "../../utilities/StringExtensions.ts";
 import { UCContext, useUCContext } from "../../contexts/UCContext.ts";
+import UCContextProvider from "../../components/UCContextProvider.tsx";
 
 function FindCategoryHeader(
   context: UCContext | null,
@@ -33,15 +34,19 @@ function Main() {
   const category = searchParams.get(ESearchParam.Category);
 
   return (
-    <AppShellEx>
-      <Stack>
-        <Text>{FindCategoryHeader(context, category)}</Text>
+    <UCContextProvider>
+      <AppShellEx>
+        <Center>
+          <Stack w="66%" mt={rem(18)} gap={rem(22)}>
+            <Text size={rem(31)}>{FindCategoryHeader(context, category)}</Text>
 
-        <Input />
-        <Actions />
-        <Output />
-      </Stack>
-    </AppShellEx>
+            <Input />
+            <Actions />
+            <Output />
+          </Stack>
+        </Center>
+      </AppShellEx>
+    </UCContextProvider>
   );
 }
 

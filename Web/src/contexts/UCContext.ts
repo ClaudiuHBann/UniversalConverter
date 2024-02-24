@@ -17,11 +17,11 @@ export class UCContext {
     this.output = output;
   }
 
-  public GetInput(): [string, Dispatch<SetStateAction<string>>] {
+  public GetInput() {
     return this.input;
   }
 
-  public GetOutput(): [string, Dispatch<SetStateAction<string>>] {
+  public GetOutput() {
     return this.output;
   }
 
