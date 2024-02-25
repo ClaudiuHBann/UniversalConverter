@@ -6,6 +6,10 @@ export class TemperatureUCService extends BaseUCService<
   TemperatureRequest,
   TemperatureResponse
 > {
+  public constructor() {
+    super();
+  }
+
   protected override GetControllerName() {
     return "Temperature";
   }

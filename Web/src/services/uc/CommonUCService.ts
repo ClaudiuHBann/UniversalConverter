@@ -6,6 +6,10 @@ export class CommonUCService extends BaseUCService<
   CommonRequest,
   CommonResponse
 > {
+  public constructor() {
+    super();
+  }
+
   protected override GetControllerName() {
     return "Common";
   }

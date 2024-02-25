@@ -19,10 +19,23 @@ export class BaseUCService<
   TRequest extends BaseRequest,
   TResponse extends BaseResponse
 > {
-  readonly urlBase: string = "https://localhost:5000/";
+  readonly urlBase: string = "";
   readonly axiosConfig = {
     validateStatus: () => true,
   };
+
+  protected constructor() {
+    if (
+      !import.meta.env.NODE_ENV ||
+      import.meta.env.NODE_ENV === "development"
+    ) {
+      this.urlBase = "https://localhost:32406/";
+    } else {
+      this.urlBase = "http://uc.hbann.ro:32406/";
+    }
+
+    console.log(this.urlBase);
+  }
 
   protected GetControllerName() {
     throw new Error("Not implemented");

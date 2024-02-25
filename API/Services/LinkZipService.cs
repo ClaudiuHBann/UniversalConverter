@@ -95,7 +95,7 @@ public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, L
             return link;
         }
 
-        var entity = await ReadEx(MakeId(code));
+        var entity = await ReadEx(new() { Id = MakeId(code) });
         _cache.Add(code, entity.Url);
         return entity.Url;
     }

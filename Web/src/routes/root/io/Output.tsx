@@ -40,8 +40,8 @@ function Output() {
         size="md"
         radius="md"
         label="Output"
-        description="Your Converted Values Here"
-        placeholder="Read"
+        description="Output From Values Above"
+        placeholder="Example..."
         value={outputValue}
         onChange={(event) => setOutputValue(event.currentTarget.value)}
       />

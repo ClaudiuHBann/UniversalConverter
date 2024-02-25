@@ -69,10 +69,14 @@ public class BaseDbService<Request, Entity, Response>(UCContext context) : BaseS
                    : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to create {entity}!"));
     }
 
-    protected async Task<Entity> ReadEx(params object?[]? keyValues) =>
-        await context.FindAsync(typeof(Entity), keyValues) as Entity ??
-        throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+    protected async Task<Entity> ReadEx(Entity entity)
+    {
+        var propertyID = entity.GetType().GetProperty("Id");
+        var propertyIDValue = propertyID?.GetValue(entity);
 
+        return await context.FindAsync(typeof(Entity), propertyIDValue) as Entity ??
+               throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+    }
     private async Task Exists(Entity entity, bool throwIfExists = false)
     {
         var propertyID = entity.GetType().GetProperty("Id");

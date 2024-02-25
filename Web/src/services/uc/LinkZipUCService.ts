@@ -6,6 +6,10 @@ export class LinkZipUCService extends BaseUCService<
   LinkZipRequest,
   LinkZipResponse
 > {
+  public constructor() {
+    super();
+  }
+
   protected override GetControllerName() {
     return "LinkZip";
   }

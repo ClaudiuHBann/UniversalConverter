@@ -6,6 +6,10 @@ export class CurrencyUCService extends BaseUCService<
   CurrencyRequest,
   CurrencyResponse
 > {
+  public constructor() {
+    super();
+  }
+
   protected override GetControllerName() {
     return "Currency";
   }

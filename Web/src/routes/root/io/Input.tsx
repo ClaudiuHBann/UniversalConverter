@@ -31,8 +31,8 @@ function Input() {
         radius="md"
         label="Input"
         resize="vertical"
-        description="Insert Your Values Below"
-        placeholder="Write your values here..."
+        description="Input Your Values Below"
+        placeholder="Example..."
         value={inputValue}
         onChange={(event) => setInputValue(event.currentTarget.value)}
       />
