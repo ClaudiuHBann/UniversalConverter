@@ -2,6 +2,7 @@ import { Textarea, rem } from "@mantine/core";
 import { IconCheck, IconClearAll } from "@tabler/icons-react";
 import ActionIconEx from "../../../components/ActionIconEx";
 import { useUCContext } from "../../../contexts/UCContext";
+import classes from "./IO.module.css";
 
 function FindIconClear(state: boolean) {
   if (state) {
@@ -25,6 +26,7 @@ function Input() {
     <div style={{ position: "relative" }}>
       <Textarea
         variant="filled"
+        classNames={{ input: classes.input }}
         size="md"
         radius="md"
         label="Input"

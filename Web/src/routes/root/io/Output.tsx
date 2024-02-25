@@ -2,6 +2,7 @@ import { Textarea, rem } from "@mantine/core";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import ActionIconEx from "../../../components/ActionIconEx";
 import { useUCContext } from "../../../contexts/UCContext";
+import classes from "./IO.module.css";
 
 function FindIconCopy(state: boolean) {
   if (state) {
@@ -34,6 +35,7 @@ function Output() {
       <Textarea
         variant="filled"
         resize="vertical"
+        classNames={{ input: classes.input }}
         readOnly
         size="md"
         radius="md"

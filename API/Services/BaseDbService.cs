@@ -37,7 +37,7 @@ public class BaseDbService<Request, Entity, Response>(UCContext context) : BaseS
                                             $"Failed {action.ToString().ToLower()} validation for {entity}!"));
         await methodValidation;
 
-        var methodCRUD = this.Invoke<Task<Entity>>($"{action}Ex", [new[] { entity }]) ??
+        var methodCRUD = this.Invoke<Task<Entity>>($"{action}Ex", [entity]) ??
                          throw new DatabaseException(new(HttpStatusCode.InternalServerError,
                                                          $"Failed to {action.ToString().ToLower()} {entity}!"));
         return await methodCRUD;

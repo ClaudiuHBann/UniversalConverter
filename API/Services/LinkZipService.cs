@@ -15,6 +15,12 @@ namespace API.Services
 {
 public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipResponse>
 {
+#if DEBUG
+    private const string _prefix = "localhost:5173/LinkZip/?code=";
+#else
+    private const string _prefix = "uc.hbann.ro/LinkZip/?code=";
+#endif
+
     private readonly UCContext _context;
     private readonly RadixService _radix;
     private readonly IAppCache _cache;

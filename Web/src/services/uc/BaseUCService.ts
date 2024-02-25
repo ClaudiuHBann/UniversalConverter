@@ -19,7 +19,7 @@ export class BaseUCService<
   TRequest extends BaseRequest,
   TResponse extends BaseResponse
 > {
-  readonly urlBase: string = "https://localhost:7212/";
+  readonly urlBase: string = "https://localhost:5000/";
   readonly axiosConfig = {
     validateStatus: () => true,
   };
