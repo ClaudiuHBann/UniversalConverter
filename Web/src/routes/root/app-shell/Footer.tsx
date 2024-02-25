@@ -2,9 +2,8 @@ import { SimpleGrid, Flex, Anchor, Text, rem } from "@mantine/core";
 import {
   IconBrandGoogle,
   IconBrandDiscord,
-  IconBrandFacebook,
+  IconBrandLinkedin,
   IconBrandGithub,
-  IconBrandInstagram,
   IconCheck,
 } from "@tabler/icons-react";
 import ActionIconEx from "../../../components/ActionIconEx";
@@ -43,9 +42,22 @@ function ClipboardWriteText(text: string) {
 
 function Footer() {
   return (
-    <SimpleGrid cols={2}>
+    <SimpleGrid cols={3}>
+      <Flex mih={50} gap="md" justify="center" align="center">
+        <Text>Contribute on</Text>
+        <Anchor
+          href="https://github.com/ClaudiuHBann/UniversalConverter"
+          c="white"
+          ml={-5}
+          mt={7.5}
+        >
+          <IconBrandGithub />
+        </Anchor>
+      </Flex>
+
       <Flex mih={50} gap="md" justify="center" align="center">
         <Text>Contact Me:</Text>
+
         <ActionIconEx
           onClick={() => {
             ClipboardWriteText("claudiu.andrei.hermann@gmail.com");
@@ -53,6 +65,15 @@ function Footer() {
           findIcon={FindIconGoogle}
           findTooltip={FindTooltipGoogle}
         />
+
+        <Anchor
+          href="https://www.linkedin.com/in/hermann-claudiu-b6243a229"
+          c="#0077B5"
+          mt={5}
+        >
+          <IconBrandLinkedin />
+        </Anchor>
+
         <ActionIconEx
           onClick={() => {
             ClipboardWriteText("claudiuhbann");
@@ -61,23 +82,9 @@ function Footer() {
           findTooltip={FindTooltipDiscord}
         />
       </Flex>
+
       <Flex mih={50} gap="md" justify="center" align="center">
-        <Text>My Socials:</Text>
-        <Anchor
-          href="https://www.facebook.com/profile.php?id=100011084952722"
-          c="#4267B2"
-        >
-          <IconBrandFacebook />
-        </Anchor>
-        <Anchor href="https://github.com/ClaudiuHBann" c="white">
-          <IconBrandGithub />
-        </Anchor>
-        <Anchor
-          href="https://www.instagram.com/claudiuhbann/?hl=en"
-          c="#dd2a7b"
-        >
-          <IconBrandInstagram />
-        </Anchor>
+        <Text>Made with ❤️ in Romania by HBann</Text>
       </Flex>
     </SimpleGrid>
   );
