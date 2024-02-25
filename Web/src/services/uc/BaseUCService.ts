@@ -25,16 +25,11 @@ export class BaseUCService<
   };
 
   protected constructor() {
-    if (
-      !import.meta.env.NODE_ENV ||
-      import.meta.env.NODE_ENV === "development"
-    ) {
+    if (import.meta.env.DEV) {
       this.urlBase = "https://localhost:32406/";
     } else {
-      this.urlBase = "http://uc.hbann.ro:32406/";
+      this.urlBase = "http://162.55.32.18:32406/";
     }
-
-    console.log(this.urlBase);
   }
 
   protected GetControllerName() {

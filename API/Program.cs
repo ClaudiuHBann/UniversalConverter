@@ -8,8 +8,8 @@ using Shared.Validators;
 var urls = new string[] { "https://localhost:32406/" };
 var origins = new string[] { "http://localhost:5173/" };
 #else
-var urls = new string[] { "http://uc.hbann.ro:32406/" };
-var origins = new string[] { "http://uc.hbann.ro:80/" };
+var urls = new string[] { "http://162.55.32.18:32406/" };
+var origins = new string[] { "http://162.55.32.18:80/" };
 #endif
 
 var builder = WebApplication.CreateBuilder(args);
