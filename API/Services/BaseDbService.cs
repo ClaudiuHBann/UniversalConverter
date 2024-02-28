@@ -35,17 +35,28 @@ public class BaseDbService<Request, Response> : IService
     {
         await Exists(entity);
     }
+    protected virtual async Task UpdateValidate<Entity>(Entity entity)
+        where Entity : BaseEntity
+    {
+        await Exists(entity);
+    }
 
-    public virtual async Task<Entity> Create<Entity>(Entity entity)
+    protected virtual async Task<Entity> Create<Entity>(Entity entity)
         where Entity : BaseEntity
     {
         return await CRUD(entity, EAction.Create);
     }
 
-    public virtual async Task<Entity> Read<Entity>(Entity entity)
+    protected virtual async Task<Entity> Read<Entity>(Entity entity)
         where Entity : BaseEntity
     {
         return await CRUD(entity, EAction.Read);
+    }
+
+    protected virtual async Task<Entity> Update<Entity>(Entity entity)
+        where Entity : BaseEntity
+    {
+        return await CRUD(entity, EAction.Update);
     }
 
     private enum EAction
@@ -106,6 +117,36 @@ public class BaseDbService<Request, Response> : IService
 
         return await _context.FindAsync(typeof(Entity), propertyIDValue) as Entity ??
                throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+    }
+
+    protected async Task<Entity> UpdateEx<Entity>(Entity entity)
+        where Entity : BaseEntity
+    {
+        var entityUpdated = await ReadEx(entity);
+        var entityUpdatedProperties = entityUpdated.GetType().GetProperties();
+        var entityProperties = entity.GetType().GetProperties();
+
+        // if we update properties with the sanem value, SaveChangesAsync will return 0 so:
+        int equalCount = 0;
+
+        for (int i = 0; i < entityProperties.Length; i++)
+        {
+            var entityUpdatedPropertyValue = entityUpdatedProperties[i].GetValue(entityUpdated);
+            var entityPropertyValue = entityProperties[i].GetValue(entity);
+
+            if (entityUpdatedPropertyValue != null && entityPropertyValue != null &&
+                // TODO: expensive operation, find a better way
+                entityUpdatedPropertyValue.Equal(entityPropertyValue))
+            {
+                equalCount++;
+            }
+
+            entityUpdatedProperties[i].SetValue(entityUpdated, entityPropertyValue);
+        }
+
+        var updated = await _context.SaveChangesAsync() > 0 || equalCount > 0;
+        return updated ? entityUpdated
+                       : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to update the {entity}!"));
     }
     private async Task Exists<Entity>(Entity entity, bool throwIfExists = false)
         where Entity : BaseEntity

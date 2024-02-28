@@ -11,5 +11,7 @@ public static class ObjectExtensions
         var methodResult = method!.Invoke(obj, parameters)!;
         return (Result)methodResult;
     }
+
+    public static bool Equal(this object obj1, object obj2) => obj1.ToJSON() == obj2.ToJSON();
 }
 }

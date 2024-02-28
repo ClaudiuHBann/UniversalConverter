@@ -7,9 +7,11 @@ namespace Shared.Entities
 public class LinkEntity : BaseEntity
 {
     [Key]
+    [Required]
     [Column("id")]
     public long Id { get; set; }
 
+    [Required]
     [MaxLength(2048)]
     [Column("url")]
     public string Url {
