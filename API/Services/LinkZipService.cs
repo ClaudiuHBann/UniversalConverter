@@ -13,7 +13,7 @@ using Shared.Validators;
 
 namespace API.Services
 {
-public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, LinkZipResponse>
+public sealed class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 {
 #if DEBUG
     private const string _prefix = "localhost:5173/LinkZip/?code=";
@@ -95,7 +95,7 @@ public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, L
             return link;
         }
 
-        var entity = await ReadEx(new() { Id = MakeId(code) });
+        var entity = await ReadEx<LinkEntity>(new() { Id = MakeId(code) });
         _cache.Add(code, entity.Url);
         return entity.Url;
     }
@@ -114,7 +114,7 @@ public sealed class LinkZipService : BaseDbService<LinkZipRequest, LinkEntity, L
             return MakeCode(entity.Id);
         }
 
-        entity = await Create(new() { Url = url });
+        entity = await Create<LinkEntity>(new() { Url = url });
         code = MakeCode(entity.Id);
 
         _cache.Add(url, code);

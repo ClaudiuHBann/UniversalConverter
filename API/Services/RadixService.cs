@@ -2,6 +2,8 @@
 using Shared.Responses;
 using Shared.Exceptions;
 
+using API.Entities;
+
 namespace API.Services
 {
 public sealed class RadixService : BaseService<RadixRequest, RadixResponse>
@@ -15,6 +17,10 @@ public sealed class RadixService : BaseService<RadixRequest, RadixResponse>
 
     private static readonly List<string> _fromTo =
         Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList();
+
+    public RadixService(UCContext context) : base(context)
+    {
+    }
 
     public override async Task<List<string>> FromTo() => await Task.FromResult(_fromTo);
 

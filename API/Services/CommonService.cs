@@ -1,14 +1,24 @@
 ﻿using System.Reflection;
 
+using API.Entities;
+
+using Shared.Requests;
+using Shared.Responses;
 using Shared.Utilities;
 
 namespace API.Services
 {
-public class CommonService
-(IServiceProvider provider)
+public class CommonService : BaseService<CommonRequest, CommonResponse>
 {
     private readonly Dictionary<string, List<string>> _fromToAll = [];
     private readonly SemaphoreSlim _ss = new(1);
+
+    private readonly IServiceProvider _provider;
+
+    public CommonService(IServiceProvider provider, UCContext context) : base(context)
+    {
+        _provider = provider;
+    }
 
     private List<Type> FindAllServiceTypes()
     {
@@ -46,7 +56,7 @@ public class CommonService
 
             foreach (var serviceType in FindAllServiceTypes())
             {
-                var service = ActivatorUtilities.CreateInstance(provider, serviceType);
+                var service = ActivatorUtilities.CreateInstance(_provider, serviceType);
                 var fromTo = await service.Invoke<Task<List<string>>>("FromTo");
                 _fromToAll.Add(serviceType.Name.Replace("Service", null), fromTo);
             }

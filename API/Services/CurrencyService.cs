@@ -6,6 +6,8 @@ using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;
 
+using API.Entities;
+
 namespace API.Services
 {
 public sealed class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
@@ -18,6 +20,10 @@ public sealed class CurrencyService : BaseService<CurrencyRequest, CurrencyRespo
 
     private static DateTime _ratesLastUpdate = DateTime.MinValue;
     private static readonly Mutex _mutexRatesLastUpdate = new();
+
+    public CurrencyService(UCContext context) : base(context)
+    {
+    }
 
     public override async Task<List<string>> FromTo()
     {

@@ -3,6 +3,8 @@ using Shared.Responses;
 using Shared.Exceptions;
 using Shared.Utilities;
 
+using API.Entities;
+
 namespace API.Services
 {
 public sealed class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
@@ -17,6 +19,10 @@ public sealed class TemperatureService : BaseService<TemperatureRequest, Tempera
                 { "Kelvin->Celsius", FromKelvin },
                 { "Kelvin->Fahrenheit", temperature => ToFahrenheit(FromKelvin(temperature)) },
                 { "Kelvin->Kelvin", temperature => temperature } };
+
+    public TemperatureService(UCContext context) : base(context)
+    {
+    }
 
     public override async Task<List<string>> FromTo() => await Task.FromResult(
         _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList());

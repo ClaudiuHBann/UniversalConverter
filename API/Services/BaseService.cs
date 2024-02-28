@@ -1,14 +1,19 @@
-﻿using Shared.Services;
-using Shared.Requests;
+﻿using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;
 
+using API.Entities;
+
 namespace API.Services
 {
-public abstract class BaseService<Request, Response>() : IService
+public abstract class BaseService<Request, Response> : BaseDbService<Request, Response>
     where Request : BaseRequest
     where Response : BaseResponse
 {
+    protected BaseService(UCContext context) : base(context)
+    {
+    }
+
     public virtual Task<List<string>> FromTo() => throw new NotImplementedException();
 
     private async Task<string> FindFromTo(string fromTo)
