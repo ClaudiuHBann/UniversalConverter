@@ -13,7 +13,7 @@ using Shared.Validators;
 
 namespace API.Services
 {
-public sealed class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
+public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 {
 #if DEBUG
     private const string _prefix = "localhost:5173/LinkZip/?code=";
@@ -34,6 +34,8 @@ public sealed class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse
         _cache = cache;
         _validator = validator;
     }
+
+    public override bool IsConverter() => true;
 
     public override async Task<List<string>> FromTo() =>
         await Task.FromResult<List<string>>(["Shortifier", "Longifier"]);

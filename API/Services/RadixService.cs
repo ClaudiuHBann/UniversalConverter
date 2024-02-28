@@ -6,7 +6,7 @@ using API.Entities;
 
 namespace API.Services
 {
-public sealed class RadixService : BaseService<RadixRequest, RadixResponse>
+public class RadixService : BaseService<RadixRequest, RadixResponse>
 {
     private const string Bases = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -21,6 +21,8 @@ public sealed class RadixService : BaseService<RadixRequest, RadixResponse>
     public RadixService(UCContext context) : base(context)
     {
     }
+
+    public override bool IsConverter() => true;
 
     public override async Task<List<string>> FromTo() => await Task.FromResult(_fromTo);
 

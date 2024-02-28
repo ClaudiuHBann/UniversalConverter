@@ -14,7 +14,9 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
     {
     }
 
-    public virtual Task<List<string>> FromTo() => throw new NotImplementedException();
+    public abstract bool IsConverter();
+
+    public abstract Task<List<string>> FromTo();
 
     private async Task<string> FindFromTo(string fromTo)
     {
@@ -49,7 +51,7 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
         }
     }
 
-    protected virtual Task<Response> ConvertInternal(Request request) => throw new NotImplementedException();
+    protected abstract Task<Response> ConvertInternal(Request request);
 
     public async Task<Response> Convert(Request request)
     {

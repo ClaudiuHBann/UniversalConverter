@@ -7,7 +7,7 @@ using API.Entities;
 
 namespace API.Services
 {
-public sealed class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
+public class TemperatureService : BaseService<TemperatureRequest, TemperatureResponse>
 {
     private static readonly Dictionary<string, Func<double, double>> _temperatureDirectConversions =
         new() { { "Celsius->Celsius", temperature => temperature },
@@ -23,6 +23,8 @@ public sealed class TemperatureService : BaseService<TemperatureRequest, Tempera
     public TemperatureService(UCContext context) : base(context)
     {
     }
+
+    public override bool IsConverter() => true;
 
     public override async Task<List<string>> FromTo() => await Task.FromResult(
         _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList());

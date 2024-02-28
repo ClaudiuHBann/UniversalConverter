@@ -3,6 +3,7 @@
 using API.Entities;
 
 using Shared.Requests;
+using Shared.Services;
 using Shared.Responses;
 using Shared.Utilities;
 
@@ -20,16 +21,18 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
         _provider = provider;
     }
 
-    private List<Type> FindAllServiceTypes()
+    public override bool IsConverter() => false;
+
+    public override Task<List<string>> FromTo() => throw new InvalidOperationException();
+
+    protected override Task<CommonResponse> ConvertInternal(CommonRequest request) =>
+        throw new InvalidOperationException();
+
+    private List<IService> FindAllService()
     {
-        List<Type> services = [];
+        List<IService> services = [];
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
-            if (!type.IsSealed)
-            {
-                continue;
-            }
-
             for (var baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
             {
                 if (!baseType.IsGenericType || baseType.GetGenericTypeDefinition() != typeof(BaseService<, >))
@@ -37,7 +40,13 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
                     continue;
                 }
 
-                services.Add(type);
+                var service = ActivatorUtilities.CreateInstance(_provider, type);
+                if (!service.Invoke<bool>("IsConverter"))
+                {
+                    continue;
+                }
+
+                services.Add((IService)service);
             }
         }
 
@@ -54,11 +63,10 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
                 return _fromToAll;
             }
 
-            foreach (var serviceType in FindAllServiceTypes())
+            foreach (var service in FindAllService())
             {
-                var service = ActivatorUtilities.CreateInstance(_provider, serviceType);
                 var fromTo = await service.Invoke<Task<List<string>>>("FromTo");
-                _fromToAll.Add(serviceType.Name.Replace("Service", null), fromTo);
+                _fromToAll.Add(service.GetType().Name.Replace("Service", null), fromTo);
             }
 
             return _fromToAll;

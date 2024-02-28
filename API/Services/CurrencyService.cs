@@ -10,7 +10,7 @@ using API.Entities;
 
 namespace API.Services
 {
-public sealed class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
+public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 {
     private const string Source = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 
@@ -24,6 +24,8 @@ public sealed class CurrencyService : BaseService<CurrencyRequest, CurrencyRespo
     public CurrencyService(UCContext context) : base(context)
     {
     }
+
+    public override bool IsConverter() => true;
 
     public override async Task<List<string>> FromTo()
     {
