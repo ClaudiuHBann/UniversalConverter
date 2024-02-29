@@ -18,6 +18,7 @@ public class UCContext : DbContext
     }
 
     public DbSet<LinkEntity> Links { get; set; }
+    public DbSet<RankEntity> Ranks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder.UseNpgsql(_connectionString);

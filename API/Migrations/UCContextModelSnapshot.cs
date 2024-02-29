@@ -40,6 +40,30 @@ namespace API.Migrations
 
                     b.ToTable("link");
                 });
+
+            modelBuilder.Entity("Shared.Entities.RankEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("Conversions")
+                        .HasColumnType("bigint")
+                        .HasColumnName("conversions");
+
+                    b.Property<string>("Converter")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("character varying(18)")
+                        .HasColumnName("converter");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("rank");
+                });
 #pragma warning restore 612, 618
         }
     }
