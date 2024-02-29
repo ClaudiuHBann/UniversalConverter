@@ -97,7 +97,7 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
             return link;
         }
 
-        var entity = await ReadEx<LinkEntity>(new() { Id = MakeId(code) });
+        var entity = await Read<LinkEntity>(new() { Id = MakeId(code) });
         _cache.Add(code, entity.Url);
         return entity.Url;
     }

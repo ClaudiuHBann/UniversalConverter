@@ -3,6 +3,8 @@ using Shared.Responses;
 using Shared.Exceptions;
 
 using API.Entities;
+using Microsoft.EntityFrameworkCore;
+using Shared.Entities;
 
 namespace API.Services
 {
@@ -10,8 +12,11 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
     where Request : BaseRequest
     where Response : BaseResponse
 {
+    private readonly UCContext _context;
+
     protected BaseService(UCContext context) : base(context)
     {
+        _context = context;
     }
 
     public abstract bool IsConverter();
@@ -57,7 +62,20 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
     {
         await ConvertValidate(request);
         await UpdateRequestsFromTo(request);
-        return await ConvertInternal(request);
+        var response = await ConvertInternal(request);
+        await UpdateRank();
+        return response;
+    }
+
+    private async Task UpdateRank()
+    {
+        var converter = typeof(Request).GetType().Name.Replace("Request", null);
+        var rank = await _context.Ranks.FirstOrDefaultAsync(rank => rank.Converter == converter) ??
+                   await Create(new RankEntity { Converter = converter });
+
+        // TODO: increase but update once 5 minutes or smth
+        rank.Conversions++;
+        await Update(rank);
     }
 }
 }

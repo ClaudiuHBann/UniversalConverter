@@ -23,7 +23,7 @@ public class FromToException : BaseException
 
     private static string Format(IService service, bool fromIsInvalid)
     {
-        var serviceName = service.GetType().Name.Replace("Service", "");
+        var serviceName = service.GetType().Name.Replace("Service", null);
         var fromOrTo = fromIsInvalid ? "from" : "to";
 
         return $"{serviceName}'s {fromOrTo} is invalid!";
