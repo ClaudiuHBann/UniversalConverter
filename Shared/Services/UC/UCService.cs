@@ -7,5 +7,6 @@ public class UCService : IService
     public TemperatureUCService Temperature { get; set; } = new();
     public LinkZipUCService LinkZip { get; set; } = new();
     public CommonUCService Common { get; set; } = new();
+    public RankUCService Rank { get; set; } = new();
 }
 }

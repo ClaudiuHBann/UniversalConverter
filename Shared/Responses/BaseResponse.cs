@@ -6,6 +6,7 @@ public class BaseResponse
     {
         Unknown,
         Common,
+        Rank,
         Currency,
         Error,
         FromTo,
