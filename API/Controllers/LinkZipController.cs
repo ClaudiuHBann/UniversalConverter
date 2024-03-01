@@ -3,7 +3,6 @@
 using API.Services;
 
 using Shared.Requests;
-using Shared.Responses;
 
 namespace API.Controllers
 {
@@ -13,7 +12,7 @@ public class LinkZipController
 (LinkZipService service) : BaseController
 {
     [HttpGet(nameof(FromTo))]
-    public async Task<ActionResult> FromTo() => MakeOk(new FromToResponse(await service.FromTo()));
+    public async Task<ActionResult> FromTo() => MakeOk(await service.FromTo());
 
     [HttpPost(nameof(Convert))]
     public async Task<ActionResult> Convert([FromBody] LinkZipRequest request) =>

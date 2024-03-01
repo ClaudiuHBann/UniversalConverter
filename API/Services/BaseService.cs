@@ -21,13 +21,13 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
 
     public abstract bool IsConverter();
 
-    public abstract Task<List<string>> FromTo();
+    public abstract Task<FromToResponse> FromTo();
 
     private async Task<string> FindFromTo(string fromTo)
     {
         var fromTos = await FromTo();
-        var index = fromTos.FindIndex(ft => ft.Equals(fromTo, StringComparison.OrdinalIgnoreCase));
-        return fromTos[index];
+        var index = fromTos.FromTo.FindIndex(ft => ft.Equals(fromTo, StringComparison.OrdinalIgnoreCase));
+        return fromTos.FromTo[index];
     }
 
     private async Task UpdateRequestsFromTo(Request request)
@@ -45,12 +45,12 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
 
         var fromTo = await FromTo();
 
-        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
+        if (!fromTo.FromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, true);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
+        if (!fromTo.FromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, false);
         }

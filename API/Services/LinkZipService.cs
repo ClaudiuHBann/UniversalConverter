@@ -37,8 +37,8 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 
     public override bool IsConverter() => true;
 
-    public override async Task<List<string>> FromTo() =>
-        await Task.FromResult<List<string>>(["Shortifier", "Longifier"]);
+    public override async Task<FromToResponse> FromTo() =>
+        new(await Task.FromResult<List<string>>(["Shortifier", "Longifier"]));
 
     protected override async Task ConvertValidate(LinkZipRequest request)
     {
@@ -54,12 +54,12 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 
         var fromTo = await FromTo();
 
-        if (!fromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
+        if (!fromTo.FromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, true);
         }
 
-        if (!fromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
+        if (!fromTo.FromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
         {
             throw new FromToException(this, false);
         }

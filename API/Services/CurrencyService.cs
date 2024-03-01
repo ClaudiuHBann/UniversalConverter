@@ -27,10 +27,10 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 
     public override bool IsConverter() => true;
 
-    public override async Task<List<string>> FromTo()
+    public override async Task<FromToResponse> FromTo()
     {
         await FindRates();
-        return _fromTo;
+        return new(_fromTo);
     }
 
     protected override async Task<CurrencyResponse> ConvertInternal(CurrencyRequest request)

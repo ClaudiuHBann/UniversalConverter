@@ -24,7 +24,7 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     public override bool IsConverter() => true;
 
-    public override async Task<List<string>> FromTo() => await Task.FromResult(_fromTo);
+    public override async Task<FromToResponse> FromTo() => new(await Task.FromResult(_fromTo));
 
     protected override async Task ConvertValidate(RadixRequest request)
     {

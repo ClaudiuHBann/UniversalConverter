@@ -26,8 +26,8 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     public override bool IsConverter() => true;
 
-    public override async Task<List<string>> FromTo() => await Task.FromResult(
-        _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList());
+    public override async Task<FromToResponse> FromTo() => new(await Task.FromResult(
+        _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList()));
 
     protected override async Task<TemperatureResponse> ConvertInternal(TemperatureRequest request)
     {

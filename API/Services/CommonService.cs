@@ -23,10 +23,12 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
 
     public override bool IsConverter() => false;
 
-    public override Task<List<string>> FromTo() => throw new InvalidOperationException();
+    public override Task<FromToResponse> FromTo() => throw new InvalidOperationException();
 
     protected override Task<CommonResponse> ConvertInternal(CommonRequest request) =>
         throw new InvalidOperationException();
+
+    public async Task<CommonResponse> FromToAll() => new(await FindFromToAll());
 
     private List<IService> FindAllService()
     {
@@ -76,7 +78,5 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
             _ss.Release();
         }
     }
-
-    public async Task<Dictionary<string, List<string>>> FromToAll() => await FindFromToAll();
 }
 }
