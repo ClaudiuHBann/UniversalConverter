@@ -12,7 +12,9 @@ namespace API.Services
 public class CommonService : BaseService<CommonRequest, CommonResponse>
 {
     private readonly Dictionary<string, List<string>> _fromToAll = [];
-    private readonly SemaphoreSlim _ss = new(1);
+    private readonly SemaphoreSlim _ssFromToAll = new(1);
+
+    private readonly List<IService> _services = [];
 
     private readonly IServiceProvider _provider;
 
@@ -23,6 +25,8 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
 
     public override bool IsConverter() => false;
 
+    public override string GetServiceName() => "Common";
+
     public override Task<FromToResponse> FromTo() => throw new InvalidOperationException();
 
     protected override Task<CommonResponse> ConvertInternal(CommonRequest request) =>
@@ -30,52 +34,59 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
 
     public async Task<CommonResponse> FromToAll() => new(await FindFromToAll());
 
-    private List<IService> FindAllService()
+    public List<IService> FindAllServices()
     {
-        List<IService> services = [];
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+        lock (_services)
         {
-            for (var baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
+            if (_services.Count > 0)
             {
-                if (!baseType.IsGenericType || baseType.GetGenericTypeDefinition() != typeof(BaseService<, >))
-                {
-                    continue;
-                }
-
-                var service = ActivatorUtilities.CreateInstance(_provider, type);
-                if (!service.Invoke<bool>("IsConverter"))
-                {
-                    continue;
-                }
-
-                services.Add((IService)service);
+                return _services;
             }
-        }
 
-        return services;
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                for (var baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
+                {
+                    if (!baseType.IsGenericType || baseType.GetGenericTypeDefinition() != typeof(BaseService<, >))
+                    {
+                        continue;
+                    }
+
+                    var service = ActivatorUtilities.CreateInstance(_provider, type);
+                    if (!service.Invoke<bool>("IsConverter"))
+                    {
+                        continue;
+                    }
+
+                    _services.Add((IService)service);
+                }
+            }
+
+            return _services;
+        }
     }
 
     private async Task<Dictionary<string, List<string>>> FindFromToAll()
     {
         try
         {
-            await _ss.WaitAsync();
+            await _ssFromToAll.WaitAsync();
             if (_fromToAll.Count > 0)
             {
                 return _fromToAll;
             }
 
-            foreach (var service in FindAllService())
+            foreach (var service in FindAllServices())
             {
-                var fromTo = await service.Invoke<Task<List<string>>>("FromTo");
-                _fromToAll.Add(service.GetType().Name.Replace("Service", null), fromTo);
+                var response = await service.Invoke<Task<FromToResponse>>("FromTo");
+                _fromToAll.Add(service.GetType().Name.Replace("Service", null), response.FromTo);
             }
 
             return _fromToAll;
         }
         finally
         {
-            _ss.Release();
+            _ssFromToAll.Release();
         }
     }
 }

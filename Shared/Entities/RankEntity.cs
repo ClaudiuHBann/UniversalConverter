@@ -23,5 +23,10 @@ public class RankEntity : BaseEntity
     public long Conversions {
         get; set;
     } = 0;
+
+    public RankEntity(string converter)
+    {
+        Converter = converter;
+    }
 }
 }

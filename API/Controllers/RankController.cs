@@ -11,7 +11,7 @@ namespace API.Controllers
 public class RankController
 (RankService service) : BaseController
 {
-    [HttpGet(nameof(Converters))]
+    [HttpPost(nameof(Converters))]
     public async Task<ActionResult> Converters([FromBody] RankRequest request) =>
         MakeOk(await service.Converters(request));
 }

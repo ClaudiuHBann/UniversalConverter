@@ -6,9 +6,18 @@ public static class ObjectExtensions
 {
     public static Result Invoke<Result>(this object obj, string methodName, object?[]? parameters = null)
     {
-        var method = obj.GetType().GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic |
-                                                             BindingFlags.Instance | BindingFlags.Static);
-        var methodResult = method!.Invoke(obj, parameters)!;
+        // TODO: refactor this because is very sensitive
+
+        var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
+                           BindingFlags.FlattenHierarchy | BindingFlags.InvokeMethod;
+        var method = obj.GetType().GetMethod(methodName, bindingFlags);
+        if (method!.IsGenericMethod)
+        {
+            var parametersTypes = parameters != null ? parameters.Select(param => param!.GetType()).ToArray() : [];
+            method = method.MakeGenericMethod(parametersTypes);
+        }
+
+        var methodResult = method.Invoke(obj, parameters)!;
         return (Result)methodResult;
     }
 

@@ -100,7 +100,7 @@ public class BaseDbService<Request, Response> : IService
         throw exception;
     }
 
-    private async Task<Entity> CreateEx<Entity>(Entity entity)
+    protected async Task<Entity> CreateEx<Entity>(Entity entity)
         where Entity : BaseEntity
     {
         await GetDbSet<Entity>().AddAsync(entity);
@@ -109,7 +109,7 @@ public class BaseDbService<Request, Response> : IService
                    : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to create {entity}!"));
     }
 
-    private async Task<Entity> ReadEx<Entity>(Entity entity)
+    protected async Task<Entity> ReadEx<Entity>(Entity entity)
         where Entity : BaseEntity
     {
         var propertyID = entity.GetType().GetProperty("Id");
@@ -119,7 +119,7 @@ public class BaseDbService<Request, Response> : IService
                throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
     }
 
-    private async Task<Entity> UpdateEx<Entity>(Entity entity)
+    protected async Task<Entity> UpdateEx<Entity>(Entity entity)
         where Entity : BaseEntity
     {
         var entityUpdated = await ReadEx(entity);
@@ -148,7 +148,7 @@ public class BaseDbService<Request, Response> : IService
         return updated ? entityUpdated
                        : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to update the {entity}!"));
     }
-    private async Task Exists<Entity>(Entity entity, bool throwIfExists = false)
+    protected async Task Exists<Entity>(Entity entity, bool throwIfExists = false)
         where Entity : BaseEntity
     {
         var propertyID = entity.GetType().GetProperty("Id");

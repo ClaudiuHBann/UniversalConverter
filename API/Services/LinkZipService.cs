@@ -15,12 +15,6 @@ namespace API.Services
 {
 public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 {
-#if DEBUG
-    private const string _prefix = "localhost:5173/LinkZip/?code=";
-#else
-    private const string _prefix = "uc.hbann.ro/LinkZip/?code=";
-#endif
-
     private readonly UCContext _context;
     private readonly RadixService _radix;
     private readonly IAppCache _cache;
@@ -36,6 +30,17 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
     }
 
     public override bool IsConverter() => true;
+
+    public override string GetServiceName() => "LinkZip";
+
+    private string GetPrefix()
+    {
+#if DEBUG
+        return $"localhost:5173/{GetServiceName()}/?code=";
+#else
+        return $"uc.hbann.ro/{GetServiceName()}/?code=";
+#endif
+    }
 
     public override async Task<FromToResponse> FromTo() =>
         new(await Task.FromResult<List<string>>(["Shortifier", "Longifier"]));

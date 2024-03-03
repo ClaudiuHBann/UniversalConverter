@@ -23,6 +23,7 @@ builder.Services.AddTransient<UCContext>();
 
 builder.Services.AddTransient<LinkValidator>();
 
+builder.Services.AddSingleton<RankService>();
 builder.Services.AddTransient<RadixService>();
 builder.Services.AddSingleton<CommonService>();
 builder.Services.AddTransient<LinkZipService>();

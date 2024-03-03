@@ -1,10 +1,11 @@
-﻿using Shared.Requests;
+﻿using Shared.Entities;
+using Shared.Requests;
 using Shared.Responses;
 using Shared.Exceptions;
 
-using API.Entities;
 using Microsoft.EntityFrameworkCore;
-using Shared.Entities;
+
+using API.Entities;
 
 namespace API.Services
 {
@@ -20,6 +21,7 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
     }
 
     public abstract bool IsConverter();
+    public abstract string GetServiceName();
 
     public abstract Task<FromToResponse> FromTo();
 
@@ -69,9 +71,10 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
 
     private async Task UpdateRank()
     {
-        var converter = typeof(Request).GetType().Name.Replace("Request", null);
+
+        var converter = GetServiceName();
         var rank = await _context.Ranks.FirstOrDefaultAsync(rank => rank.Converter == converter) ??
-                   await Create(new RankEntity { Converter = converter });
+                   await Create(new RankEntity(converter));
 
         // TODO: increase but update once 5 minutes or smth
         rank.Conversions++;

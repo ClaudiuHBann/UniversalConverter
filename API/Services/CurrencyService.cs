@@ -27,6 +27,8 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
 
     public override bool IsConverter() => true;
 
+    public override string GetServiceName() => "Currency";
+
     public override async Task<FromToResponse> FromTo()
     {
         await FindRates();
