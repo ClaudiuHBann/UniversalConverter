@@ -4,10 +4,28 @@ import { useUCContext } from "../../../contexts/UCContext";
 import { useNavigate } from "react-router-dom";
 import { NavigateToCategory } from "../../../utilities/NavigateExtensions";
 import { ToCategory } from "../../../utilities/EnumsExtensions";
+import { useRankConverters } from "../../../hooks/Queries";
+import { RankRequest } from "../../../models/requests/RankRequest";
+import { useEffect, useState } from "react";
 
 function HeaderItems() {
   const context = useUCContext();
   const navigate = useNavigate();
+
+  const categoriesCount = 3;
+
+  const queryRankConverters = useRankConverters(
+    new RankRequest(categoriesCount)
+  );
+  var [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (queryRankConverters.data) {
+      setCategories(queryRankConverters.data.converters);
+    } else if (context) {
+      setCategories(context.GetCategories().slice(0, categoriesCount));
+    }
+  }, [queryRankConverters.data, context]);
 
   const HandleCategoryChange = (category: string | null) => {
     var eCategory = ToCategory(category);
@@ -21,18 +39,17 @@ function HeaderItems() {
   return (
     <Group justify="space-between">
       <Group gap={0}>
-        {context &&
-          context.GetCategories().map((category, index) => {
-            return (
-              <UnstyledButton
-                key={index}
-                className="control"
-                onClick={() => HandleCategoryChange(category)}
-              >
-                {category}
-              </UnstyledButton>
-            );
-          })}
+        {categories.map((category, index) => {
+          return (
+            <UnstyledButton
+              key={index}
+              className="control"
+              onClick={() => HandleCategoryChange(category)}
+            >
+              {category}
+            </UnstyledButton>
+          );
+        })}
       </Group>
 
       <Select

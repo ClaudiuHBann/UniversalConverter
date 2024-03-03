@@ -9,6 +9,7 @@ import {
   SplitByAnySpaceAndComma,
 } from "../../utilities/ArrayExtensions";
 import { ECategory } from "../../utilities/Enums";
+import { RankRequest } from "./RankRequest";
 
 export function ToRequest(type: ECategory): ERequest {
   switch (type) {
@@ -66,6 +67,10 @@ export function CreateRequest(
   switch (type) {
     case ERequest.Common:
       request = new CommonRequest();
+      break;
+
+    case ERequest.Rank:
+      request = new RankRequest();
       break;
 
     case ERequest.Currency:

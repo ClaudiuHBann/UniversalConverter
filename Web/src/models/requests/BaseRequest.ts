@@ -1,6 +1,7 @@
 ﻿export enum ERequest {
   Unknown,
   Common,
+  Rank,
   Currency,
   LinkZip,
   Radix,

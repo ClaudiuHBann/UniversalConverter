@@ -6,6 +6,7 @@ import { FromToResponse } from "./FromToResponse";
 import { LinkZipResponse } from "./LinkZipResponse";
 import { RadixResponse } from "./RadixResponse";
 import { TemperatureResponse } from "./TemperatureResponse";
+import { RankResponse } from "./RankResponse";
 
 export function ToOutput(response: BaseResponse) {
   switch (response.type) {
@@ -31,6 +32,10 @@ export function CreateResponse(type: EResponse, data: any) {
   switch (type) {
     case EResponse.Common:
       response = new CommonResponse();
+      break;
+
+    case EResponse.Rank:
+      response = new RankResponse();
       break;
 
     case EResponse.Currency:

@@ -1,6 +1,7 @@
 ﻿export enum EResponse {
   Unknown,
   Common,
+  Rank,
   Currency,
   Error,
   FromTo,

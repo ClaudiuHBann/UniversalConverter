@@ -2,6 +2,7 @@
 import { CurrencyUCService } from "./CurrencyUCService";
 import { LinkZipUCService } from "./LinkZipUCService";
 import { RadixUCService } from "./RadixUCService";
+import { RankUCService } from "./RankUCService";
 import { TemperatureUCService } from "./TemperatureUCService";
 
 export class UCService implements IService {
@@ -10,4 +11,5 @@ export class UCService implements IService {
   temperature = new TemperatureUCService();
   linkZip = new LinkZipUCService();
   common = new CommonUCService();
+  rank = new RankUCService();
 }

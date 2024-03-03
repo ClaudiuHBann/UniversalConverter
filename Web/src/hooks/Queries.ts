@@ -5,6 +5,7 @@ import { ECategory } from "../utilities/Enums";
 import { BaseResponse } from "../models/responses/BaseResponse";
 import { BaseRequest } from "../models/requests/BaseRequest";
 import { NotificationEx } from "../components/Notification";
+import { RankRequest } from "../models/requests/RankRequest";
 
 const uc = new UCService();
 
@@ -48,5 +49,16 @@ export const useConvert = (category: ECategory) => {
         .get(category)
         ?.Convert(request)
         .catch((error) => NotificationEx(error.message)),
+  });
+};
+
+export const useRankConverters = (request: RankRequest) => {
+  return useQuery({
+    queryKey: ["rankConverters", request],
+    queryFn: async () =>
+      await uc.rank
+        .Converters(request)
+        .catch((error) => NotificationEx(error.message)),
+    gcTime: 1000 * 60, // a minute
   });
 };
