@@ -55,6 +55,8 @@ public class CurrencyUCUnitTest : BaseUCUnitTest
                                                             var rates = await FindRates();
 
                                                             Assert.IsTrue(rates.Keys.SequenceEqual(response.FromTo));
+                                                            Assert.IsTrue(response.DefaultFrom == "USD");
+                                                            Assert.IsTrue(response.DefaultTo == "EUR");
                                                         });
 
     private static async Task<Dictionary<string, decimal>> FindRates()

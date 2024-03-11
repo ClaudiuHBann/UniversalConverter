@@ -46,6 +46,8 @@ public class TemperatureUCUnitTest : BaseUCUnitTest
                         {
                             var response = await _uc.Temperature.FromTo();
                             Assert.IsTrue(response.FromTo.SequenceEqual(["Celsius", "Fahrenheit", "Kelvin"]));
+                            Assert.IsTrue(response.DefaultFrom == "Celsius");
+                            Assert.IsTrue(response.DefaultTo == "Fahrenheit");
                         });
 }
 }

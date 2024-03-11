@@ -49,6 +49,8 @@ public class RadixUCUnitTest : BaseUCUnitTest
             var response = await _uc.Radix.FromTo();
             // bases start from 2 and go up to 36 (0-9 and A-Z which is 10 + 26)
             Assert.IsTrue(Enumerable.Range(2, 35).Select(number => number.ToString()).SequenceEqual(response.FromTo));
+            Assert.IsTrue(response.DefaultFrom == "10");
+            Assert.IsTrue(response.DefaultTo == "2");
         });
 }
 }

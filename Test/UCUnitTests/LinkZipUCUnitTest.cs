@@ -47,6 +47,8 @@ public class LinkZipUCUnitTest : BaseUCUnitTest
                         {
                             var response = await _uc.LinkZip.FromTo();
                             Assert.IsTrue(response.FromTo.SequenceEqual(["Shortifier", "Longifier"]));
+                            Assert.IsTrue(response.DefaultFrom == "Longifier");
+                            Assert.IsTrue(response.DefaultTo == "Shortifier");
                         });
 }
 }
