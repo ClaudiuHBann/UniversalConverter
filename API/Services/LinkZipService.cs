@@ -20,6 +20,10 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
     private readonly IAppCache _cache;
     private readonly LinkValidator _validator;
 
+    private const string _defaultFrom = "Longifier";
+    private const string _defaultTo = "Shortifier";
+    private static readonly string[] _fromTo = [_defaultTo, _defaultFrom];
+
     public LinkZipService(UCContext context, RadixService radix, IAppCache cache, LinkValidator validator)
         : base(context)
     {
@@ -42,8 +46,9 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 #endif
     }
 
-    public override async Task<FromToResponse> FromTo() =>
-        new(await Task.FromResult<List<string>>(["Shortifier", "Longifier"]));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse([.._fromTo],
+                                                                                                    _defaultFrom,
+                                                                                                    _defaultTo));
 
     protected override async Task ConvertValidate(LinkZipRequest request)
     {

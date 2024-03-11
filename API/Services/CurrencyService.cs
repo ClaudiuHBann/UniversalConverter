@@ -18,6 +18,9 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     private static Dictionary<string, decimal> _rates = [];
     private static List<string> _fromTo = [];
 
+    private const string _defaultFrom = "USD";
+    private const string _defaultTo = "EUR";
+
     private static DateTime _ratesLastUpdate = DateTime.MinValue;
     private static readonly Mutex _mutexRatesLastUpdate = new();
 
@@ -32,7 +35,7 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     public override async Task<FromToResponse> FromTo()
     {
         await FindRates();
-        return new(_fromTo);
+        return new(_fromTo, _defaultFrom, _defaultTo);
     }
 
     protected override async Task<CurrencyResponse> ConvertInternal(CurrencyRequest request)

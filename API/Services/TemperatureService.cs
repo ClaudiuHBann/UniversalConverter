@@ -20,6 +20,11 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
                 { "Kelvin->Fahrenheit", temperature => ToFahrenheit(FromKelvin(temperature)) },
                 { "Kelvin->Kelvin", temperature => temperature } };
 
+    private static readonly List<string> _fromTo =
+        _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList();
+    private const string _defaultFrom = "Celsius";
+    private const string _defaultTo = "Fahrenheit";
+
     public TemperatureService(UCContext context) : base(context)
     {
     }
@@ -28,8 +33,9 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     public override string GetServiceName() => "Temperature";
 
-    public override async Task<FromToResponse> FromTo() => new(await Task.FromResult(
-        _temperatureDirectConversions.Select(tdc => tdc.Key.Split("->").First()).Distinct().ToList()));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse(_fromTo,
+                                                                                                    _defaultFrom,
+                                                                                                    _defaultTo));
 
     protected override async Task<TemperatureResponse> ConvertInternal(TemperatureRequest request)
     {

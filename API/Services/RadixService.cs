@@ -17,6 +17,8 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     private static readonly List<string> _fromTo =
         Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList();
+    private const string _defaultFrom = "10";
+    private const string _defaultTo = "2";
 
     public RadixService(UCContext context) : base(context)
     {
@@ -26,7 +28,9 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
 
     public override string GetServiceName() => "Radix";
 
-    public override async Task<FromToResponse> FromTo() => new(await Task.FromResult(_fromTo));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse(_fromTo,
+                                                                                                    _defaultFrom,
+                                                                                                    _defaultTo));
 
     protected override async Task ConvertValidate(RadixRequest request)
     {
