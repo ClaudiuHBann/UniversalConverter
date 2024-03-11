@@ -12,7 +12,7 @@ function FindCategoryHeader(
   context: UCContext | null,
   category: string | null
 ) {
-  var text = "Choose a category...";
+  let text = "Choose a category...";
   if (!context || !category) {
     return text;
   }

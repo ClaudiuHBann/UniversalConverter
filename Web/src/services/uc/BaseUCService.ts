@@ -53,9 +53,9 @@ export class BaseUCService<
     action: string,
     value?: TRequest
   ) {
-    var uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
+    let uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
 
-    var promise;
+    let promise;
     switch (requestHTTP) {
       case EHTTPRequest.Get:
         promise = axios.get<TResponse>(uri, this.axiosConfig);
@@ -75,7 +75,7 @@ export class BaseUCService<
   }
 
   private async ProcessResponse(result: AxiosResponse<TResponse, any>) {
-    var response = CreateResponse(result.data.type, result.data);
+    let response = CreateResponse(result.data.type, result.data);
     if (result.status === 200) {
       return response as TResponse;
     } else {

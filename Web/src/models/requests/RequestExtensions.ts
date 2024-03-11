@@ -63,7 +63,7 @@ export function CreateRequest(
     throw new Error("The from && to && data are required!");
   }
 
-  var request;
+  let request;
   switch (type) {
     case ERequest.Common:
       request = new CommonRequest();

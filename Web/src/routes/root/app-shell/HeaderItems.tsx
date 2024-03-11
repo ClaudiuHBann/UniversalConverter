@@ -17,7 +17,7 @@ function HeaderItems() {
   const queryRankConverters = useRankConverters(
     new RankRequest(categoriesCount)
   );
-  var [categories, setCategories] = useState<string[]>([]);
+  let [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     if (queryRankConverters.data) {
@@ -28,7 +28,7 @@ function HeaderItems() {
   }, [queryRankConverters.data, context]);
 
   const HandleCategoryChange = (category: string | null) => {
-    var eCategory = ToCategory(category);
+    let eCategory = ToCategory(category);
     if (!eCategory || !context) {
       return;
     }

@@ -28,7 +28,7 @@ export function ToOutput(response: BaseResponse) {
 }
 
 export function CreateResponse(type: EResponse, data: any) {
-  var response: BaseResponse;
+  let response: BaseResponse;
   switch (type) {
     case EResponse.Common:
       response = new CommonResponse();
