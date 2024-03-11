@@ -1,9 +1,13 @@
 ﻿import { BaseResponse, EResponse } from "./BaseResponse";
+import { FromToResponse } from "./FromToResponse";
 
 export class CommonResponse extends BaseResponse {
-  public fromToAll: Map<string, string[]> = new Map<string, string[]>();
+  public fromToAll: Map<string, FromToResponse> = new Map<
+    string,
+    FromToResponse
+  >();
 
-  public constructor(fromToAll?: Map<string, string[]>) {
+  public constructor(fromToAll?: Map<string, FromToResponse>) {
     super(EResponse.Common);
 
     if (fromToAll) {

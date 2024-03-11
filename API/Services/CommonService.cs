@@ -11,7 +11,7 @@ namespace API.Services
 {
 public class CommonService : BaseService<CommonRequest, CommonResponse>
 {
-    private readonly Dictionary<string, List<string>> _fromToAll = [];
+    private readonly Dictionary<string, FromToResponse> _fromToAll = [];
     private readonly SemaphoreSlim _ssFromToAll = new(1);
 
     private readonly List<IService> _services = [];
@@ -66,7 +66,7 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
         }
     }
 
-    private async Task<Dictionary<string, List<string>>> FindFromToAll()
+    private async Task<Dictionary<string, FromToResponse>> FindFromToAll()
     {
         try
         {
@@ -79,7 +79,7 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
             foreach (var service in FindAllServices())
             {
                 var response = await service.Invoke<Task<FromToResponse>>("FromTo");
-                _fromToAll.Add(service.GetType().Name.Replace("Service", null), response.FromTo);
+                _fromToAll.Add(service.GetType().Name.Replace("Service", null), response);
             }
 
             return _fromToAll;

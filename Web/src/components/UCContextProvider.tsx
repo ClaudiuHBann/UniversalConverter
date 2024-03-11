@@ -3,6 +3,7 @@ import { useFromToAll } from "../hooks/Queries";
 import { UCContext, ucContext } from "../contexts/UCContext";
 import { useDisclosure } from "@mantine/hooks";
 import { Box, LoadingOverlay } from "@mantine/core";
+import { FromToResponse } from "../models/responses/FromToResponse";
 
 function UCContextProvider({ children }: { children: React.ReactNode }) {
   const [visible, toggle] = useDisclosure(true);
@@ -10,7 +11,7 @@ function UCContextProvider({ children }: { children: React.ReactNode }) {
   const queryFromToAll = useFromToAll();
 
   const [categoryToFromTo, setCategoryToFromTo] = useState(
-    new Map<string, string[]>()
+    new Map<string, FromToResponse>()
   );
   const input = useState("");
   const output = useState("");

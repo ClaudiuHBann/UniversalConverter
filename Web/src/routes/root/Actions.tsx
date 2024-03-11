@@ -5,7 +5,7 @@ import {
   IconSwitchHorizontal,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import { useUCContext } from "../../contexts/UCContext";
+import { UCContext, useUCContext } from "../../contexts/UCContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ESearchParam } from "../../utilities/Enums";
 import { NavigateTo } from "../../utilities/NavigateExtensions";
@@ -36,6 +36,26 @@ function FindTooltipSwap(state: boolean) {
   return state ? "Swapped" : "Swap";
 }
 
+function FindFromTo(
+  context: UCContext | null,
+  category: string | null,
+  searchParams: URLSearchParams,
+  fromTo: boolean
+): string | null {
+  if (!context) {
+    return null;
+  }
+
+  let fromToParam = fromTo
+    ? searchParams.get(ESearchParam.From)
+    : searchParams.get(ESearchParam.To);
+
+  return (
+    context.FindFromTo(category, fromToParam) ||
+    context.GetFromToDefault(category, fromTo)
+  );
+}
+
 function Actions() {
   const [loading, toggle] = useDisclosure(false);
   const [searchParams] = useSearchParams();
@@ -44,15 +64,11 @@ function Actions() {
 
   const category = searchParams.get(ESearchParam.Category);
 
-  const fromValueNew = context
-    ? context.FindFromTo(category, searchParams.get(ESearchParam.From))
-    : "";
+  const fromValueNew = FindFromTo(context, category, searchParams, true);
   const [fromValue, setFromValue] = useState<string | null>(fromValueNew);
   useEffect(() => setFromValue(fromValueNew), [fromValueNew]);
 
-  const toValueNew = context
-    ? context.FindFromTo(category, searchParams.get(ESearchParam.To))
-    : "";
+  const toValueNew = FindFromTo(context, category, searchParams, false);
   const [toValue, setToValue] = useState<string | null>(toValueNew);
   useEffect(() => setToValue(toValueNew), [toValueNew]);
 
