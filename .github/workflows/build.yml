@@ -2,10 +2,10 @@ name: Build
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
 
   pull_request:
-    branches: ["main"]
+    branches: ["master"]
 
 jobs:
   build:
@@ -20,13 +20,13 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore workload
-        working-directory: ./PackageManager
+        working-directory: ./API
         run: dotnet workload restore
 
       - name: Restore dependencies
-        working-directory: ./PackageManager
-        run: dotnet restore
+        working-directory: ./API
+        run: dotnet restore API.csproj
 
       - name: Build
-        working-directory: ./PackageManager/PackageManager.Desktop
-        run: dotnet build --no-restore
+        working-directory: ./API
+        run: dotnet build --no-restore API.csproj
