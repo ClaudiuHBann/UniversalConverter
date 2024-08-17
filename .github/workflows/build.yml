@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore workload
+        working-directory: ./PackageManager
+        run: dotnet workload restore
+
+      - name: Restore dependencies
+        working-directory: ./PackageManager
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./PackageManager/PackageManager.Desktop
+        run: dotnet build --no-restore

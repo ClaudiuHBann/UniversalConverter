@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install NUnit.Console
+        working-directory: ./Tests
+        run: nuget install NUnit.Console -Version 3.18.1 -DirectDownload -OutputDirectory .
+
+      - name: Restore workload
+        working-directory: ./Tests
+        run: dotnet workload restore
+
+      - name: Restore dependencies
+        working-directory: ./Tests
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./Tests
+        run: dotnet build --no-restore
+
+      - name: Run UnitTests
+        working-directory: ./Tests
+        run: ./NUnit.ConsoleRunner.3.18.1/tools/nunit3-console.exe Tests.csproj

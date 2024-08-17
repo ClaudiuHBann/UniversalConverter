@@ -56,7 +56,7 @@ export class UCContext {
   }
 
   public GetFromTo(category: string | null): string[] {
-    return this.GetFromToResponse(category)!.fromTo || [];
+    return this.GetFromToResponse(category)?.fromTo || [];
   }
 
   public FindFromTo(
