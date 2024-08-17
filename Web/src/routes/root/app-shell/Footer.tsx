@@ -1,4 +1,4 @@
-import { SimpleGrid, Flex, Anchor, Text, rem } from "@mantine/core";
+import { Grid, Flex, Anchor, Text, rem } from "@mantine/core";
 import {
   IconBrandGoogle,
   IconBrandDiscord,
@@ -42,7 +42,7 @@ function ClipboardWriteText(text: string) {
 
 function Footer() {
   return (
-    <SimpleGrid cols={3}>
+    <Grid grow justify="space-around" align="center" gutter="0">
       <Flex mih={50} gap="md" justify="center" align="center">
         <Text>Contribute on</Text>
         <Anchor
@@ -86,7 +86,7 @@ function Footer() {
       <Flex mih={50} gap="md" justify="center" align="center">
         <Text>Made with ❤️ in Romania by HBann</Text>
       </Flex>
-    </SimpleGrid>
+    </Grid>
   );
 }
 
