@@ -7,7 +7,6 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { UCContext, useUCContext } from "../../contexts/UCContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ESearchParam } from "../../utilities/Enums";
 import { NavigateTo } from "../../utilities/NavigateExtensions";
 import ActionIconEx from "../../components/ActionIconEx";
 import { useEffect, useState } from "react";
@@ -19,6 +18,7 @@ import {
   ToRequest,
 } from "../../models/requests/RequestExtensions";
 import { ToOutput } from "../../models/responses/ResponseExtensions";
+import { URLSearchParamsEx } from "../../utilities/URLSearchParamsEx";
 
 function FindTooltipConvert(state: boolean) {
   return state ? "Converting..." : "Convert";
@@ -39,16 +39,14 @@ function FindTooltipSwap(state: boolean) {
 function FindFromTo(
   context: UCContext | null,
   category: string | null,
-  searchParams: URLSearchParams,
+  searchParamsEx: URLSearchParamsEx,
   fromTo: boolean
 ): string | null {
   if (!context) {
     return null;
   }
 
-  let fromToParam = fromTo
-    ? searchParams.get(ESearchParam.From)
-    : searchParams.get(ESearchParam.To);
+  let fromToParam = searchParamsEx.GetFromOrTo(fromTo);
 
   return (
     context.FindFromTo(category, fromToParam) ||
@@ -58,19 +56,40 @@ function FindFromTo(
 
 function Actions() {
   const [loading, toggle] = useDisclosure(false);
-  const [searchParams] = useSearchParams();
   const context = useUCContext();
+  const [searchParams] = useSearchParams();
+  const searchParamsEx = new URLSearchParamsEx(
+    context,
+    undefined,
+    searchParams
+  );
   const navigate = useNavigate();
 
-  const category = searchParams.get(ESearchParam.Category);
+  const category = searchParamsEx.GetCategory();
 
-  const fromValueNew = FindFromTo(context, category, searchParams, true);
+  const fromValueNew = FindFromTo(context, category, searchParamsEx, true);
   const [fromValue, setFromValue] = useState<string | null>(fromValueNew);
   useEffect(() => setFromValue(fromValueNew), [fromValueNew]);
 
-  const toValueNew = FindFromTo(context, category, searchParams, false);
+  const toValueNew = FindFromTo(context, category, searchParamsEx, false);
   const [toValue, setToValue] = useState<string | null>(toValueNew);
   useEffect(() => setToValue(toValueNew), [toValueNew]);
+
+  const UpdateFrom = (value: string | null) => {
+    setFromValue(value);
+
+    if (value) {
+      searchParamsEx.SetFrom(value);
+    }
+  };
+
+  const UpdateTo = (value: string | null) => {
+    setToValue(value);
+
+    if (value) {
+      searchParamsEx.SetTo(value);
+    }
+  };
 
   const convertHook = useConvert(ToCategory(category)!);
   const convert = async () => {
@@ -105,17 +124,10 @@ function Actions() {
       return;
     }
 
-    setFromValue(toValue);
-    if (toValue) {
-      searchParams.set(ESearchParam.From, toValue);
-    }
+    UpdateTo(fromValue);
+    UpdateFrom(toValue);
 
-    setToValue(fromValue);
-    if (fromValue) {
-      searchParams.set(ESearchParam.To, fromValue);
-    }
-
-    NavigateTo(navigate, context, searchParams);
+    NavigateTo(navigate, context, searchParamsEx);
   };
 
   const OnChangeFromTo = (value: string | null, fromTo: boolean) => {
@@ -128,19 +140,13 @@ function Actions() {
       return;
     }
 
-    if (!value) {
-      value = "";
-    }
-
     if (fromTo) {
-      setFromValue(value);
-      searchParams.set(ESearchParam.From, value);
+      UpdateFrom(value);
     } else {
-      setToValue(value);
-      searchParams.set(ESearchParam.To, value);
+      UpdateTo(value);
     }
 
-    NavigateTo(navigate, context, searchParams);
+    NavigateTo(navigate, context, searchParamsEx);
   };
 
   return (
