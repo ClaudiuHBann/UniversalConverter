@@ -1,4 +1,4 @@
-import { Grid, GridCol, Burger, UnstyledButton } from "@mantine/core";
+import { Grid, Burger, UnstyledButton } from "@mantine/core";
 import NavBarItems from "./HeaderItems";
 import { useNavigate } from "react-router-dom";
 import "./HeaderItems.css";
@@ -12,24 +12,35 @@ export interface AppShellExProps {
 function Header({ opened, toggle }: AppShellExProps) {
   const navigate = useNavigate();
 
-  return (
-    <Grid h="100%" m={0} mt={10} pl={10} pr={15} grow>
-      <GridCol span={0}>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-      </GridCol>
+  const OnClickedHomeButton = () => {
+    NavigateToRoot(navigate);
 
-      <GridCol span={0} p={0} pr={10}>
-        <UnstyledButton
-          className="control"
-          onClick={() => NavigateToRoot(navigate)}
-        >
+    if (opened) {
+      toggle();
+    }
+  };
+
+  return (
+    <Grid mt={2} mr={7} grow gutter="0" align="center">
+      <Grid.Col span={0}>
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="sm"
+          ml={15}
+          color="#c9c9c9"
+        />
+      </Grid.Col>
+
+      <Grid.Col span={0}>
+        <UnstyledButton className="control" onClick={OnClickedHomeButton}>
           Universal Converter
         </UnstyledButton>
-      </GridCol>
+      </Grid.Col>
 
-      <GridCol span="content" visibleFrom="sm" p={0}>
-        <NavBarItems />
-      </GridCol>
+      <Grid.Col visibleFrom="sm" span={1}>
+        <NavBarItems toggle={toggle} />
+      </Grid.Col>
     </Grid>
   );
 }

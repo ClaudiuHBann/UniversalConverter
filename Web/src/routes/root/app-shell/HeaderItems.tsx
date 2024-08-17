@@ -8,7 +8,11 @@ import { useRankConverters } from "../../../hooks/Queries";
 import { RankRequest } from "../../../models/requests/RankRequest";
 import { useEffect, useState } from "react";
 
-function HeaderItems() {
+export interface AppShellExProps {
+  toggle: () => void;
+}
+
+function HeaderItems({ toggle }: AppShellExProps) {
   const context = useUCContext();
   const navigate = useNavigate();
 
@@ -34,6 +38,7 @@ function HeaderItems() {
     }
 
     NavigateToCategory(navigate, context, eCategory);
+    toggle();
   };
 
   return (

@@ -40,10 +40,19 @@ function ClipboardWriteText(text: string) {
   navigator.clipboard.writeText(text);
 }
 
+const propertiesGridElement = {
+  mih: 50,
+  mr: 10,
+  ml: 10,
+  gap: "md",
+  justify: "center",
+  align: "center",
+};
+
 function Footer() {
   return (
     <Grid grow justify="space-around" align="center" gutter="0">
-      <Flex mih={50} gap="md" justify="center" align="center">
+      <Flex {...propertiesGridElement}>
         <Text>Contribute on</Text>
         <Anchor
           href="https://github.com/ClaudiuHBann/UniversalConverter"
@@ -55,7 +64,7 @@ function Footer() {
         </Anchor>
       </Flex>
 
-      <Flex mih={50} gap="md" justify="center" align="center">
+      <Flex {...propertiesGridElement}>
         <Text>Contact Me:</Text>
 
         <ActionIconEx
@@ -83,7 +92,7 @@ function Footer() {
         />
       </Flex>
 
-      <Flex mih={50} gap="md" justify="center" align="center">
+      <Flex {...propertiesGridElement}>
         <Text>Made with ❤️ in Romania by HBann</Text>
       </Flex>
     </Grid>

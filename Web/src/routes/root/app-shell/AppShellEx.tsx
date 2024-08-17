@@ -26,7 +26,7 @@ function AppShellEx({ children }: AppShellExProps) {
       </AppShell.Header>
 
       <AppShell.Navbar>
-        <HeaderItems />
+        <HeaderItems toggle={toggle} />
       </AppShell.Navbar>
 
       <AppShell.Footer>
