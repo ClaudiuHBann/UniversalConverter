@@ -1,5 +1,5 @@
 import { Grid, Burger, UnstyledButton } from "@mantine/core";
-import NavBarItems from "./HeaderItems";
+import HeaderItems from "./HeaderItems";
 import { useNavigate } from "react-router-dom";
 import "./HeaderItems.css";
 import { NavigateToRoot } from "../../../utilities/NavigateExtensions";
@@ -28,6 +28,8 @@ function Header({ opened, toggle }: AppShellExProps) {
           onClick={toggle}
           hiddenFrom="sm"
           ml={15}
+          mr={15}
+          pl={5}
           color="#c9c9c9"
         />
       </Grid.Col>
@@ -39,7 +41,7 @@ function Header({ opened, toggle }: AppShellExProps) {
       </Grid.Col>
 
       <Grid.Col visibleFrom="sm" span={1}>
-        <NavBarItems toggle={toggle} />
+        <HeaderItems opened={opened} toggle={toggle} />
       </Grid.Col>
     </Grid>
   );

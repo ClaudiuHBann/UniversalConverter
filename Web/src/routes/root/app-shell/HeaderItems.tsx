@@ -9,10 +9,12 @@ import { RankRequest } from "../../../models/requests/RankRequest";
 import { useEffect, useState } from "react";
 
 export interface AppShellExProps {
+  opened: boolean;
   toggle: () => void;
+  props?: any;
 }
 
-function HeaderItems({ toggle }: AppShellExProps) {
+function HeaderItems({ opened, toggle, props }: AppShellExProps) {
   const context = useUCContext();
   const navigate = useNavigate();
 
@@ -38,11 +40,14 @@ function HeaderItems({ toggle }: AppShellExProps) {
     }
 
     NavigateToCategory(navigate, context, eCategory);
-    toggle();
+
+    if (opened) {
+      toggle();
+    }
   };
 
   return (
-    <Group justify="space-between">
+    <Group justify="space-between" {...props}>
       <Group gap={0}>
         {categories.map((category, index) => {
           return (
