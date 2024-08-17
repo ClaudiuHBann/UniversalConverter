@@ -19,11 +19,10 @@ function UCContextProvider({ children }: { children: React.ReactNode }) {
   const context = new UCContext(categoryToFromTo, input, output);
 
   useEffect(() => {
-    if (!queryFromToAll.data) {
-      return;
+    if (queryFromToAll.data) {
+      setCategoryToFromTo(queryFromToAll.data.fromToAll);
     }
 
-    setCategoryToFromTo(queryFromToAll.data.fromToAll);
     toggle.close();
   }, [queryFromToAll.data]);
 

@@ -9,6 +9,11 @@ import { RankRequest } from "../models/requests/RankRequest";
 
 const uc = new UCService();
 
+function CallbackDefault(error: any) {
+  NotificationEx(error.message);
+  return null;
+}
+
 const categoryToService = new Map<
   string,
   BaseUCService<BaseRequest, BaseResponse>
@@ -22,10 +27,7 @@ const categoryToService = new Map<
 export const useFromToAll = () => {
   return useQuery({
     queryKey: ["fromToAll"],
-    queryFn: async () =>
-      await uc.common
-        .FromToAll()
-        .catch((error) => NotificationEx(error.message)),
+    queryFn: async () => await uc.common.FromToAll().catch(CallbackDefault),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
@@ -34,10 +36,7 @@ export const useFromTo = (category: ECategory) => {
   return useQuery({
     queryKey: ["fromTo", category],
     queryFn: async () =>
-      await categoryToService
-        .get(category)
-        ?.FromTo()
-        .catch((error) => NotificationEx(error.message)),
+      await categoryToService.get(category)?.FromTo().catch(CallbackDefault),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
@@ -48,7 +47,7 @@ export const useConvert = (category: ECategory) => {
       await categoryToService
         .get(category)
         ?.Convert(request)
-        .catch((error) => NotificationEx(error.message)),
+        .catch(CallbackDefault),
   });
 };
 
@@ -56,9 +55,7 @@ export const useRankConverters = (request: RankRequest) => {
   return useQuery({
     queryKey: ["rankConverters", request],
     queryFn: async () =>
-      await uc.rank
-        .Converters(request)
-        .catch((error) => NotificationEx(error.message)),
+      await uc.rank.Converters(request).catch(CallbackDefault),
     gcTime: 1000 * 60, // a minute
   });
 };
