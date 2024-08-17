@@ -41,9 +41,7 @@ export function NavigateToCategory(
   context: UCContext,
   category: ECategory
 ) {
-  const searchParams = new URLSearchParamsEx(context);
-  searchParams.SetCategory(category);
-  NavigateTo(navigate, context, searchParams);
+  NavigateToEx(navigate, context, new Map([[ESearchParam.Category, category]]));
 }
 
 export function NavigateToRoot(navigate: NavigateFunction) {

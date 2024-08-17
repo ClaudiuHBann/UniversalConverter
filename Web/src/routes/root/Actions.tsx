@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { UCContext, useUCContext } from "../../contexts/UCContext";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "../../utilities/NavigateExtensions";
 import ActionIconEx from "../../components/ActionIconEx";
 import { useEffect, useState } from "react";
@@ -57,23 +57,16 @@ function FindFromTo(
 function Actions() {
   const [loading, toggle] = useDisclosure(false);
   const context = useUCContext();
-  const [searchParams] = useSearchParams();
-  const searchParamsEx = new URLSearchParamsEx(
-    context,
-    undefined,
-    searchParams
-  );
+  const searchParamsEx = new URLSearchParamsEx(context);
   const navigate = useNavigate();
 
   const category = searchParamsEx.GetCategory();
 
   const fromValueNew = FindFromTo(context, category, searchParamsEx, true);
   const [fromValue, setFromValue] = useState<string | null>(fromValueNew);
-  useEffect(() => setFromValue(fromValueNew), [fromValueNew]);
 
   const toValueNew = FindFromTo(context, category, searchParamsEx, false);
   const [toValue, setToValue] = useState<string | null>(toValueNew);
-  useEffect(() => setToValue(toValueNew), [toValueNew]);
 
   const UpdateFrom = (value: string | null) => {
     setFromValue(value);
@@ -90,6 +83,17 @@ function Actions() {
       searchParamsEx.SetTo(value);
     }
   };
+
+  useEffect(() => {
+    if (!context || !fromValueNew || !toValueNew) {
+      return;
+    }
+
+    UpdateFrom(fromValueNew);
+    UpdateTo(toValueNew);
+
+    NavigateTo(navigate, context, searchParamsEx);
+  }, [fromValueNew, toValueNew]);
 
   const convertHook = useConvert(ToCategory(category)!);
   const convert = async () => {

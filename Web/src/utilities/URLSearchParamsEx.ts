@@ -6,14 +6,9 @@ export class URLSearchParamsEx {
   private context: UCContext | null;
   private urlSearchParams: URLSearchParams;
 
-  public constructor(
-    context: UCContext | null = null,
-    search?: string,
-    urlSearchParams?: URLSearchParams
-  ) {
+  public constructor(context: UCContext | null = null, search?: string) {
     this.context = context;
-    this.urlSearchParams =
-      urlSearchParams ?? new URLSearchParams(search ?? location.search);
+    this.urlSearchParams = new URLSearchParams(search ?? location.search);
   }
 
   public toString(): string {
