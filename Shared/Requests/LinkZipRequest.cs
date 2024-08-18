@@ -1,5 +1,4 @@
-﻿using Shared.Utilities;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Shared.Requests
 {
@@ -15,11 +14,6 @@ public class LinkZipRequest : BaseRequest
     public LinkZipRequest(LinkZipRequest request) : base(request)
     {
         URLs = request.URLs;
-    }
-
-    public override string ToString()
-    {
-        return this.ToJSON(true);
     }
 }
 }

@@ -1,6 +1,4 @@
-﻿using Shared.Utilities;
-
-namespace Shared.Requests
+﻿namespace Shared.Requests
 {
 public class CurrencyRequest : BaseRequest
 {
@@ -13,11 +11,6 @@ public class CurrencyRequest : BaseRequest
     public CurrencyRequest(CurrencyRequest request) : base(request)
     {
         Money = request.Money;
-    }
-
-    public override string ToString()
-    {
-        return this.ToJSON(true);
     }
 }
 }
