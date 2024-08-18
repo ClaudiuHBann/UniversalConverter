@@ -1,6 +1,5 @@
-﻿using API.Services;
-
-using Shared.Requests;
+﻿using Shared.Requests;
+using Shared.Services.UC;
 
 using Tests.Utilities;
 
@@ -14,11 +13,11 @@ internal class UnitTestLinkZip : UnitTestBase
 
     // TODO: Add a dynamic test case
 
-    private readonly LinkZipService _service;
+    private readonly LinkZipUCService _service;
 
     public UnitTestLinkZip()
     {
-        _service = DI.GetService<LinkZipService>()!;
+        _service = DI.GetService<LinkZipUCService>()!;
     }
 
     // clang-format off

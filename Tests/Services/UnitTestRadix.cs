@@ -1,19 +1,18 @@
-﻿using API.Services;
-
-using Tests.Utilities;
+﻿using Tests.Utilities;
 
 using Shared.Requests;
+using Shared.Services.UC;
 
 namespace Tests.Services
 {
 [TestFixture]
 internal class UnitTestRadix : UnitTestBase
 {
-    private readonly RadixService _service;
+    private readonly RadixUCService _service;
 
     public UnitTestRadix()
     {
-        _service = DI.GetService<RadixService>()!;
+        _service = DI.GetService<RadixUCService>()!;
     }
 
     // clang-format off

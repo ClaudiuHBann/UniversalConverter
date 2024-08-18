@@ -2,9 +2,8 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using API.Services;
-
 using Shared.Requests;
+using Shared.Services.UC;
 
 using Tests.Utilities;
 
@@ -15,11 +14,11 @@ internal class UnitTestCurrency : UnitTestBase
 {
     private const string _source = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 
-    private readonly CurrencyService _service;
+    private readonly CurrencyUCService _service;
 
     public UnitTestCurrency()
     {
-        _service = DI.GetService<CurrencyService>()!;
+        _service = DI.GetService<CurrencyUCService>()!;
     }
 
     // clang-format off

@@ -1,6 +1,5 @@
-﻿using API.Services;
-
-using Shared.Requests;
+﻿using Shared.Requests;
+using Shared.Services.UC;
 
 using Tests.Utilities;
 
@@ -9,11 +8,11 @@ namespace Tests.Services
 [TestFixture]
 internal class UnitTestTemperature : UnitTestBase
 {
-    private readonly TemperatureService _service;
+    private readonly TemperatureUCService _service;
 
     public UnitTestTemperature()
     {
-        _service = DI.GetService<TemperatureService>()!;
+        _service = DI.GetService<TemperatureUCService>()!;
     }
 
     // clang-format off

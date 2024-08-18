@@ -1,13 +1,10 @@
-﻿using API.Entities;
-using API.Services;
+﻿using System.Reflection;
 
 using Shared.Validators;
+using Shared.Services.UC;
 
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System.Reflection;
 
 namespace Tests.Utilities
 {
@@ -28,20 +25,18 @@ internal static class DI
     {
         ServiceCollection serviceCollection = new();
 
-        serviceCollection.AddLazyCache();
-
         serviceCollection.AddScoped(
             _ => configuration);
-        serviceCollection.AddTransient<UCContext>();
+        serviceCollection.AddTransient<UCService>();
 
         serviceCollection.AddTransient<LinkValidator>();
 
-        serviceCollection.AddSingleton<RankService>();
-        serviceCollection.AddSingleton<CommonService>();
-        serviceCollection.AddTransient<RadixService>();
-        serviceCollection.AddTransient<LinkZipService>();
-        serviceCollection.AddTransient<CurrencyService>();
-        serviceCollection.AddTransient<TemperatureService>();
+        serviceCollection.AddSingleton<RankUCService>();
+        serviceCollection.AddSingleton<CommonUCService>();
+        serviceCollection.AddTransient<RadixUCService>();
+        serviceCollection.AddTransient<LinkZipUCService>();
+        serviceCollection.AddTransient<CurrencyUCService>();
+        serviceCollection.AddTransient<TemperatureUCService>();
 
         return serviceCollection.BuildServiceProvider();
     }
