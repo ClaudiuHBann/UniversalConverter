@@ -20,7 +20,7 @@ jobs:
       - name: Restore API's workload and dependencies
         working-directory: ./API
         run: |
-          dotnet workload restore &&
+          dotnet workload restore
           dotnet restore API.csproj
 
       - name: Build

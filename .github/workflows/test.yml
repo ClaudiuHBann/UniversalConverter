@@ -23,7 +23,7 @@ jobs:
       - name: Restore API's workload and dependencies
         working-directory: ./API
         run: |
-          dotnet workload restore &&
+          dotnet workload restore
           dotnet restore API.csproj
 
       - name: Build & Run API
@@ -31,7 +31,7 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Development
         run: |
-          dotnet build --no-restore API.csproj &&
+          dotnet build --no-restore API.csproj
           dotnet run --project ./API.csproj &
 
       - name: Install NUnit.Console
@@ -41,12 +41,12 @@ jobs:
       - name: Restore Tests's workload and dependencies
         working-directory: ./Tests
         run: |
-          dotnet workload restore &&
+          dotnet workload restore
           dotnet restore
 
       - name: Build & Run Tests
         working-directory: ./Tests
         run: |
-          dotnet build --no-restore &&
-          $runner = "./NUnit.ConsoleRunner.$env:NUNIT_CONSOLE_VERSION/tools/nunit3-console.exe" &&
+          dotnet build --no-restore
+          $runner = "./NUnit.ConsoleRunner.$env:NUNIT_CONSOLE_VERSION/tools/nunit3-console.exe"
           & $Runner Tests.csproj
