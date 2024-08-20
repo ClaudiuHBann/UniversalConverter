@@ -5,7 +5,7 @@ using API.Middlewares;
 using Shared.Validators;
 
 #if DEBUG
-var urls = new string[] { "https://localhost:32406/" };
+var urls = new string[] { "http://localhost:32406/" };
 var origins = new string[] { "http://localhost:5173/" };
 #else
 var urls = new string[] { "http://162.55.32.18:32406/" };
@@ -50,7 +50,6 @@ app.UseCors(config => config.AllowAnyMethod()
                           .WithOrigins(origins)
                           .AllowCredentials());
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

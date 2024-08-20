@@ -2,8 +2,6 @@ name: Build
 
 on:
   push:
-    branches: ["master"]
-
   pull_request:
     branches: ["master"]
 
@@ -19,13 +17,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Restore workload
+      - name: Restore API's workload and dependencies
         working-directory: ./API
-        run: dotnet workload restore
-
-      - name: Restore dependencies
-        working-directory: ./API
-        run: dotnet restore API.csproj
+        run: |
+          dotnet workload restore &&
+          dotnet restore API.csproj
 
       - name: Build
         working-directory: ./API

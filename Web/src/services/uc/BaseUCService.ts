@@ -26,7 +26,7 @@ export class BaseUCService<
 
   protected constructor() {
     if (import.meta.env.DEV) {
-      this.urlBase = "https://localhost:32406/";
+      this.urlBase = "http://localhost:32406/";
     } else {
       this.urlBase = "http://162.55.32.18:32406/";
     }

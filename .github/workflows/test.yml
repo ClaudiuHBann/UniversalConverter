@@ -2,10 +2,11 @@ name: Test
 
 on:
   push:
-    branches: ["master"]
-
   pull_request:
     branches: ["master"]
+
+env:
+  NUNIT_CONSOLE_VERSION: 3.18.1
 
 jobs:
   test:
@@ -19,22 +20,33 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Restore API's workload and dependencies
+        working-directory: ./API
+        run: |
+          dotnet workload restore &&
+          dotnet restore API.csproj
+
+      - name: Build & Run API
+        working-directory: ./API
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+        run: |
+          dotnet build --no-restore API.csproj &&
+          dotnet run --project ./API.csproj &
+
       - name: Install NUnit.Console
         working-directory: ./Tests
-        run: nuget install NUnit.Console -Version 3.18.1 -DirectDownload -OutputDirectory .
+        run: nuget install NUnit.Console -Version $env:NUNIT_CONSOLE_VERSION -DirectDownload -OutputDirectory .
 
-      - name: Restore workload
+      - name: Restore Tests's workload and dependencies
         working-directory: ./Tests
-        run: dotnet workload restore
+        run: |
+          dotnet workload restore &&
+          dotnet restore
 
-      - name: Restore dependencies
+      - name: Build & Run Tests
         working-directory: ./Tests
-        run: dotnet restore
-
-      - name: Build
-        working-directory: ./Tests
-        run: dotnet build --no-restore
-
-      - name: Run UnitTests
-        working-directory: ./Tests
-        run: ./NUnit.ConsoleRunner.3.18.1/tools/nunit3-console.exe Tests.csproj
+        run: |
+          dotnet build --no-restore &&
+          $runner = "./NUnit.ConsoleRunner.$env:NUNIT_CONSOLE_VERSION/tools/nunit3-console.exe" &&
+          & $Runner Tests.csproj

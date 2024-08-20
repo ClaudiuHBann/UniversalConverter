@@ -119,6 +119,36 @@ public class BaseDbService<Request, Response> : IService
                throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
     }
 
+    protected async Task<Entity> UpdateEx<Entity>(Entity entity)
+        where Entity : BaseEntity
+    {
+        var entityUpdated = await ReadEx(entity);
+        var entityUpdatedProperties = entityUpdated.GetType().GetProperties();
+        var entityProperties = entity.GetType().GetProperties();
+
+        // if we update properties with the sanem value, SaveChangesAsync will return 0 so:
+        int equalCount = 0;
+
+        for (int i = 0; i < entityProperties.Length; i++)
+        {
+            var entityUpdatedPropertyValue = entityUpdatedProperties[i].GetValue(entityUpdated);
+            var entityPropertyValue = entityProperties[i].GetValue(entity);
+
+            if (entityUpdatedPropertyValue != null && entityPropertyValue != null &&
+                // TODO: expensive operation, find a better way
+                entityUpdatedPropertyValue.Equal(entityPropertyValue))
+            {
+                equalCount++;
+            }
+
+            entityUpdatedProperties[i].SetValue(entityUpdated, entityPropertyValue);
+        }
+
+        var updated = await _context.SaveChangesAsync() > 0 || equalCount > 0;
+        return updated ? entityUpdated
+                       : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to update the {entity}!"));
+    }
+
     protected async Task Exists<Entity>(Entity entity, bool throwIfExists = false)
         where Entity : BaseEntity
     {

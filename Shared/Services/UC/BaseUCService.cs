@@ -13,9 +13,9 @@ public abstract class BaseUCService<TRequest, TResponse>
     private readonly HttpClient _client = new();
 
 #if DEBUG
-    private const string _URLBase = "https://localhost:32406/";
+    private const string _URLBase = "http://localhost:32406/";
 #else
-    private const string _URLBase = "https://162.55.32.18:80/";
+    private const string _URLBase = "http://162.55.32.18:80/";
 #endif
 
     protected abstract string GetControllerName();
