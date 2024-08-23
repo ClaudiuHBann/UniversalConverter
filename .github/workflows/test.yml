@@ -5,12 +5,9 @@ on:
   pull_request:
     branches: ["master"]
 
-env:
-  NUNIT_CONSOLE_VERSION: 3.18.1
-
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -34,10 +31,6 @@ jobs:
           dotnet build --no-restore API.csproj
           dotnet run --project ./API.csproj &
 
-      - name: Install NUnit.Console
-        working-directory: ./Tests
-        run: nuget install NUnit.Console -Version $env:NUNIT_CONSOLE_VERSION -DirectDownload -OutputDirectory .
-
       - name: Restore Tests's workload and dependencies
         working-directory: ./Tests
         run: |
@@ -46,7 +39,4 @@ jobs:
 
       - name: Build & Run Tests
         working-directory: ./Tests
-        run: |
-          dotnet build --no-restore
-          $runner = "./NUnit.ConsoleRunner.$env:NUNIT_CONSOLE_VERSION/tools/nunit3-console.exe"
-          & $Runner Tests.csproj
+        run: dotnet test --no-restore
