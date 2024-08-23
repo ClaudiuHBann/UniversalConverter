@@ -25,4 +25,9 @@ jobs:
 
       - name: Build
         working-directory: ./API
-        run: dotnet build --no-restore API.csproj
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          SUPER_SECRET: ${{ secrets.SuperSecret }}
+        run: |
+          echo $SUPER_SECRET > secrets.json
+          dotnet build --no-restore API.csproj
