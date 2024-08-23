@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-using Shared.Validators;
+﻿using Shared.Validators;
 using Shared.Services.UC;
 
 using Microsoft.Extensions.Configuration;
@@ -10,6 +8,8 @@ namespace Tests.Utilities
 {
 internal static class DI
 {
+    private const string _userSecretsId = "e9cddfe6-0e78-4e9b-aa5e-45aef5339c0d";
+
     private static readonly IConfiguration _configuration;
     private static readonly IServiceProvider _serviceProvider;
 
@@ -44,7 +44,7 @@ internal static class DI
     private static IConfiguration CreateConfiguration()
     {
         ConfigurationBuilder builder = new();
-        builder.AddUserSecrets(Assembly.GetExecutingAssembly());
+        builder.AddUserSecrets(_userSecretsId);
 
         return builder.Build();
     }
