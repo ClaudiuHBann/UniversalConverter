@@ -42,8 +42,16 @@ internal class UnitTestCurrency : UnitTestBase
     // clang-format on
 
     [TestCaseSource(nameof(_input))]
-    public async Task TestConvert(bool valid, CurrencyRequest request) => await Try(valid, async () =>
-                                                                                           {});
+    public async Task TestConvert(bool valid, CurrencyRequest request) =>
+        await Try(valid, async () =>
+                         {
+                             var response = await _service.Convert(request);
+
+                             var rates = await FindRates();
+                             // the money current currency is EUR and we need to convert it to RON and next USD
+                             var money = request.Money.Select(m => m / rates[request.From] * rates[request.To]);
+                             Assert.That(money.SequenceEqual(response.Money));
+                         });
 
     [Test]
     public async Task TestFromTo() => await Try(true,

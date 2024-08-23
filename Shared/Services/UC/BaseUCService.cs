@@ -62,7 +62,13 @@ public abstract class BaseUCService<TRequest, TResponse>
             var error = await message.Content.ReadFromJsonAsync<ErrorResponse>() ?? throw parseException;
 
             var exceptionName = $"Shared.Exceptions.{error.TypeException}Exception";
-            throw (Exception)Activator.CreateInstance(Type.GetType(exceptionName)!, error)!;
+            var type = Type.GetType(exceptionName);
+            if (type == null)
+            {
+                throw new ArgumentException($"The exception type '{exceptionName}' is not allowed!");
+            }
+
+            throw (Exception)Activator.CreateInstance(type, error)!;
         }
     }
 }
