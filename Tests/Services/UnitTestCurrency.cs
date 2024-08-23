@@ -47,11 +47,6 @@ internal class UnitTestCurrency : UnitTestBase
                                                                                {
                                                                                    var response =
                                                                                        await _service.Convert(request);
-
-                                                                                   var rates = await FindRates();
-                                                                                   // the money current currency is EUR
-                                                                                   // and we need to convert it to RON
-                                                                                   // and next USD
                                                                                });
 
     [Test]
