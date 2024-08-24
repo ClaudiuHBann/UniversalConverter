@@ -1,8 +1,8 @@
-﻿using Shared.Services.UC;
+﻿using Tests.Utilities;
 
-using Tests.Utilities;
+using Shared.Services.UC;
 
-namespace Tests.Services
+namespace Tests.Endpoints
 {
 [TestFixture]
 internal class UnitTestRank : UnitTestBase

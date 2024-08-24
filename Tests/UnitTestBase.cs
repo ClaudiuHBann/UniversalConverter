@@ -1,6 +1,6 @@
 ﻿using Shared.Exceptions;
 
-namespace Tests.Services
+namespace Tests
 {
 internal class UnitTestBase
 {

@@ -3,9 +3,9 @@
 using Shared.Requests;
 using Shared.Services.UC;
 
-namespace Tests.Services
+namespace Tests.Endpoints
 {
-[TestFixture]
+    [TestFixture]
 internal class UnitTestRadix : UnitTestBase
 {
     private readonly RadixUCService _service;

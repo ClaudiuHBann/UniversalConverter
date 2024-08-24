@@ -1,9 +1,9 @@
-﻿using Shared.Requests;
+﻿using Tests.Utilities;
+
+using Shared.Requests;
 using Shared.Services.UC;
 
-using Tests.Utilities;
-
-namespace Tests.Services
+namespace Tests.Endpoints
 {
 [TestFixture]
 internal class UnitTestLinkZip : UnitTestBase

@@ -3,6 +3,7 @@
 using Shared.Requests;
 using Shared.Responses;
 using Shared.Utilities;
+using Shared.Exceptions;
 
 namespace Shared.Services.UC
 {
@@ -60,6 +61,10 @@ public abstract class BaseUCService<TRequest, TResponse>
         else
         {
             var error = await message.Content.ReadFromJsonAsync<ErrorResponse>() ?? throw parseException;
+            if (error.TypeException == BaseException.EType.Unknown)
+            {
+                throw new Exception(error.Message);
+            }
 
             var exceptionName = $"Shared.Exceptions.{error.TypeException}Exception";
             throw (Exception)Activator.CreateInstance(Type.GetType(exceptionName)!, error)!;

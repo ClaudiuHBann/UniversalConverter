@@ -2,9 +2,9 @@
 
 using Shared.Services.UC;
 
-namespace Tests.Services
+namespace Tests.Endpoints
 {
-[TestFixture]
+    [TestFixture]
 internal class UnitTestCommon : UnitTestBase
 {
     private readonly UCService _service;
