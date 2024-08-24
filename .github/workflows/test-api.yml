@@ -1,9 +1,13 @@
-name: Test
+name: Test API
 
 on:
   push:
   pull_request:
     branches: ["master"]
+
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+  USER_SECRETS: ${{ secrets.USERSECRETS }}
 
 jobs:
   test:
@@ -25,11 +29,8 @@ jobs:
 
       - name: Build & Run API
         working-directory: ./API
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-          USERSECRETS: ${{ secrets.USERSECRETS }}
         run: |
-          echo $USERSECRETS > secrets.json
+          echo $USER_SECRETS > secrets.json
           dotnet build --no-restore API.csproj
           dotnet run --project ./API.csproj &
 
@@ -41,8 +42,6 @@ jobs:
 
       - name: Build & Run Tests
         working-directory: ./Tests
-        env:
-          USERSECRETS: ${{ secrets.USERSECRETS }}
         run: |
-          echo $USERSECRETS > secrets.json
+          echo $USER_SECRETS > secrets.json
           dotnet test --no-restore

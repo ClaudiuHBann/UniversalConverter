@@ -1,9 +1,13 @@
-name: Build
+name: Build API
 
 on:
   push:
   pull_request:
     branches: ["master"]
+
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+  USER_SECRETS: ${{ secrets.USERSECRETS }}
 
 jobs:
   build:
@@ -17,7 +21,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Restore API's workload and dependencies
+      - name: Restore workload and dependencies
         working-directory: ./API
         run: |
           dotnet workload restore
@@ -25,9 +29,6 @@ jobs:
 
       - name: Build
         working-directory: ./API
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-          USERSECRETS: ${{ secrets.USERSECRETS }}
         run: |
-          echo $USERSECRETS > secrets.json
+          echo $USER_SECRETS > secrets.json
           dotnet build --no-restore API.csproj
