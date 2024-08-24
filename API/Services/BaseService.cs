@@ -76,7 +76,6 @@ public abstract class BaseService<Request, Response> : BaseDbService<Request, Re
         var rank = await _context.Ranks.FirstOrDefaultAsync(rank => rank.Converter == converter) ??
                    await Create(new RankEntity(converter));
 
-        // TODO: increase but update once 5 minutes or smth
         rank.Conversions++;
         await Update(rank);
     }

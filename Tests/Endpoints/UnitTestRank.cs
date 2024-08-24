@@ -14,8 +14,6 @@ internal class UnitTestRank : UnitTestBase
         _service = DI.GetService<RankUCService>()!;
     }
 
-    // TODO: Implement tests
-
     [Test]
     public async Task Test() => await Try(true, () => Task.CompletedTask);
 }

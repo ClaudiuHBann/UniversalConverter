@@ -81,8 +81,11 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
                 var result = await _validator.ValidateAsync(new LinkEntity(url));
                 if (!result.IsValid)
                 {
-                    // TODO: add the validation errors to the exception
-                    throw new ValueException("The link is invalid!");
+                    var errors = result.Errors.Select(e => e.ErrorMessage);
+                    var title = "The link is invalid!";
+                    var content = string.Join('\n', errors);
+
+                    throw new ValueException($"{title}\n{content}");
                 }
             }
         }
