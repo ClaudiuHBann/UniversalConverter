@@ -1,4 +1,5 @@
-﻿import { CommonUCService } from "./CommonUCService";
+﻿import { IService } from "../IService";
+import { CommonUCService } from "./CommonUCService";
 import { CurrencyUCService } from "./CurrencyUCService";
 import { LinkZipUCService } from "./LinkZipUCService";
 import { RadixUCService } from "./RadixUCService";

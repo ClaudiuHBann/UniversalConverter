@@ -12,6 +12,6 @@ export class LinkZipResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.urls = Array.from(data.urls!);
+    this.urls = Array.from(data.urls);
   }
 }

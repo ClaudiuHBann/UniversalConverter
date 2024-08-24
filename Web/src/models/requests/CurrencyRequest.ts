@@ -11,13 +11,9 @@ export class CurrencyRequest extends BaseRequest {
     }
   }
 
-  public override Initialize(data?: any) {
+  public override Initialize(data: number[]) {
     if (!data) {
       throw new Error("The money are null!");
-    }
-
-    if (typeof data !== typeof this.money) {
-      throw new Error(`The data is not of type ${typeof this.money}!`);
     }
 
     this.money = data;

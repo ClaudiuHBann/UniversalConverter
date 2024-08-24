@@ -11,13 +11,9 @@ export class LinkZipRequest extends BaseRequest {
     }
   }
 
-  public override Initialize(data?: any) {
+  public override Initialize(data: string[]) {
     if (!data) {
       throw new Error("The urls are null!");
-    }
-
-    if (typeof data !== typeof this.urls) {
-      throw new Error(`The data is not of type ${typeof this.urls}!`);
     }
 
     this.urls = data;

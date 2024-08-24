@@ -47,7 +47,7 @@ export class UCContext {
     category: string | null,
     fromTo: boolean
   ): string | null {
-    let fromToResponse = this.GetFromToResponse(category);
+    const fromToResponse = this.GetFromToResponse(category);
     if (!fromToResponse) {
       return null;
     }

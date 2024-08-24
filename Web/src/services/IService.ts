@@ -1,1 +1,1 @@
-﻿interface IService {}
+﻿export interface IService {}

@@ -17,6 +17,7 @@ export class BaseResponse {
     this.type = type;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public Initialize(_: any) {
     throw new Error("Not implemented!");
   }

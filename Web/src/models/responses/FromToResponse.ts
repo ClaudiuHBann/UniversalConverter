@@ -14,8 +14,8 @@ export class FromToResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.fromTo = Array.from(data.fromTo!);
-    this.defaultFrom = data.defaultFrom!;
-    this.defaultTo = data.defaultTo!;
+    this.fromTo = Array.from(data.fromTo);
+    this.defaultFrom = data.defaultFrom;
+    this.defaultTo = data.defaultTo;
   }
 }

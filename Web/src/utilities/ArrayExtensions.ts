@@ -17,7 +17,7 @@ export function FindItem(
   item: string,
   icase: boolean = true
 ): string | null {
-  let index = FindIndex(array, item, icase);
+  const index = FindIndex(array, item, icase);
   return index === -1 ? null : array[index];
 }
 

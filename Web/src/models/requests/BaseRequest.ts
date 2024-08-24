@@ -22,7 +22,8 @@ export class BaseRequest {
     }
   }
 
-  public Initialize(_?: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public Initialize(_: any) {
     throw new Error("Not implemented!");
   }
 }

@@ -11,13 +11,9 @@ export class TemperatureRequest extends BaseRequest {
     }
   }
 
-  public override Initialize(data?: any) {
+  public override Initialize(data: number[]) {
     if (!data) {
       throw new Error("The temperatures are null!");
-    }
-
-    if (typeof data !== typeof this.temperatures) {
-      throw new Error(`The data is not of type ${typeof this.temperatures}!`);
     }
 
     this.temperatures = data;

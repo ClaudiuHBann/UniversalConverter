@@ -16,6 +16,6 @@ export class CommonResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.fromToAll = new Map(Object.entries(data.fromToAll!));
+    this.fromToAll = new Map(Object.entries(data.fromToAll));
   }
 }

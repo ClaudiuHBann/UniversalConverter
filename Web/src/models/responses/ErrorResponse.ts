@@ -16,8 +16,8 @@ export class ErrorResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.code = data.code!;
-    this.message = data.message!;
-    this.typeException = data.typeException!;
+    this.code = data.code;
+    this.message = data.message;
+    this.typeException = data.typeException;
   }
 }

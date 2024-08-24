@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 export interface AppShellExProps {
   opened: boolean;
   toggle: () => void;
-  props?: any;
+  props?: React.ComponentProps<typeof Group>;
 }
 
 function HeaderItems({ opened, toggle, props }: AppShellExProps) {
@@ -23,7 +23,7 @@ function HeaderItems({ opened, toggle, props }: AppShellExProps) {
   const queryRankConverters = useRankConverters(
     new RankRequest(categoriesCount)
   );
-  let [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     if (queryRankConverters.data) {
@@ -34,7 +34,7 @@ function HeaderItems({ opened, toggle, props }: AppShellExProps) {
   }, [queryRankConverters.data, context]);
 
   const HandleCategoryChange = (category: string | null) => {
-    let eCategory = ToCategory(category);
+    const eCategory = ToCategory(category);
     if (!eCategory || !context) {
       return;
     }

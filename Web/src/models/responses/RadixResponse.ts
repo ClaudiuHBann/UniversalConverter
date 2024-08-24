@@ -12,6 +12,6 @@ export class RadixResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.numbers = Array.from(data.numbers!);
+    this.numbers = Array.from(data.numbers);
   }
 }

@@ -12,6 +12,6 @@ export class RankResponse extends BaseResponse {
   }
 
   public override Initialize(data: any) {
-    this.converters = Array.from(data.converters!);
+    this.converters = Array.from(data.converters);
   }
 }

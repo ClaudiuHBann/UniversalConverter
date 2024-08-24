@@ -46,7 +46,7 @@ function FindFromTo(
     return null;
   }
 
-  let fromToParam = searchParamsEx.GetFromOrTo(fromTo);
+  const fromToParam = searchParamsEx.GetFromOrTo(fromTo);
 
   return (
     context.FindFromTo(category, fromToParam) ||
@@ -116,7 +116,7 @@ function Actions() {
 
     const response = await convertHook.mutateAsync(request);
     if (response) {
-      const [_, setOutputValue] = context.GetOutput();
+      const [, setOutputValue] = context.GetOutput();
       setOutputValue(ToOutput(response));
     }
 

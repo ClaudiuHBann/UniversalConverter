@@ -11,13 +11,9 @@ export class RadixRequest extends BaseRequest {
     }
   }
 
-  public override Initialize(data?: any) {
+  public override Initialize(data: string[]) {
     if (!data) {
       throw new Error("The numbers are null!");
-    }
-
-    if (typeof data !== typeof this.numbers) {
-      throw new Error(`The data is not of type ${typeof this.numbers}!`);
     }
 
     this.numbers = data;

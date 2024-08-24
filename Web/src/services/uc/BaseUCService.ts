@@ -1,4 +1,4 @@
-﻿import axios, { AxiosResponse } from "axios";
+﻿import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { BaseRequest } from "../../models/requests/BaseRequest";
 import { BaseResponse } from "../../models/responses/BaseResponse";
 import { ErrorResponse } from "../../models/responses/ErrorResponse";
@@ -53,7 +53,7 @@ export class BaseUCService<
     action: string,
     value?: TRequest
   ) {
-    let uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
+    const uri = `${this.urlBase}${this.GetControllerName()}/${action}`;
 
     let promise;
     switch (requestHTTP) {
@@ -74,8 +74,10 @@ export class BaseUCService<
     return this.ProcessResponse(await promise);
   }
 
-  private async ProcessResponse(result: AxiosResponse<TResponse, any>) {
-    let response = CreateResponse(result.data.type, result.data);
+  private async ProcessResponse(
+    result: AxiosResponse<TResponse, AxiosRequestConfig<any>>
+  ) {
+    const response = CreateResponse(result.data.type, result.data);
     if (result.status === 200) {
       return response as TResponse;
     } else {

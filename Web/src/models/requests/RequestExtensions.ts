@@ -30,11 +30,7 @@ export function ToRequest(type: ECategory): ERequest {
   }
 }
 
-export function ParseInput(type: ERequest, input: any) {
-  if (typeof input !== "string") {
-    throw new Error("Invalid parse input!");
-  }
-
+export function ParseInput(type: ERequest, input: string) {
   switch (type) {
     case ERequest.Currency:
       return SplitByAnySpaceAndComma(input).map(Number);
