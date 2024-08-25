@@ -40,9 +40,9 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
     private string GetPrefix()
     {
 #if DEBUG
-        return $"localhost:5173/{GetServiceName()}/?code=";
+        return $"localhost:5173/{GetServiceName()}?code=";
 #else
-        return $"uc.hbann.ro/{GetServiceName()}/?code=";
+        return $"hbann.ro/{GetServiceName()}?code=";
 #endif
     }
 
@@ -81,6 +81,8 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
                 var result = await _validator.ValidateAsync(new LinkEntity(url));
                 if (!result.IsValid)
                 {
+                    // TODO: the new lines are not permited
+
                     var errors = result.Errors.Select(e => e.ErrorMessage);
                     var title = "The link is invalid!";
                     var content = string.Join('\n', errors);
@@ -102,38 +104,40 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
         return new(urls);
     }
 
-    private async Task<string> SToL(string code)
+    private async Task<string> SToL(string url)
     {
-        var link = await _cache.GetAsync<string>(code);
+        var link = await _cache.GetAsync<string>(url);
         if (link != null)
         {
             return link;
         }
 
+        var code = url.Replace(GetPrefix(), null);
         var entity = await Read<LinkEntity>(new() { Id = MakeId(code) });
-        _cache.Add(code, entity.Url);
+
+        _cache.Add(url, entity.Url);
         return entity.Url;
     }
 
-    private async Task<string> LToS(string url)
+    private async Task<string> LToS(string urlLong)
     {
-        var code = await _cache.GetAsync<string>(url);
-        if (code != null)
+        var urlShort = await _cache.GetAsync<string>(urlLong);
+        if (urlShort != null)
         {
-            return code;
+            return urlShort;
         }
 
-        var entity = await _context.Links.FirstOrDefaultAsync(link => link.Url == url);
+        var entity = await _context.Links.FirstOrDefaultAsync(link => link.Url == urlLong);
         if (entity != null)
         {
-            return MakeCode(entity.Id);
+            return GetPrefix() + MakeCode(entity.Id);
         }
 
-        entity = await Create<LinkEntity>(new() { Url = url });
-        code = MakeCode(entity.Id);
+        entity = await Create<LinkEntity>(new() { Url = urlLong });
+        urlShort = GetPrefix() + MakeCode(entity.Id);
 
-        _cache.Add(url, code);
-        return code;
+        _cache.Add(urlLong, urlShort);
+        return urlShort;
     }
 
     private string MakeCode(long id)
