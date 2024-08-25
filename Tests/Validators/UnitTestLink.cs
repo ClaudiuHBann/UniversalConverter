@@ -3,6 +3,6 @@
 [TestFixture]
 internal class UnitTestLink
 {
-    // TOOD: Implement tests
+    // TOOD: Implement tests after improving the LinkValidator
 }
 }

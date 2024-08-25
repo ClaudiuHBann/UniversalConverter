@@ -19,6 +19,7 @@ function AppShellEx({ children }: AppShellExProps) {
         breakpoint: "sm",
         collapsed: { desktop: true, mobile: !opened },
       }}
+      footer={{ height: 50 }}
       padding="md"
     >
       <AppShell.Header>
