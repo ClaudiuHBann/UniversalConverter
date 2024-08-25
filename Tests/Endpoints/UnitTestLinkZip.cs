@@ -8,8 +8,8 @@ namespace Tests.Endpoints
 [TestFixture]
 internal class UnitTestLinkZip : UnitTestBase
 {
-    private const string _urlRR = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-    private const string _codeRR = "1";
+    private const string _urlLongRR = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    private static readonly string _urlShortRR = GetPrefix() + '1'; // code 1 is the _urlLongRR's code;
 
     // TODO: Add a dynamic test case
 
@@ -25,12 +25,12 @@ internal class UnitTestLinkZip : UnitTestBase
     {
         From = "Longifier",
         To = "Shortifier",
-        URLs = [_urlRR]
+        URLs = [_urlLongRR]
     };
 
     private static readonly object[] _input = [
-        new object[] { true, new List<string>() { _codeRR }, _requestValid },
-        new object[] { true, new List<string>() { _urlRR }, new LinkZipRequest(_requestValid) { From = "Shortifier", To = "Longifier", URLs = [_codeRR] } },
+        new object[] { true, new List<string>() { _urlShortRR }, _requestValid },
+        new object[] { true, new List<string>() { _urlLongRR }, new LinkZipRequest(_requestValid) { From = "Shortifier", To = "Longifier", URLs = [_urlShortRR] } },
         new object[] { false, new List<string>(), new LinkZipRequest(_requestValid) { URLs = Enumerable.Range(0, 70).Select(i => i.ToString()).ToList() } }, // more than the maximum number of links
         new object[] { false, new List<string>(), new LinkZipRequest(_requestValid) { URLs = ["https://www.ma-ta.e.pe.mine.7-cutite/?"] } }, // invalid link
         new object[] { false, new List<string>(), new LinkZipRequest(_requestValid) { To = "XXX" } }, // invalid To
@@ -40,6 +40,15 @@ internal class UnitTestLinkZip : UnitTestBase
         new object[] { false, new List<string>(), new LinkZipRequest(_requestValid) { URLs = [new string('a', 2048)] } }, // overflow
     ];
     // clang-format on
+
+    private static string GetPrefix()
+    {
+#if DEBUG
+        return "localhost:5173/LinkZip?code=";
+#else
+        return "hbann.ro/LinkZip?code=";
+#endif
+    }
 
     [TestCaseSource(nameof(_input))]
     public async Task TestConvert(bool valid, List<string> result, LinkZipRequest request) =>
