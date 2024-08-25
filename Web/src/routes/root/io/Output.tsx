@@ -1,28 +1,14 @@
-import { Textarea, rem } from "@mantine/core";
-import { IconCopy, IconCheck } from "@tabler/icons-react";
+import { Textarea } from "@mantine/core";
 import ActionIconEx from "../../../components/ActionIconEx";
 import { useUCContext } from "../../../contexts/UCContext";
 import classes from "./IO.module.css";
-
-function FindIconCopy(state: boolean) {
-  if (state) {
-    return <IconCheck style={{ width: rem(69) }} />;
-  } else {
-    return <IconCopy style={{ width: rem(69) }} />;
-  }
-}
-
-function FindTooltipCopy(state: boolean) {
-  return state ? "Copied" : "Copy";
-}
-
-function HandleButtonIconCopy(value: string) {
-  if (value.length === 0) {
-    return;
-  }
-
-  navigator.clipboard.writeText(value);
-}
+import {
+  FindIconCopy,
+  FindTooltipCopy,
+  HandleButtonIconCopy,
+  FindIconClear,
+  FindTooltipClear,
+} from "./IOShortcutMenu";
 
 function Output() {
   const context = useUCContext();
@@ -35,7 +21,7 @@ function Output() {
       <Textarea
         variant="filled"
         resize="vertical"
-        classNames={{ input: classes.input }}
+        classNames={{ input: classes.io }}
         readOnly
         size="md"
         radius="md"
@@ -47,6 +33,17 @@ function Output() {
       />
 
       <ActionIconEx
+        onClick={() => setOutputValue("")}
+        findIcon={FindIconClear}
+        findTooltip={FindTooltipClear}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+        }}
+      />
+
+      <ActionIconEx
         onClick={() => {
           HandleButtonIconCopy(outputValue);
         }}
@@ -55,7 +52,7 @@ function Output() {
         style={{
           position: "absolute",
           top: 10,
-          right: 10,
+          right: 45,
         }}
       />
     </div>
