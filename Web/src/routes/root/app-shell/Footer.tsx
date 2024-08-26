@@ -1,10 +1,11 @@
-import { Grid, Flex, Anchor, Text, rem } from "@mantine/core";
+import { Grid, Flex, Anchor, Text, rem, ActionIcon } from "@mantine/core";
 import {
   IconBrandGoogle,
   IconBrandDiscord,
   IconBrandLinkedin,
   IconBrandGithub,
   IconCheck,
+  IconNotebook,
 } from "@tabler/icons-react";
 import ActionIconEx from "../../../components/ActionIconEx";
 
@@ -42,59 +43,81 @@ function ClipboardWriteText(text: string) {
 
 const propertiesGridElement = {
   mih: 50,
-  mr: 10,
-  ml: 10,
   gap: "md",
   justify: "center",
   align: "center",
 };
 
-function Footer() {
+export interface FooterProps {
+  openedAside: boolean;
+  toggleAside: () => void;
+}
+
+function Footer({ openedAside, toggleAside }: FooterProps) {
   return (
-    <Grid grow justify="space-around" align="center" gutter="0">
-      <Flex {...propertiesGridElement}>
-        <Text>Contribute on</Text>
-        <Anchor
-          href="https://github.com/ClaudiuHBann/UniversalConverter"
-          c="white"
-          ml={-5}
-          mt={7.5}
-        >
-          <IconBrandGithub />
-        </Anchor>
-      </Flex>
+    <Grid grow justify="center" align="center" gutter="0">
+      <Grid.Col span={3}>
+        <Flex {...propertiesGridElement}>
+          <Text>Contribute on</Text>
+          <Anchor
+            href="https://github.com/ClaudiuHBann/UniversalConverter"
+            c="white"
+            ml={-5}
+            mt={7.5}
+          >
+            <IconBrandGithub />
+          </Anchor>
+        </Flex>
+      </Grid.Col>
 
-      <Flex {...propertiesGridElement}>
-        <Text>Contact Me:</Text>
+      <Grid.Col span={3}>
+        <Flex {...propertiesGridElement}>
+          <Text>Contact Me:</Text>
 
-        <ActionIconEx
-          onClick={() => {
-            ClipboardWriteText("claudiu.andrei.hermann@gmail.com");
-          }}
-          findIcon={FindIconGoogle}
-          findTooltip={FindTooltipGoogle}
-        />
+          <ActionIconEx
+            onClick={() => {
+              ClipboardWriteText("claudiu.andrei.hermann@gmail.com");
+            }}
+            findIcon={FindIconGoogle}
+            findTooltip={FindTooltipGoogle}
+          />
 
-        <Anchor
-          href="https://www.linkedin.com/in/hermann-claudiu-b6243a229"
-          c="#0077B5"
-          mt={5}
-        >
-          <IconBrandLinkedin />
-        </Anchor>
+          <Anchor
+            href="https://www.linkedin.com/in/hermann-claudiu-b6243a229"
+            c="#0077B5"
+            mt={5}
+          >
+            <IconBrandLinkedin />
+          </Anchor>
 
-        <ActionIconEx
-          onClick={() => {
-            ClipboardWriteText("claudiuhbann");
-          }}
-          findIcon={FindIconDiscord}
-          findTooltip={FindTooltipDiscord}
-        />
-      </Flex>
+          <ActionIconEx
+            onClick={() => {
+              ClipboardWriteText("claudiuhbann");
+            }}
+            findIcon={FindIconDiscord}
+            findTooltip={FindTooltipDiscord}
+          />
+        </Flex>
+      </Grid.Col>
 
-      <Flex {...propertiesGridElement}>
-        <Text>Made with ❤️ in Romania by HBann</Text>
-      </Flex>
+      <Grid.Col span={3}>
+        <Flex {...propertiesGridElement}>
+          <Text>Made with ❤️ in Romania by HBann</Text>
+        </Flex>
+      </Grid.Col>
+
+      <Grid.Col span="content">
+        <Flex {...propertiesGridElement}>
+          <ActionIcon
+            c="gray"
+            variant="subtle"
+            onClick={toggleAside}
+            style={{ outline: "none" }}
+          >
+            <IconNotebook />
+          </ActionIcon>
+        </Flex>
+      </Grid.Col>
     </Grid>
   );
 }

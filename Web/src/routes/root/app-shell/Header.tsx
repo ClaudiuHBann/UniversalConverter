@@ -4,19 +4,19 @@ import { useNavigate } from "react-router-dom";
 import "./HeaderItems.css";
 import { NavigateToRoot } from "../../../utilities/NavigateExtensions";
 
-export interface AppShellExProps {
-  opened: boolean;
-  toggle: () => void;
+export interface HeaderProps {
+  openedNavbar: boolean;
+  toggleNavbar: () => void;
 }
 
-function Header({ opened, toggle }: AppShellExProps) {
+function Header({ openedNavbar, toggleNavbar }: HeaderProps) {
   const navigate = useNavigate();
 
   const OnClickedHomeButton = () => {
     NavigateToRoot(navigate);
 
-    if (opened) {
-      toggle();
+    if (openedNavbar) {
+      toggleNavbar();
     }
   };
 
@@ -24,8 +24,8 @@ function Header({ opened, toggle }: AppShellExProps) {
     <Grid mt={2} mr={7} grow gutter="0" align="center">
       <Grid.Col span={0}>
         <Burger
-          opened={opened}
-          onClick={toggle}
+          opened={openedNavbar}
+          onClick={toggleNavbar}
           hiddenFrom="sm"
           ml={15}
           mr={15}
@@ -41,7 +41,7 @@ function Header({ opened, toggle }: AppShellExProps) {
       </Grid.Col>
 
       <Grid.Col visibleFrom="sm" span={1}>
-        <HeaderItems opened={opened} toggle={toggle} />
+        <HeaderItems openedNavbar={openedNavbar} toggleNavbar={toggleNavbar} />
       </Grid.Col>
     </Grid>
   );

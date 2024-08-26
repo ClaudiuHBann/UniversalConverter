@@ -8,13 +8,13 @@ import { useRankConverters } from "../../../hooks/Queries";
 import { RankRequest } from "../../../models/requests/RankRequest";
 import { useEffect, useState } from "react";
 
-export interface AppShellExProps {
-  opened: boolean;
-  toggle: () => void;
+export interface HeaderItemsProps {
+  openedNavbar: boolean;
+  toggleNavbar: () => void;
   props?: React.ComponentProps<typeof Group>;
 }
 
-function HeaderItems({ opened, toggle, props }: AppShellExProps) {
+function HeaderItems({ openedNavbar, toggleNavbar, props }: HeaderItemsProps) {
   const context = useUCContext();
   const navigate = useNavigate();
 
@@ -41,8 +41,8 @@ function HeaderItems({ opened, toggle, props }: AppShellExProps) {
 
     NavigateToCategory(navigate, context, eCategory);
 
-    if (opened) {
-      toggle();
+    if (openedNavbar) {
+      toggleNavbar();
     }
   };
 
