@@ -1,13 +1,23 @@
-import { Stack, Text } from "@mantine/core";
+import { Stack, Notification } from "@mantine/core";
 import { useUCContext } from "../../../contexts/UCContext";
+import { IconX } from "@tabler/icons-react";
 
 function Aside() {
   const context = useUCContext();
 
   return (
-    <Stack>
-      {context?.GetLogs().map((log) => {
-        return <Text>{log}</Text>;
+    <Stack align="stretch" justify="flex-start" gap="xs" m={10}>
+      {context!.GetLogs().map((log) => {
+        return (
+          <Notification
+            withCloseButton={false}
+            color="red"
+            radius="md"
+            icon={<IconX />}
+          >
+            {log}
+          </Notification>
+        );
       })}
     </Stack>
   );
