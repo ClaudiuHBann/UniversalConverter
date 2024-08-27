@@ -70,7 +70,7 @@ function Footer({ openedAside, toggleAside }: FooterProps) {
         </Flex>
       </Grid.Col>
 
-      <Grid.Col span={3}>
+      <Grid.Col span={4} visibleFrom="xs">
         <Flex {...propertiesGridElement}>
           <Text>Contact Me:</Text>
 
@@ -100,7 +100,7 @@ function Footer({ openedAside, toggleAside }: FooterProps) {
         </Flex>
       </Grid.Col>
 
-      <Grid.Col span={3}>
+      <Grid.Col span={4} visibleFrom="sm">
         <Flex {...propertiesGridElement}>
           <Text>Made with ❤️ in Romania by HBann</Text>
         </Flex>
