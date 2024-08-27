@@ -21,6 +21,7 @@ function HeaderItems({ openedNavbar, toggleNavbar, props }: HeaderItemsProps) {
   const categoriesCount = 3;
 
   const queryRankConverters = useRankConverters(
+    context!,
     new RankRequest(categoriesCount)
   );
   const [categories, setCategories] = useState<string[]>([]);

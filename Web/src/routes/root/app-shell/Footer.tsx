@@ -8,6 +8,7 @@ import {
   IconNotebook,
 } from "@tabler/icons-react";
 import ActionIconEx from "../../../components/ActionIconEx";
+import { useUCContext } from "../../../contexts/UCContext";
 
 function FindIconGoogle(state: boolean) {
   if (state) {
@@ -54,6 +55,15 @@ export interface FooterProps {
 }
 
 function Footer({ openedAside, toggleAside }: FooterProps) {
+  const context = useUCContext();
+
+  const OnButtonLogs = () => {
+    toggleAside();
+
+    // negate openedAside because the state is not updated yet
+    context?.SetLogsVisibility(!openedAside);
+  };
+
   return (
     <Grid grow justify="center" align="center" gutter="0">
       <Grid.Col span={3}>
@@ -111,7 +121,7 @@ function Footer({ openedAside, toggleAside }: FooterProps) {
           <ActionIcon
             c="gray"
             variant="subtle"
-            onClick={toggleAside}
+            onClick={OnButtonLogs}
             style={{ outline: "none" }}
           >
             <IconNotebook />

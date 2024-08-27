@@ -6,17 +6,26 @@ import { Box, LoadingOverlay } from "@mantine/core";
 import { FromToResponse } from "../models/responses/FromToResponse";
 
 function UCContextProvider({ children }: { children: React.ReactNode }) {
-  const [visible, toggle] = useDisclosure(true);
-
-  const queryFromToAll = useFromToAll();
-
   const [categoryToFromTo, setCategoryToFromTo] = useState(
     new Map<string, FromToResponse>()
   );
   const input = useState("");
   const output = useState("");
 
-  const context = new UCContext(categoryToFromTo, input, output);
+  const logs = useState<string[]>([]);
+  const logsVisible = useState(false);
+
+  const context = new UCContext(
+    categoryToFromTo,
+    input,
+    output,
+    logs,
+    logsVisible
+  );
+
+  const queryFromToAll = useFromToAll(context);
+
+  const [visible, toggle] = useDisclosure(true);
 
   useEffect(() => {
     if (queryFromToAll.data) {

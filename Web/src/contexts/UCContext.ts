@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, createContext, useContext } from "react";
 import { Contains, FindItem } from "../utilities/ArrayExtensions";
 import { FromToResponse } from "../models/responses/FromToResponse";
+import { NotificationEx } from "../components/Notification";
 
 export class UCContext {
   private categoryToFromTo: Map<string, FromToResponse> = new Map();
@@ -8,14 +9,28 @@ export class UCContext {
   private input: [string, Dispatch<SetStateAction<string>>] = ["", () => {}];
   private output: [string, Dispatch<SetStateAction<string>>] = ["", () => {}];
 
+  private logs: [string[], Dispatch<SetStateAction<string[]>>] = [[], () => {}];
+  private logsVisible: [boolean, Dispatch<SetStateAction<boolean>>] = [
+    false,
+    () => {},
+  ];
+
+  private callbackPromiseCatch: (error: any) => void = () => {};
+
   public constructor(
     categoryToFromTo: Map<string, FromToResponse>,
     input: [string, Dispatch<SetStateAction<string>>],
-    output: [string, Dispatch<SetStateAction<string>>]
+    output: [string, Dispatch<SetStateAction<string>>],
+    logs: [string[], Dispatch<SetStateAction<string[]>>],
+    logsVisible: [boolean, Dispatch<SetStateAction<boolean>>]
   ) {
     this.categoryToFromTo = categoryToFromTo;
     this.input = input;
     this.output = output;
+    this.logs = logs;
+    this.logsVisible = logsVisible;
+
+    this.callbackPromiseCatch = this.CallbackPromiseCatch.bind(this);
   }
 
   public GetInput() {
@@ -26,8 +41,32 @@ export class UCContext {
     return this.output;
   }
 
+  public GetLogs() {
+    const [logs] = this.logs;
+    return logs;
+  }
+
+  public AreLogsVisible() {
+    const [logsVisible] = this.logsVisible;
+    return logsVisible;
+  }
+
+  public SetLogsVisibility(visibility: boolean) {
+    const [, setLogsVisible] = this.logsVisible;
+    setLogsVisible(visibility);
+  }
+
   public GetCategories(): string[] {
     return [...this.categoryToFromTo.keys()];
+  }
+
+  private CallbackPromiseCatch(error: any) {
+    NotificationEx(this, error.message);
+    return null;
+  }
+
+  public GetCallbackPromiseCatch() {
+    return this.callbackPromiseCatch;
   }
 
   private GetFromToResponse(category: string | null): FromToResponse | null {
@@ -57,6 +96,11 @@ export class UCContext {
 
   public GetFromTo(category: string | null): string[] {
     return this.GetFromToResponse(category)?.fromTo || [];
+  }
+
+  public AddLog(log: string) {
+    const [logs, setLogs] = this.logs;
+    setLogs(() => [...logs, log]);
   }
 
   public FindFromTo(

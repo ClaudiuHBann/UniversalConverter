@@ -4,15 +4,10 @@ import { BaseUCService } from "../services/uc/BaseUCService";
 import { ECategory } from "../utilities/Enums";
 import { BaseResponse } from "../models/responses/BaseResponse";
 import { BaseRequest } from "../models/requests/BaseRequest";
-import { NotificationEx } from "../components/Notification";
 import { RankRequest } from "../models/requests/RankRequest";
+import { UCContext } from "../contexts/UCContext";
 
 const uc = new UCService();
-
-function CallbackDefault(error: any) {
-  NotificationEx(error.message);
-  return null;
-}
 
 const categoryToService = new Map<
   string,
@@ -24,38 +19,44 @@ const categoryToService = new Map<
   [ECategory.Temperature, uc.temperature],
 ]);
 
-export const useFromToAll = () => {
+export const useFromToAll = (context: UCContext) => {
   return useQuery({
     queryKey: ["fromToAll"],
-    queryFn: async () => await uc.common.FromToAll().catch(CallbackDefault),
+    queryFn: async () =>
+      await uc.common.FromToAll().catch(context.GetCallbackPromiseCatch()),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
 
-export const useFromTo = (category: ECategory) => {
+export const useFromTo = (context: UCContext, category: ECategory) => {
   return useQuery({
     queryKey: ["fromTo", category],
     queryFn: async () =>
-      await categoryToService.get(category)?.FromTo().catch(CallbackDefault),
+      await categoryToService
+        .get(category)
+        ?.FromTo()
+        .catch(context.GetCallbackPromiseCatch()),
     gcTime: 1000 * 60 * 60 * 24, // a day
   });
 };
 
-export const useConvert = (category: ECategory) => {
+export const useConvert = (context: UCContext, category: ECategory) => {
   return useMutation({
     mutationFn: async (request: BaseRequest) =>
       await categoryToService
         .get(category)
         ?.Convert(request)
-        .catch(CallbackDefault),
+        .catch(context.GetCallbackPromiseCatch()),
   });
 };
 
-export const useRankConverters = (request: RankRequest) => {
+export const useRankConverters = (context: UCContext, request: RankRequest) => {
   return useQuery({
     queryKey: ["rankConverters", request],
     queryFn: async () =>
-      await uc.rank.Converters(request).catch(CallbackDefault),
+      await uc.rank
+        .Converters(request)
+        .catch(context.GetCallbackPromiseCatch()),
     gcTime: 1000 * 60, // a minute
   });
 };

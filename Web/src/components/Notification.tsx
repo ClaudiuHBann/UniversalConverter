@@ -1,7 +1,17 @@
 import { IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
+import { UCContext } from "../contexts/UCContext";
 
-export function NotificationEx(message: string, title?: string) {
+export function NotificationEx(
+  context: UCContext,
+  message: string,
+  title?: string
+) {
+  context.AddLog(message);
+  if (context.AreLogsVisible()) {
+    return;
+  }
+
   notifications.show({
     autoClose: 5000,
     icon: <IconX />,

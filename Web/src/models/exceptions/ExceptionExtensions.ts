@@ -16,6 +16,6 @@ export function CreateException(type: EException, error: ErrorResponse) {
       return new ValueException(error);
 
     default:
-      throw new Error(`The EException type '${type}' is not allowed!`);
+      throw new Error(`An exception of type '${type}' has occurred!`);
   }
 }
