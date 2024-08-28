@@ -6,6 +6,18 @@ import { BaseResponse } from "../models/responses/BaseResponse";
 import { BaseRequest } from "../models/requests/BaseRequest";
 import { RankRequest } from "../models/requests/RankRequest";
 import { UCContext } from "../contexts/UCContext";
+import { Notification } from "../components/Notification";
+
+function CallbackPromiseCatchDefault(error: any) {
+  Notification(error.message);
+  return null;
+}
+
+function FindCallbackPromiseCatch(context?: UCContext) {
+  return context
+    ? context.GetCallbackPromiseCatch()
+    : CallbackPromiseCatchDefault;
+}
 
 const uc = new UCService();
 
@@ -40,13 +52,13 @@ export const useFromTo = (context: UCContext, category: ECategory) => {
   });
 };
 
-export const useConvert = (context: UCContext, category: ECategory) => {
+export const useConvert = (category: ECategory, context?: UCContext) => {
   return useMutation({
     mutationFn: async (request: BaseRequest) =>
       await categoryToService
         .get(category)
         ?.Convert(request)
-        .catch(context.GetCallbackPromiseCatch()),
+        .catch(FindCallbackPromiseCatch(context)),
   });
 };
 

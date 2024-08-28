@@ -12,6 +12,10 @@ export function NotificationEx(
     return;
   }
 
+  Notification(message, title);
+}
+
+export function Notification(message: string, title?: string) {
   notifications.show({
     autoClose: 5000,
     icon: <IconX />,

@@ -95,7 +95,7 @@ function Actions() {
     NavigateTo(navigate, context, searchParamsEx);
   }, [fromValueNew, toValueNew]);
 
-  const convertHook = useConvert(context!, ToCategory(category)!);
+  const convertHook = useConvert(ToCategory(category)!, context!);
   const convert = async () => {
     if (!context) {
       return;

@@ -6,13 +6,11 @@ import { LinkZipResponse } from "../../models/responses/LinkZipResponse";
 import { useEffect } from "react";
 import { Center, Group, Loader, Text, rem } from "@mantine/core";
 import { URLSearchParamsEx } from "../../utilities/URLSearchParamsEx";
-import { useUCContext } from "../../contexts/UCContext";
 
 const fallbackURL = `/?${ESearchParam.Category}=${ECategory.LinkZip}&${ESearchParam.From}=${ELinkZipFromTo.Longifier}&${ESearchParam.To}=${ELinkZipFromTo.Shortifier}`;
 
 function Redirect() {
-  const context = useUCContext();
-  const linkZip = useConvert(context!, ECategory.LinkZip);
+  const linkZip = useConvert(ECategory.LinkZip);
 
   const navigate = useNavigate();
 

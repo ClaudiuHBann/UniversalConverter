@@ -7,9 +7,10 @@ function Aside() {
 
   return (
     <Stack align="stretch" justify="flex-start" gap="xs" m={10}>
-      {context!.GetLogs().map((log) => {
+      {context!.GetLogs().map((log, index) => {
         return (
           <Notification
+            key={index}
             withCloseButton={false}
             color="red"
             radius="md"
