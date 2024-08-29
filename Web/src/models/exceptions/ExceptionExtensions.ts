@@ -3,6 +3,7 @@ import { DatabaseException } from "./DatabaseException";
 import { FromToException } from "./FromToException";
 import { ValueException } from "./ValueException";
 import { ErrorResponse } from "../responses/ErrorResponse";
+import { ToStringEException } from "../../utilities/EnumsExtensions";
 
 export function CreateException(type: EException, error: ErrorResponse) {
   switch (type) {
@@ -16,6 +17,8 @@ export function CreateException(type: EException, error: ErrorResponse) {
       return new ValueException(error);
 
     default:
-      throw new Error(`An exception of type '${type}' has occurred!`);
+      throw new Error(
+        `An exception of type '${ToStringEException(type)}' has occurred!`
+      );
   }
 }

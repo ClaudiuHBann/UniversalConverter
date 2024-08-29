@@ -10,6 +10,7 @@ import {
 } from "../../utilities/ArrayExtensions";
 import { ECategory } from "../../utilities/Enums";
 import { RankRequest } from "./RankRequest";
+import { ToStringERequest } from "../../utilities/EnumsExtensions";
 
 export function ToRequest(type: ECategory): ERequest {
   switch (type) {
@@ -26,7 +27,11 @@ export function ToRequest(type: ECategory): ERequest {
       return ERequest.Temperature;
 
     default:
-      throw new Error(`The ECategory type '${type}' is not allowed!`);
+      throw new Error(
+        `Method 'ToRequest' doesn't allow the type '${ToStringERequest(
+          type
+        )}' !`
+      );
   }
 }
 
@@ -45,7 +50,11 @@ export function ParseInput(type: ERequest, input: string) {
       return SplitByAnySpaceAndComma(input).map(Number);
 
     default:
-      throw new Error(`The ERequest type '${type}' is not allowed!`);
+      throw new Error(
+        `Method 'ParseInput' doesn't allow the type '${ToStringERequest(
+          type
+        )}' !`
+      );
   }
 }
 
@@ -86,7 +95,11 @@ export function CreateRequest(
       break;
 
     default:
-      throw new Error(`The ERequest type '${type}' is not allowed!`);
+      throw new Error(
+        `Method 'CreateRequest' doesn't allow the type '${ToStringERequest(
+          type
+        )}' !`
+      );
   }
 
   request.Initialize(data);

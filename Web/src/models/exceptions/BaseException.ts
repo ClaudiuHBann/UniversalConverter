@@ -1,4 +1,4 @@
-﻿import { ToExceptionStr } from "../../utilities/EnumsExtensions";
+﻿import { ToStringEException } from "../../utilities/EnumsExtensions";
 import { ErrorResponse } from "../responses/ErrorResponse";
 
 export enum EException {
@@ -14,7 +14,7 @@ export class BaseException extends Error {
 
   protected constructor(type: EException, error: ErrorResponse) {
     super(error.message);
-    super.name = ToExceptionStr(type);
+    super.name = ToStringEException(type);
 
     this.type = type;
     this.error = error;

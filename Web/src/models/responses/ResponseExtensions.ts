@@ -7,6 +7,7 @@ import { LinkZipResponse } from "./LinkZipResponse";
 import { RadixResponse } from "./RadixResponse";
 import { TemperatureResponse } from "./TemperatureResponse";
 import { RankResponse } from "./RankResponse";
+import { ToStringEResponse } from "../../utilities/EnumsExtensions";
 
 export function ToOutput(response: BaseResponse) {
   switch (response.type) {
@@ -23,7 +24,11 @@ export function ToOutput(response: BaseResponse) {
       return (response as TemperatureResponse).temperatures.join("\n");
 
     default:
-      throw new Error(`The EResponse type '${response.type}' is not allowed!`);
+      throw new Error(
+        `Method 'ToOutput' doesn't allow the type '${ToStringEResponse(
+          response.type
+        )}' !`
+      );
   }
 }
 
@@ -63,7 +68,11 @@ export function CreateResponse(type: EResponse, data: any) {
       break;
 
     default:
-      throw new Error(`The EResponse type '${type}' is not allowed!`);
+      throw new Error(
+        `Method 'CreateResponse' doesn't allow the type '${ToStringEResponse(
+          type
+        )}' !`
+      );
   }
 
   response.Initialize(data);

@@ -4,6 +4,7 @@ import { BaseResponse } from "../../models/responses/BaseResponse";
 import { ErrorResponse } from "../../models/responses/ErrorResponse";
 import { CreateResponse } from "../../models/responses/ResponseExtensions";
 import { CreateException } from "../../models/exceptions/ExceptionExtensions";
+import { ToStringEHTTPRequest } from "../../utilities/EnumsExtensions";
 
 enum EDBAction {
   FromTo = "FromTo",
@@ -67,7 +68,9 @@ export class BaseUCService<
 
       default:
         throw new Error(
-          `The EHTTPRequest type '${requestHTTP}' is not allowed!`
+          `Method 'Request' doesn't allow the type '${ToStringEHTTPRequest(
+            requestHTTP
+          )}' !`
         );
     }
 
@@ -77,6 +80,11 @@ export class BaseUCService<
   private async ProcessResponse(
     result: AxiosResponse<TResponse, AxiosRequestConfig<any>>
   ) {
+    // TODO: is there a better way to check that an exception occured on our side?
+    if (typeof result.data.type !== "number") {
+      throw new Error((result as any).data.title);
+    }
+
     const response = CreateResponse(result.data.type, result.data);
     if (result.status === 200) {
       return response as TResponse;

@@ -13,6 +13,8 @@ public class LinkValidator : AbstractValidator<LinkEntity>
 
     private async Task<bool> ValidateURL(string url, CancellationToken token)
     {
+        // TODO: improve this
+
         try
         {
             using var client = new HttpClient();

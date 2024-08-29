@@ -52,26 +52,11 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 
     protected override async Task ConvertValidate(LinkZipRequest request)
     {
+        await base.ConvertValidate(request);
+
         if (request.URLs.Count > 69)
         {
             throw new ValueException("The maximum number of links is 69!");
-        }
-
-        if (request.From.Equals(request.To, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new FromToException(this, false);
-        }
-
-        var fromTo = await FromTo();
-
-        if (!fromTo.FromTo.Any(ft => ft.Equals(request.From, StringComparison.OrdinalIgnoreCase)))
-        {
-            throw new FromToException(this, true);
-        }
-
-        if (!fromTo.FromTo.Any(ft => ft.Equals(request.To, StringComparison.OrdinalIgnoreCase)))
-        {
-            throw new FromToException(this, false);
         }
 
         if (request.From.Equals("Longifier", StringComparison.OrdinalIgnoreCase))
@@ -82,12 +67,7 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
                 if (!result.IsValid)
                 {
                     // TODO: the new lines are not permited
-
-                    var errors = result.Errors.Select(e => e.ErrorMessage);
-                    var title = "The link is invalid!";
-                    var content = string.Join('\n', errors);
-
-                    throw new ValueException($"{title}\n{content}");
+                    throw new ValueException("The link is invalid!");
                 }
             }
         }
