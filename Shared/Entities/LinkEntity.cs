@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Shared.Entities
 {
 [Table("link")]
-public class LinkEntity : BaseEntity
+public class LinkEntity
+(string url = "") : BaseEntity
 {
     [Key]
     [Required]
@@ -16,15 +17,6 @@ public class LinkEntity : BaseEntity
     [Column("url")]
     public string Url {
         get; set;
-    } = "";
-
-    public LinkEntity()
-    {
-    }
-
-    public LinkEntity(string url)
-    {
-        Url = url;
-    }
+    } = url;
 }
 }

@@ -20,15 +20,6 @@ public class BaseException : Exception
         Type = type;
 
         Error = error;
-        Error.TypeException = type;
-    }
-
-    protected BaseException(EType type, ErrorResponse error, Exception inner) : base(error.Message, inner)
-    {
-        Type = type;
-
-        Error = error;
-        Error.TypeException = type;
     }
 }
 }

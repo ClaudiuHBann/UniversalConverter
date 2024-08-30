@@ -68,7 +68,7 @@ public class RankService : BaseService<RankRequest, RankResponse>
                              .Select(rank => rank.Converter)
                              .ToListAsync();
 
-        return new RankResponse(converters);
+        return new RankResponse() { Converters = converters };
     }
 }
 }

@@ -69,23 +69,27 @@ public class BaseDbService<Request, Response> : IService
     private async Task<Entity> CRUD<Entity>(Entity entity, EAction action)
         where Entity : BaseEntity
     {
-        var methodValidation =
-            this.Invoke<Task>($"{action}Validate", [entity]) ??
-            throw new DatabaseException(new(HttpStatusCode.InternalServerError,
-                                            $"Failed {action.ToString().ToLower()} validation for {entity}!"));
+        var methodValidation = this.Invoke<Task>($"{action}Validate", [entity]) ??
+                               throw new DatabaseException(
+                                   new() { Code = HttpStatusCode.InternalServerError,
+                                           Message = $"Failed {action.ToString().ToLower()} validation for {entity}!",
+                                           TypeException = BaseException.EType.Database });
         await methodValidation;
 
-        var methodCRUD = this.Invoke<Task<Entity>>($"{action}Ex", [entity]) ??
-                         throw new DatabaseException(new(HttpStatusCode.InternalServerError,
-                                                         $"Failed to {action.ToString().ToLower()} {entity}!"));
+        var methodCRUD =
+            this.Invoke<Task<Entity>>($"{action}Ex", [entity]) ??
+            throw new DatabaseException(new() { Code = HttpStatusCode.InternalServerError,
+                                                Message = $"Failed to {action.ToString().ToLower()} {entity}!",
+                                                TypeException = BaseException.EType.Database });
         return await methodCRUD;
     }
 
     private DbSet<Entity> GetDbSet<Entity>()
         where Entity : BaseEntity
     {
-        var exception = new DatabaseException(
-            new(HttpStatusCode.InternalServerError, $"Failed to get the database set for {typeof(Entity)}."));
+        var exception = new DatabaseException(new() { Code = HttpStatusCode.InternalServerError,
+                                                      Message = $"Failed to get the database set for {typeof(Entity)}.",
+                                                      TypeException = BaseException.EType.Database });
 
         foreach (var property in _context.GetType().GetProperties())
         {
@@ -106,7 +110,9 @@ public class BaseDbService<Request, Response> : IService
         await GetDbSet<Entity>().AddAsync(entity);
         return await _context.SaveChangesAsync() > 0
                    ? entity
-                   : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to create {entity}!"));
+                   : throw new DatabaseException(new() { Code = HttpStatusCode.BadRequest,
+                                                         Message = $"Failed to create {entity}!",
+                                                         TypeException = BaseException.EType.Database });
     }
 
     protected async Task<Entity> ReadEx<Entity>(Entity entity)
@@ -116,7 +122,9 @@ public class BaseDbService<Request, Response> : IService
         var propertyIDValue = propertyID?.GetValue(entity);
 
         return await _context.FindAsync(typeof(Entity), propertyIDValue) as Entity ??
-               throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+               throw new DatabaseException(new() { Code = HttpStatusCode.NotFound,
+                                                   Message = $"The {typeof(Entity)} could not be found!",
+                                                   TypeException = BaseException.EType.Database });
     }
 
     protected async Task<Entity> UpdateEx<Entity>(Entity entity)
@@ -146,7 +154,9 @@ public class BaseDbService<Request, Response> : IService
 
         var updated = await _context.SaveChangesAsync() > 0 || equalCount > 0;
         return updated ? entityUpdated
-                       : throw new DatabaseException(new(HttpStatusCode.BadRequest, $"Failed to update the {entity}!"));
+                       : throw new DatabaseException(new() { Code = HttpStatusCode.BadRequest,
+                                                             Message = $"Failed to update the {entity}!",
+                                                             TypeException = BaseException.EType.Database });
     }
 
     protected async Task Exists<Entity>(Entity entity, bool throwIfExists = false)
@@ -159,11 +169,15 @@ public class BaseDbService<Request, Response> : IService
         var exists = await _context.FindAsync(typeof(Entity), propertyIDValue) != null;
         if (exists && throwIfExists)
         {
-            throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} already exists!"));
+            throw new DatabaseException(new() { Code = HttpStatusCode.NotFound,
+                                                Message = $"The {typeof(Entity)} already exists!",
+                                                TypeException = BaseException.EType.Database });
         }
         else if (!exists && !throwIfExists)
         {
-            throw new DatabaseException(new(HttpStatusCode.NotFound, $"The {typeof(Entity)} could not be found!"));
+            throw new DatabaseException(new() { Code = HttpStatusCode.NotFound,
+                                                Message = $"The {typeof(Entity)} could not be found!",
+                                                TypeException = BaseException.EType.Database });
         }
     }
 }

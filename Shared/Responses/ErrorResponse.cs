@@ -5,10 +5,10 @@ using Shared.Exceptions;
 namespace Shared.Responses
 {
 public class ErrorResponse
-(HttpStatusCode code, string message) : BaseResponse(EType.Error)
+() : BaseResponse(EType.Error)
 {
-    public HttpStatusCode Code { get; set; } = code;
-    public string Message { get; set; } = message;
-    public BaseException.EType TypeException { get; set; } = BaseException.EType.Unknown;
+    public required HttpStatusCode Code { get; init; }
+    public required string Message { get; init; }
+    public required BaseException.EType TypeException { get; init; }
 }
 }

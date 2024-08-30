@@ -2,14 +2,8 @@
 
 namespace Shared.Exceptions
 {
-public class DatabaseException : BaseException
+public class DatabaseException
+(ErrorResponse error) : BaseException(EType.Database, error)
 {
-    public DatabaseException(ErrorResponse error) : base(EType.Database, error)
-    {
-    }
-
-    public DatabaseException(ErrorResponse error, Exception inner) : base(EType.Database, error, inner)
-    {
-    }
 }
 }

@@ -13,25 +13,18 @@ using Shared.Validators;
 
 namespace API.Services
 {
-public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
+public class LinkZipService
+(UCContext context, RadixService radix, IAppCache cache, LinkValidator validator)
+    : BaseService<LinkZipRequest, LinkZipResponse>(context)
 {
-    private readonly UCContext _context;
-    private readonly RadixService _radix;
-    private readonly IAppCache _cache;
-    private readonly LinkValidator _validator;
+    private readonly UCContext _context = context;
+    private readonly RadixService _radix = radix;
+    private readonly IAppCache _cache = cache;
+    private readonly LinkValidator _validator = validator;
 
     private const string _defaultFrom = "Longifier";
     private const string _defaultTo = "Shortifier";
     private static readonly string[] _fromTo = [_defaultTo, _defaultFrom];
-
-    public LinkZipService(UCContext context, RadixService radix, IAppCache cache, LinkValidator validator)
-        : base(context)
-    {
-        _context = context;
-        _radix = radix;
-        _cache = cache;
-        _validator = validator;
-    }
 
     public override bool IsConverter() => true;
 
@@ -46,9 +39,8 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
 #endif
     }
 
-    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse([.._fromTo],
-                                                                                                    _defaultFrom,
-                                                                                                    _defaultTo));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(
+        new FromToResponse() { FromTo = [.._fromTo], DefaultFrom = _defaultFrom, DefaultTo = _defaultTo });
 
     protected override async Task ConvertValidate(LinkZipRequest request)
     {
@@ -81,10 +73,12 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
             urls.Add(await this.Invoke<Task<string>>($"{request.From[0]}To{request.To[0]}", [url])!);
         }
 
-        return new(urls);
+        return new() { URLs = urls };
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private async Task<string> SToL(string url)
+#pragma warning restore IDE0051 // Remove unused private members
     {
         var link = await _cache.GetAsync<string>(url);
         if (link != null)
@@ -99,7 +93,9 @@ public class LinkZipService : BaseService<LinkZipRequest, LinkZipResponse>
         return entity.Url;
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private async Task<string> LToS(string urlLong)
+#pragma warning restore IDE0051 // Remove unused private members
     {
         var urlShort = await _cache.GetAsync<string>(urlLong);
         if (urlShort != null)

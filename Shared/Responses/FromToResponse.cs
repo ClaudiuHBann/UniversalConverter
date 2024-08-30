@@ -1,10 +1,10 @@
 ﻿namespace Shared.Responses
 {
 public class FromToResponse
-(List<string> fromTo, string defaultFrom, string defaultTo) : BaseResponse(EType.FromTo)
+() : BaseResponse(EType.FromTo)
 {
-    public List<string> FromTo { get; set; } = fromTo;
-    public string DefaultFrom { get; set; } = defaultFrom;
-    public string DefaultTo { get; set; } = defaultTo;
+    public required List<string> FromTo { get; init; }
+    public required string DefaultFrom { get; init; }
+    public required string DefaultTo { get; init; }
 }
 }

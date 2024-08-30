@@ -32,7 +32,7 @@ public class CommonService : BaseService<CommonRequest, CommonResponse>
     protected override Task<CommonResponse> ConvertInternal(CommonRequest request) =>
         throw new InvalidOperationException();
 
-    public async Task<CommonResponse> FromToAll() => new(await FindFromToAll());
+    public async Task<CommonResponse> FromToAll() => new() { FromToAll = await FindFromToAll() };
 
     public List<IService> FindAllServices()
     {

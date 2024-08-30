@@ -10,12 +10,9 @@ public class ValueException : BaseException
     {
     }
 
-    public ValueException(string value) : base(EType.Value, new ErrorResponse(HttpStatusCode.BadRequest, value))
-    {
-    }
-
-    public ValueException(string value, Exception inner)
-        : base(EType.Value, new ErrorResponse(HttpStatusCode.BadRequest, value), inner)
+    public ValueException(string value)
+        : base(EType.Value,
+               new ErrorResponse() { Code = HttpStatusCode.BadRequest, Message = value, TypeException = EType.Value })
     {
     }
 }

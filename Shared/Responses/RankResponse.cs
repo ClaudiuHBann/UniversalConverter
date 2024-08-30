@@ -1,12 +1,8 @@
 ﻿namespace Shared.Responses
 {
-public class RankResponse : BaseResponse
+public class RankResponse
+() : BaseResponse(EType.Rank)
 {
-    public List<string> Converters { get; set; }
-
-    public RankResponse(List<string> converters) : base(EType.Rank)
-    {
-        Converters = converters;
-    }
+    public required List<string> Converters { get; init; }
 }
 }

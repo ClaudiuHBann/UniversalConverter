@@ -1,8 +1,8 @@
 ﻿namespace Shared.Responses
 {
 public class CurrencyResponse
-(List<decimal> money) : BaseResponse(EType.Currency)
+() : BaseResponse(EType.Currency)
 {
-    public List<decimal> Money { get; set; } = money;
+    public required List<decimal> Money { get; init; }
 }
 }

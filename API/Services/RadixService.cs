@@ -6,7 +6,8 @@ using API.Entities;
 
 namespace API.Services
 {
-public class RadixService : BaseService<RadixRequest, RadixResponse>
+public class RadixService
+(UCContext context) : BaseService<RadixRequest, RadixResponse>(context)
 {
     private const string Bases = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -20,17 +21,12 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
     private const string _defaultFrom = "10";
     private const string _defaultTo = "2";
 
-    public RadixService(UCContext context) : base(context)
-    {
-    }
-
     public override bool IsConverter() => true;
 
     public override string GetServiceName() => "Radix";
 
-    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse(_fromTo,
-                                                                                                    _defaultFrom,
-                                                                                                    _defaultTo));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(
+        new FromToResponse() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultTo = _defaultTo });
 
     protected override async Task ConvertValidate(RadixRequest request)
     {
@@ -51,7 +47,8 @@ public class RadixService : BaseService<RadixRequest, RadixResponse>
         var from = ulong.Parse(request.From);
         var to = ulong.Parse(request.To);
 
-        RadixResponse response = new(request.Numbers.Select(number => ToBase(number, from, to)).ToList());
+        RadixResponse response =
+            new() { Numbers = request.Numbers.Select(number => ToBase(number, from, to)).ToList() };
         return await Task.FromResult(response);
     }
 

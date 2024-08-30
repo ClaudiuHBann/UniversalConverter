@@ -1,7 +1,7 @@
 ﻿using System.Net;
 
-using Shared.Responses;
 using Shared.Services;
+using Shared.Responses;
 
 namespace Shared.Exceptions
 {
@@ -12,12 +12,8 @@ public class FromToException : BaseException
     }
 
     public FromToException(IService service, bool fromIsInvalid)
-        : base(EType.FromTo, new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)))
-    {
-    }
-
-    public FromToException(IService service, bool fromIsInvalid, Exception inner)
-        : base(EType.FromTo, new(HttpStatusCode.BadRequest, Format(service, fromIsInvalid)), inner)
+        : base(EType.FromTo, new() { Code = HttpStatusCode.BadRequest, Message = Format(service, fromIsInvalid),
+                                     TypeException = EType.FromTo })
     {
     }
 

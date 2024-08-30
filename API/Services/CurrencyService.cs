@@ -35,7 +35,7 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     public override async Task<FromToResponse> FromTo()
     {
         await FindRates();
-        return new(_fromTo, _defaultFrom, _defaultTo);
+        return new() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultTo = _defaultTo };
     }
 
     protected override async Task<CurrencyResponse> ConvertInternal(CurrencyRequest request)
@@ -44,7 +44,9 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
         try
         {
             // divide by from first because the currency is in EUR by default
-            return new(request.Money.Select(money => money / _rates[request.From] * _rates[request.To]).ToList());
+            return new() {
+                Money = request.Money.Select(money => money / _rates[request.From] * _rates[request.To]).ToList()
+            };
         }
         catch (OverflowException)
         {

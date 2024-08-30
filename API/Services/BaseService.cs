@@ -9,16 +9,11 @@ using API.Entities;
 
 namespace API.Services
 {
-public abstract class BaseService<Request, Response> : BaseDbService<Request, Response>
+public abstract class BaseService<Request, Response>(UCContext context) : BaseDbService<Request, Response>(context)
     where Request : BaseRequest
     where Response : BaseResponse
 {
-    private readonly UCContext _context;
-
-    protected BaseService(UCContext context) : base(context)
-    {
-        _context = context;
-    }
+    private readonly UCContext _context = context;
 
     public abstract bool IsConverter();
     public abstract string GetServiceName();

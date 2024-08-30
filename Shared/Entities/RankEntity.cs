@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Shared.Entities
 {
 [Table("rank")]
-public class RankEntity : BaseEntity
+public class RankEntity
+(string converter) : BaseEntity
 {
     [Key]
     [Required]
@@ -16,17 +17,12 @@ public class RankEntity : BaseEntity
     [Column("converter")]
     public string Converter {
         get; set;
-    } = "";
+    } = converter;
 
     [Required]
     [Column("conversions")]
     public long Conversions {
         get; set;
     } = 0;
-
-    public RankEntity(string converter)
-    {
-        Converter = converter;
-    }
 }
 }

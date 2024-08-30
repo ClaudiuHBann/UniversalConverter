@@ -44,9 +44,9 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
 
     public override string GetServiceName() => "Temperature";
 
-    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse(_fromTo,
-                                                                                                    _defaultFrom,
-                                                                                                    _defaultTo));
+    public override async Task<FromToResponse> FromTo() => await Task.FromResult(new FromToResponse() {
+        FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultTo = _defaultTo
+    });
 
     protected override async Task<TemperatureResponse> ConvertInternal(TemperatureRequest request)
     {
@@ -54,7 +54,7 @@ public class TemperatureService : BaseService<TemperatureRequest, TemperatureRes
         try
         {
             TemperatureResponse response =
-                new(request.Temperatures.Select(temperature => algorithm(temperature)).ToList());
+                new() { Temperatures = request.Temperatures.Select(temperature => algorithm(temperature)).ToList() };
             return await Task.FromResult(response);
         }
         catch (OverflowException)

@@ -15,7 +15,7 @@ public class BaseResponse
         Temperature
     }
 
-    public EType Type { get; set; }
+    public EType Type { get; }
 
     protected BaseResponse(EType type)
     {

@@ -1,8 +1,8 @@
 ﻿namespace Shared.Responses
 {
 public class TemperatureResponse
-(List<double> temperatures) : BaseResponse(EType.Temperature)
+() : BaseResponse(EType.Temperature)
 {
-    public List<double> Temperatures { get; set; } = temperatures;
+    public required List<double> Temperatures { get; init; }
 }
 }

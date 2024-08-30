@@ -27,7 +27,8 @@ public class GlobalExceptionHandlerMiddleware
         {
             _logger.LogError($"Exception: {exception.Message}");
 
-            ErrorResponse error = new(HttpStatusCode.InternalServerError, exception.Message);
+            ErrorResponse error = new() { Code = HttpStatusCode.InternalServerError, Message = exception.Message,
+                                          TypeException = BaseException.EType.Unknown };
             context.Response.StatusCode = (int)error.Code;
             await context.Response.WriteAsJsonAsync(error);
         }

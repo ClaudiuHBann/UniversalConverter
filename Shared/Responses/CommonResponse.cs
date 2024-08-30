@@ -1,8 +1,8 @@
 ﻿namespace Shared.Responses
 {
 public class CommonResponse
-(Dictionary<string, FromToResponse> fromToAll) : BaseResponse(EType.Common)
+() : BaseResponse(EType.Common)
 {
-    public Dictionary<string, FromToResponse> FromToAll { get; set; } = fromToAll;
+    public required Dictionary<string, FromToResponse> FromToAll { get; init; }
 }
 }
