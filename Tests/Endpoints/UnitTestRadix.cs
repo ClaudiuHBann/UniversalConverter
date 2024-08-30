@@ -5,7 +5,7 @@ using Shared.Services.UC;
 
 namespace Tests.Endpoints
 {
-    [TestFixture]
+[TestFixture]
 internal class UnitTestRadix : UnitTestBase
 {
     private readonly RadixUCService _service;
@@ -58,8 +58,8 @@ internal class UnitTestRadix : UnitTestBase
                                                                   Assert.That(Enumerable.Range(2, 35)
                                                                                   .Select(number => number.ToString())
                                                                                   .SequenceEqual(response.FromTo));
-                                                                  Assert.That(response.DefaultFrom, Is.EqualTo("10"));
-                                                                  Assert.That(response.DefaultTo, Is.EqualTo("2"));
+                                                                  Assert.That(response.DefaultFrom, Is.EqualTo("2"));
+                                                                  Assert.That(response.DefaultTo, Is.EqualTo("10"));
                                                               });
                                                       });
 }

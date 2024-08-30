@@ -19,7 +19,10 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     private static List<string> _fromTo = [];
 
     private const string _defaultFrom = "USD";
+    private const string _defaultFromValue = "1000000";
+
     private const string _defaultTo = "EUR";
+    private const string _defaultToValue = "850000";
 
     private static DateTime _ratesLastUpdate = DateTime.MinValue;
     private static readonly Mutex _mutexRatesLastUpdate = new();
@@ -35,7 +38,8 @@ public class CurrencyService : BaseService<CurrencyRequest, CurrencyResponse>
     public override async Task<FromToResponse> FromTo()
     {
         await FindRates();
-        return new() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultTo = _defaultTo };
+        return new() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultFromValue = _defaultFromValue,
+                       DefaultTo = _defaultTo, DefaultToValue = _defaultToValue };
     }
 
     protected override async Task<CurrencyResponse> ConvertInternal(CurrencyRequest request)

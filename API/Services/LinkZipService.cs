@@ -22,9 +22,13 @@ public class LinkZipService
     private readonly IAppCache _cache = cache;
     private readonly LinkValidator _validator = validator;
 
-    private const string _defaultFrom = "Longifier";
-    private const string _defaultTo = "Shortifier";
     private static readonly string[] _fromTo = [_defaultTo, _defaultFrom];
+
+    private const string _defaultFrom = "Longifier";
+    private const string _defaultFromValue = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+    private const string _defaultTo = "Shortifier";
+    private const string _defaultToValue = "hbann.ro/LinkZip?code=1";
 
     public override bool IsConverter() => true;
 
@@ -40,7 +44,8 @@ public class LinkZipService
     }
 
     public override async Task<FromToResponse> FromTo() => await Task.FromResult(
-        new FromToResponse() { FromTo = [.._fromTo], DefaultFrom = _defaultFrom, DefaultTo = _defaultTo });
+        new FromToResponse() { FromTo = [.._fromTo], DefaultFrom = _defaultFrom, DefaultFromValue = _defaultFromValue,
+                               DefaultTo = _defaultTo, DefaultToValue = _defaultToValue });
 
     protected override async Task ConvertValidate(LinkZipRequest request)
     {

@@ -18,15 +18,20 @@ public class RadixService
 
     private static readonly List<string> _fromTo =
         Enumerable.Range(2, Bases.Length - 1).Select(number => number.ToString()).ToList();
-    private const string _defaultFrom = "10";
-    private const string _defaultTo = "2";
+
+    private const string _defaultFrom = "2";
+    private const string _defaultFromValue = "10010";
+
+    private const string _defaultTo = "10";
+    private const string _defaultToValue = "18";
 
     public override bool IsConverter() => true;
 
     public override string GetServiceName() => "Radix";
 
     public override async Task<FromToResponse> FromTo() => await Task.FromResult(
-        new FromToResponse() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultTo = _defaultTo });
+        new FromToResponse() { FromTo = _fromTo, DefaultFrom = _defaultFrom, DefaultFromValue = _defaultFromValue,
+                               DefaultTo = _defaultTo, DefaultToValue = _defaultToValue });
 
     protected override async Task ConvertValidate(RadixRequest request)
     {

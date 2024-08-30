@@ -1,10 +1,11 @@
 ﻿using Tests.Utilities;
 
+using Shared.Utilities;
 using Shared.Services.UC;
 
 namespace Tests.Endpoints
 {
-    [TestFixture]
+[TestFixture]
 internal class UnitTestCommon : UnitTestBase
 {
     private readonly UCService _service;
@@ -14,14 +15,14 @@ internal class UnitTestCommon : UnitTestBase
         _service = DI.GetService<UCService>()!;
     }
 
-    private async Task<Dictionary<string, List<string>>> CreateFromToAll()
+    private async Task<Dictionary<string, string>> CreateFromToAll()
     {
-        Dictionary<string, List<string>> fromToAll = [];
+        Dictionary<string, string> fromToAll = [];
 
-        fromToAll.Add("Currency", (await _service.Currency.FromTo()).FromTo);
-        fromToAll.Add("LinkZip", (await _service.LinkZip.FromTo()).FromTo);
-        fromToAll.Add("Radix", (await _service.Radix.FromTo()).FromTo);
-        fromToAll.Add("Temperature", (await _service.Temperature.FromTo()).FromTo);
+        fromToAll.Add("Currency", (await _service.Currency.FromTo()).ToJSON());
+        fromToAll.Add("LinkZip", (await _service.LinkZip.FromTo()).ToJSON());
+        fromToAll.Add("Radix", (await _service.Radix.FromTo()).ToJSON());
+        fromToAll.Add("Temperature", (await _service.Temperature.FromTo()).ToJSON());
 
         return fromToAll;
     }
@@ -36,7 +37,7 @@ internal class UnitTestCommon : UnitTestBase
                             Assert.That(fromToAll.Keys.SequenceEqual(response.FromToAll.Keys));
                             foreach (var (key, value) in fromToAll)
                             {
-                                Assert.That(value.SequenceEqual(response.FromToAll[key].FromTo));
+                                Assert.That(value, Is.EqualTo(response.FromToAll[key].ToJSON()));
                             }
                         });
 }
