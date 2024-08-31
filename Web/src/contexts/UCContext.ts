@@ -15,6 +15,11 @@ export class UCContext {
     () => {},
   ];
 
+  private inputChanged: [boolean, Dispatch<SetStateAction<boolean>>] = [
+    false,
+    () => {},
+  ];
+
   private callbackPromiseCatch: (error: any) => void = () => {};
 
   public constructor(
@@ -22,13 +27,15 @@ export class UCContext {
     input: [string, Dispatch<SetStateAction<string>>],
     output: [string, Dispatch<SetStateAction<string>>],
     logs: [string[], Dispatch<SetStateAction<string[]>>],
-    logsVisible: [boolean, Dispatch<SetStateAction<boolean>>]
+    logsVisible: [boolean, Dispatch<SetStateAction<boolean>>],
+    inputChanged: [boolean, Dispatch<SetStateAction<boolean>>]
   ) {
     this.categoryToFromTo = categoryToFromTo;
     this.input = input;
     this.output = output;
     this.logs = logs;
     this.logsVisible = logsVisible;
+    this.inputChanged = inputChanged;
 
     this.callbackPromiseCatch = this.CallbackPromiseCatch.bind(this);
   }
@@ -54,6 +61,16 @@ export class UCContext {
   public SetLogsVisibility(visibility: boolean) {
     const [, setLogsVisible] = this.logsVisible;
     setLogsVisible(visibility);
+  }
+
+  public SetInputChanged(changed: boolean = true) {
+    const [, setInputChanged] = this.inputChanged;
+    setInputChanged(changed);
+  }
+
+  public GetInputChanged() {
+    const [inputChanged] = this.inputChanged;
+    return inputChanged;
   }
 
   public GetCategories(): string[] {

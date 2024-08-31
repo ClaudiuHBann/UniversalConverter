@@ -20,6 +20,10 @@ function Output() {
   const category = searchParamsEx.GetCategory();
 
   useEffect(() => {
+    if (context!.GetInputChanged()) {
+      return;
+    }
+
     setOutputValue(context!.GetFromToDefaultValue(category, false) || "");
   }, [context, category]);
 

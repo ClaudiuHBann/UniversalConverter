@@ -20,6 +20,10 @@ function Input() {
   const category = searchParamsEx.GetCategory();
 
   useEffect(() => {
+    if (context!.GetInputChanged()) {
+      return;
+    }
+
     setInputValue(context!.GetFromToDefaultValue(category, true) || "");
   }, [context, category]);
 
@@ -35,7 +39,10 @@ function Input() {
         description="Input Your Values Below"
         placeholder="Example..."
         value={inputValue}
-        onChange={(event) => setInputValue(event.currentTarget.value)}
+        onChange={(event) => {
+          context!.SetInputChanged();
+          setInputValue(event.currentTarget.value);
+        }}
       />
 
       <ActionIconEx

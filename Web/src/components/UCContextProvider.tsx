@@ -15,12 +15,15 @@ function UCContextProvider({ children }: { children: React.ReactNode }) {
   const logs = useState<string[]>([]);
   const logsVisible = useState(false);
 
+  const inputChanged = useState(false);
+
   const context = new UCContext(
     categoryToFromTo,
     input,
     output,
     logs,
-    logsVisible
+    logsVisible,
+    inputChanged
   );
 
   const queryFromToAll = useFromToAll(context);

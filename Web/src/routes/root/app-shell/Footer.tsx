@@ -61,7 +61,7 @@ function Footer({ openedAside, toggleAside }: FooterProps) {
     toggleAside();
 
     // negate openedAside because the state is not updated yet
-    context?.SetLogsVisibility(!openedAside);
+    context!.SetLogsVisibility(!openedAside);
   };
 
   return (
