@@ -9,12 +9,19 @@ import {
   FindIconClear,
   FindTooltipClear,
 } from "./IOShortcutMenu";
+import { URLSearchParamsEx } from "../../../utilities/URLSearchParamsEx";
+import { useEffect } from "react";
 
 function Output() {
   const context = useUCContext();
-  const [outputValue, setOutputValue] = context
-    ? context.GetOutput()
-    : ["", () => {}];
+  const [outputValue, setOutputValue] = context!.GetOutput();
+
+  const searchParamsEx = new URLSearchParamsEx(context);
+  const category = searchParamsEx.GetCategory();
+
+  useEffect(() => {
+    setOutputValue(context!.GetFromToDefaultValue(category, false) || "");
+  }, [context, category]);
 
   return (
     <div style={{ position: "relative" }}>

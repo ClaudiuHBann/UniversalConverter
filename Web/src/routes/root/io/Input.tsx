@@ -9,12 +9,19 @@ import {
   FindTooltipCopy,
   HandleButtonIconCopy,
 } from "./IOShortcutMenu";
+import { URLSearchParamsEx } from "../../../utilities/URLSearchParamsEx";
+import { useEffect } from "react";
 
 function Input() {
   const context = useUCContext();
-  const [inputValue, setInputValue] = context
-    ? context.GetInput()
-    : ["", () => {}];
+  const [inputValue, setInputValue] = context!.GetInput();
+
+  const searchParamsEx = new URLSearchParamsEx(context);
+  const category = searchParamsEx.GetCategory();
+
+  useEffect(() => {
+    setInputValue(context!.GetFromToDefaultValue(category, true) || "");
+  }, [context, category]);
 
   return (
     <div style={{ position: "relative" }}>

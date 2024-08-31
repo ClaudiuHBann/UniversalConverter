@@ -94,6 +94,20 @@ export class UCContext {
     return fromTo ? fromToResponse.defaultFrom : fromToResponse.defaultTo;
   }
 
+  public GetFromToDefaultValue(
+    category: string | null,
+    fromTo: boolean
+  ): string | null {
+    const fromToResponse = this.GetFromToResponse(category);
+    if (!fromToResponse) {
+      return null;
+    }
+
+    return fromTo
+      ? fromToResponse.defaultFromValue
+      : fromToResponse.defaultToValue;
+  }
+
   public GetFromTo(category: string | null): string[] {
     return this.GetFromToResponse(category)?.fromTo || [];
   }
