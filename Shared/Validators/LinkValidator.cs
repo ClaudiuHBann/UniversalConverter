@@ -8,17 +8,22 @@ public class LinkValidator : AbstractValidator<LinkEntity>
 {
     public LinkValidator()
     {
-        RuleFor(x => x.Url).Length(0, 2048).MustAsync(ValidateURL);
+        RuleFor(x => x.Url).MustAsync(BeAValidURL);
     }
 
-    private async Task<bool> ValidateURL(string url, CancellationToken token)
+    private static async Task<bool> BeAValidURL(string url, CancellationToken cancellationToken)
     {
-        // TODO: improve this
+        if (url.Length < 4 || url.Length > 2048)
+        {
+            return false;
+        }
 
         try
         {
             using var client = new HttpClient();
-            var response = await client.SendAsync(new(HttpMethod.Head, url), token);
+            using var request = new HttpRequestMessage(HttpMethod.Head, url);
+
+            var response = await client.SendAsync(request, cancellationToken);
             return response.IsSuccessStatusCode;
         }
         catch
